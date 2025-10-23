@@ -132,7 +132,7 @@ export const autouiConfig: AutoUIConfig = {
   components: {
     ProductList: {
       prompt: "A grid of products with optional onAddToCart button handler.",
-      params: {
+      props: {
         products: "Product[] — array of product data",
         onAddToCart: "function(productId: string) — handler for add to cart",
       },
@@ -147,7 +147,7 @@ export const autouiConfig: AutoUIConfig = {
 
     ProductCard: {
       prompt: "Card showing product image, name, price, and add button.",
-      params: {
+      props: {
         product: "Product — object containing id, name, price, image",
         onAddToCart: "function(productId: string)",
       },
@@ -157,7 +157,7 @@ export const autouiConfig: AutoUIConfig = {
 
     CartSummary: {
       prompt: "Displays list of items currently in the shopping cart.",
-      params: {
+      props: {
         items: "CartItem[] — list of items with name, price, qty",
         onCheckout: "function() — proceed to checkout",
       },

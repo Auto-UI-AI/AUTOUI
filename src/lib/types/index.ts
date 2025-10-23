@@ -85,7 +85,7 @@ export interface AutoUIComponent {
   prompt: string;
 
   /** Human-readable parameter descriptions */
-  params?: Record<string, string>;
+  props?: Record<string, string>;
 
   /** Actual React component reference */
   callComponent: ComponentType<any>
