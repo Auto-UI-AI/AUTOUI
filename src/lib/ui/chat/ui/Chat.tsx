@@ -3,20 +3,16 @@ import { ChatInput } from "./ChatInput";
 import { ChatMessageList } from "./ChatMessageList";
 import { useAutoUI } from "../hooks/useAutoUI";
 import "../styles/index.css";
+import type { ChatMessage, ChatProps } from "../types";
 
-export interface ChatMessage {
-    id: string;
-    role: "user" | "assistant" | "system";
-    content: string | React.ReactNode;
-}
-
-export interface ChatProps {
-    title?: string;
-    onError?: (err: Error) => void;
-}
-
-export const Chat: React.FC<ChatProps> = ({ title = "AutoUI Chat", onError }) => {
+export const Chat: React.FC<ChatProps> = ({
+    title = "AutoUI Chat",
+    isOpen = true,
+    onClose,
+    onError,
+}) => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [isLoading, setIsLoading] = useState<Boolean>(false);
     const { processMessage } = useAutoUI();
 
     useEffect(() => {
@@ -27,6 +23,8 @@ export const Chat: React.FC<ChatProps> = ({ title = "AutoUI Chat", onError }) =>
     useEffect(() => {
         localStorage.setItem("autoui_chat_history", JSON.stringify(messages));
     }, [messages]);
+
+    if (!isOpen) return;
 
     const handleSend = useCallback(
         async (text: string) => {
@@ -41,6 +39,7 @@ export const Chat: React.FC<ChatProps> = ({ title = "AutoUI Chat", onError }) =>
             setMessages((prev) => [...prev, userMsg]);
 
             try {
+                setIsLoading(true);
                 const response = await processMessage(text);
                 const assistantMsg: ChatMessage = {
                     id: `${Date.now()}-a`,
@@ -56,6 +55,8 @@ export const Chat: React.FC<ChatProps> = ({ title = "AutoUI Chat", onError }) =>
                 };
                 setMessages((prev) => [...prev, errorMsg]);
                 onError?.(err);
+            } finally {
+                setIsLoading(false);
             }
         },
         [processMessage, onError]
@@ -65,6 +66,16 @@ export const Chat: React.FC<ChatProps> = ({ title = "AutoUI Chat", onError }) =>
         <section className="autoui-chat" role="complementary" aria-label="Chat">
             <header className="autoui-chat-header">
                 <h2 className="autoui-chat-title">{title}</h2>
+                {onClose && (
+                    <button className="autoui-chat-closebtn" onClick={onClose}>
+                        <img
+                            src={"xmark-svgrepo-com.svg"}
+                            alt={"Open char"}
+                            width={24}
+                            height={24}
+                        />
+                    </button>
+                )}
             </header>
 
             <ChatMessageList messages={messages} />
