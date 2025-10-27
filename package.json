@@ -1,5 +1,5 @@
 {
-    "name": "autoui",
+    "name": "@auto-ui-ai/autoui",
     "private": true,
     "version": "0.0.0",
     "type": "module",
@@ -9,11 +9,15 @@
         "build:lib": "vite build --config vite.config.lib.ts",
         "pack": "npm run build:lib && npm pack",
         "lint": "eslint .",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "deploy": "npm version patch && git push && git push --tags  &&  vite build && npm publish"
     },
     "files": [
         "dist"
     ],
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
     "dependencies": {
         "react": "^19.1.1",
         "react-dom": "^19.1.1"
