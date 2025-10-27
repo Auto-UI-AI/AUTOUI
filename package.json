@@ -11,6 +11,10 @@
         "preview": "vite preview",
         "deploy": "npm version patch && git push && git push --tags  &&  vite build && npm publish"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Auto-UI-AI/AUTOUI.git"
+    },
     "files": [
         "dist"
     ],
