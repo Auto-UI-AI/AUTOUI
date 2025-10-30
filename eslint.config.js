@@ -22,6 +22,7 @@ export default [
       globals: globals.browser,
     },
     plugins: {
+      '@typescript-eslint': tseslint.plugin,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       'prettier': prettierPlugin,
@@ -31,22 +32,27 @@ export default [
     rules: {
       // Base + React + Prettier
       ...js.configs.recommended.rules,
+      ...tseslint.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       ...prettierConfig.rules,
       'react-refresh/only-export-components': 'warn',
 
-      // Naming: camelCase everywhere; PascalCase allowed for components
-      'camelcase': ['warn', { properties: 'always' }],
+      '@typescript-eslint/naming-convention': [
+        'warn',
+        { selector: 'variableLike', format: ['camelCase', 'UPPER_CASE'] },
+        { selector: 'function', format: ['camelCase'] },
+        { selector: 'typeLike', format: ['PascalCase'] },
+      ],
       'unicorn/filename-case': ['error', { cases: { camelCase: true, pascalCase: true } }],
 
       // Secrets should be in .env
       'no-secrets/no-secrets': 'error',
 
-      // Unused: allow unused function parameters; still warn on unused variables
-      'no-unused-vars': ['warn', { args: 'none', vars: 'all' }],
+      // Allow unused function parameters; still warn on unused variables
+      '@typescript-eslint/no-unused-vars': ['warn', { args: 'none', vars: 'all' }],
 
       // Allow semicolons (rely on Prettier for formatting)
-      'semi': 'off',
+      '@typescript-eslint/semi': 'off',
     },
   },
   {
