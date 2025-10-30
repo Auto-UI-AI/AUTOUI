@@ -39,9 +39,9 @@ export default [
 
       '@typescript-eslint/naming-convention': [
         'warn',
-        { selector: 'variableLike', format: ['camelCase', 'UPPER_CASE'] },
+        { selector: 'variableLike', format: ['camelCase', 'UPPER_CASE', 'PascalCase'] },
         { selector: 'variable', types: ['function'], format: ['PascalCase', 'camelCase'] },
-        { selector: 'function', format: ['camelCase'] },
+        { selector: 'function', format: ['camelCase', 'PascalCase'] },
         { selector: 'typeLike', format: ['PascalCase'] },
       ],
       'unicorn/filename-case': ['error', { cases: { camelCase: true, pascalCase: true } }],
