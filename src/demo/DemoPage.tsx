@@ -16,6 +16,8 @@ import {
 import { fetchProducts, addToCart } from './functions';
 import { InteractiveDemo } from './DemoInteractive';
 import { PLACEHOLDER_IMAGE } from './constants';
+import { useDarkMode } from './hooks/useDarkMode';
+import { Moon, Sun } from 'lucide-react';
 
 type ComponentDemo = {
   name: string;
@@ -165,6 +167,7 @@ const COMPONENT_CATEGORIES: ComponentCategory[] = [
 ];
 
 export default function DemoStorybook() {
+  const { isDark, toggle } = useDarkMode();
   const [selectedComponent, setSelectedComponent] = useState<{
     category: string;
     name: string;
@@ -174,7 +177,7 @@ export default function DemoStorybook() {
     if (!selectedComponent) {
       return (
         <div className="flex items-center justify-center h-full">
-          <p className="text-gray-500">Select a component from the sidebar to preview.</p>
+          <p className="text-gray-500 dark:text-gray-400">Select a component from the sidebar to preview.</p>
         </div>
       );
     }
@@ -185,7 +188,7 @@ export default function DemoStorybook() {
     if (!component) {
       return (
         <div className="flex items-center justify-center h-full">
-          <p className="text-red-500">Component not found.</p>
+          <p className="text-red-500 dark:text-red-400">Component not found.</p>
         </div>
       );
     }
@@ -202,14 +205,19 @@ export default function DemoStorybook() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Sidebar */}
-      <aside className="w-64 border-r bg-white p-4">
-        <h2 className="text-lg font-semibold mb-4">Auto UI Demo</h2>
+      <aside className="w-64 border-r bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold dark:text-gray-100">Auto UI Demo</h2>
+          <Button variant="ghost" size="icon" onClick={toggle} className="h-8 w-8">
+            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </Button>
+        </div>
         <ScrollArea className="h-[calc(100vh-5rem)] pr-2">
           {COMPONENT_CATEGORIES.map((category) => (
             <div key={category.name} className="mb-4">
-              <h3 className="text-xs font-bold text-gray-500 uppercase mb-2">{category.name}</h3>
+              <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">{category.name}</h3>
               <div className="space-y-1">
                 {category.components.map((component) => {
                   const isSelected =
