@@ -1,29 +1,41 @@
 import React, { useState } from "react";
+import { useChatContext } from "../context/chatContext";
+import { clsx } from "@lib/utils/clsx";
 
-export interface ChatInputProps {
-    onSend: (message: string) => void;
-}
+export interface ChatInputProps {}
 
-export const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
+export const ChatInput: React.FC<ChatInputProps> = () => {
+    const { classNames, handleSend } = useChatContext();
     const [value, setValue] = useState("");
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSend(value);
+        handleSend(value);
         setValue("");
     };
 
     return (
-        <form className="autoui-chat-input" onSubmit={handleSubmit} aria-label="Chat input area">
+        <form
+            role="inputWrapper"
+            className={clsx("autoui-chat-input", classNames?.inputWrapper)}
+            onSubmit={handleSubmit}
+            aria-label="Chat input area"
+        >
             <input
-                className="autoui-chat-textbox"
+                role="input"
+                className={clsx("autoui-chat-textbox", classNames?.input)}
                 type="text"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 placeholder="Type a message..."
                 aria-label="Message input"
             />
-            <button type="submit" className="autoui-chat-send" aria-label="Send message">
+            <button
+                role="inputButton"
+                type="submit"
+                className={clsx("autoui-chat-send", classNames?.inputButton)}
+                aria-label="Send message"
+            >
                 ➤
             </button>
         </form>

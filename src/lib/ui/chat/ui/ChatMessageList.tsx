@@ -1,15 +1,17 @@
 import React from "react";
 import { ChatMessageListItem } from "./ChatMessageListItem";
-import type { ChatMessage } from "../types";
+import type { ChatMessageListProps } from "../types";
+import { useChatContext } from "../context/chatContext";
+import { clsx } from "@lib/utils/clsx";
 
-
-export interface ChatMessageListProps {
-    messages: ChatMessage[];
-}
-
-export const ChatMessageList: React.FC<ChatMessageListProps> = ({ messages }) => {
+export const ChatMessageList: React.FC<ChatMessageListProps> = () => {
+    const { messages, classNames } = useChatContext();
     return (
-        <div className="autoui-chat-messages" role="log" aria-live="polite">
+        <div
+            className={clsx("autoui-chat-messages", classNames?.messageList)}
+            role="messageList"
+            aria-live="polite"
+        >
             {messages.map((msg) => (
                 <ChatMessageListItem key={msg.id} message={msg} />
             ))}

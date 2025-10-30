@@ -1,5 +1,7 @@
 import React from "react";
 import type { ChatMessage } from "../types";
+import { clsx } from "@lib/utils/clsx";
+import { useChatContext } from "../context/chatContext";
 
 export interface ChatMessageListItemProps {
     message: ChatMessage;
@@ -7,11 +9,16 @@ export interface ChatMessageListItemProps {
 
 export const ChatMessageListItem: React.FC<ChatMessageListItemProps> = ({ message }) => {
     const isUser = message.role === "user";
+    const { classNames } = useChatContext();
 
     return (
         <div
-            className={`autoui-chat-message ${isUser ? "user" : "assistant"}`}
-            role="article"
+            role="message"
+            className={clsx(
+                "autoui-chat-message",
+                isUser ? "user" : "assistant",
+                classNames?.message
+            )}
             aria-label={isUser ? "User message" : "Assistant message"}
         >
             <div className="autoui-chat-bubble">{message.content}</div>

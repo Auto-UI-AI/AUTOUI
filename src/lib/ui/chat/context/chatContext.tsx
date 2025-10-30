@@ -1,12 +1,10 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
-import type { ChatContextValue, Value } from "../types";
+import { createContext, useContext, type ReactNode } from "react";
+import type { ChatContext } from "../types";
 
-const ChatContext = createContext<ChatContextValue | undefined>(undefined);
+const ChatContext = createContext<ChatContext | undefined>(undefined);
 
-export const ChatProvider = ({ children }: { children: ReactNode }) => {
-    const [value, setValue] = useState<Value>({ isOpen: false });
-
-    return <ChatContext.Provider value={{ value, setValue }}>{children}</ChatContext.Provider>;
+export const ChatProvider = ({ children, value }: { children: ReactNode; value: ChatContext }) => {
+    return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 };
 
 export const useChatContext = () => {
