@@ -1,16 +1,21 @@
 'use client';
 import React, { useState } from 'react';
-import { Button } from './base/button';
-import { ScrollArea } from './base/scroll-area';
-import { Separator } from './base/separator';
-import { Card, CardHeader, CardTitle, CardContent } from './base/card';
-
-// Demo Components
-import ProductDetailsModal from './components/ProductDetailsModal';
-import SizeFilter from './components/SizeFilter';
-import CheckoutForm from './components/CheckoutForm';
-import OrderConfirmation from './components/OrderConfirmation';
-import WishlistPanel from './components/WishlistPanel';
+import { Button, ScrollArea, Separator, Card, CardHeader, CardTitle, CardContent } from './base';
+import {
+  ProductDetailsModal,
+  ProductCard,
+  ProductGallery,
+  CartSummary,
+  SearchBar,
+  CategoryFilter,
+  SizeFilter,
+  CheckoutForm,
+  OrderConfirmation,
+  WishlistPanel,
+} from './components';
+import { fetchProducts, addToCart } from './functions';
+import { InteractiveDemo } from './DemoInteractive';
+import { PLACEHOLDER_IMAGE } from './constants';
 
 type ComponentDemo = {
   name: string;
@@ -24,8 +29,105 @@ type ComponentCategory = {
 
 const COMPONENT_CATEGORIES: ComponentCategory[] = [
   {
+    name: 'Interactive Views',
+    components: [
+      {
+        name: 'E-commerce Flow',
+        component: <InteractiveDemo />,
+      },
+    ],
+  },
+  {
     name: 'components',
     components: [
+      {
+        name: 'ProductCard',
+        component: (
+          <div className="w-64">
+            <ProductCard
+              product={{
+                id: '1',
+                name: 'Beige Coat',
+                description: 'A stylish beige coat for modern fashion.',
+                price: 89.99,
+                image: PLACEHOLDER_IMAGE,
+              }}
+              onAddToCart={() => {}}
+            />
+          </div>
+        ),
+      },
+      {
+        name: 'ProductGallery',
+        component: (
+          <ProductGallery
+            products={[
+              {
+                id: '1',
+                name: 'Beige Coat',
+                description: 'A stylish beige coat for modern fashion.',
+                price: 89.99,
+                image: PLACEHOLDER_IMAGE,
+              },
+              {
+                id: '2',
+                name: 'Denim Jacket',
+                description: 'Classic denim jacket for everyday wear.',
+                price: 69.99,
+                image: PLACEHOLDER_IMAGE,
+              },
+              {
+                id: '3',
+                name: 'Black Jeans',
+                description: 'Comfortable black jeans with modern fit.',
+                price: 49.99,
+                image: PLACEHOLDER_IMAGE,
+              },
+            ]}
+            onAddToCart={async (productId) => {
+              await addToCart({ productId });
+              console.log('Added to cart:', productId);
+            }}
+          />
+        ),
+      },
+      {
+        name: 'CartSummary',
+        component: (
+          <CartSummary
+            items={[
+              { id: '1', name: 'Beige Coat', price: 89.99, quantity: 2 },
+              { id: '2', name: 'Denim Jacket', price: 69.99, quantity: 1 },
+            ]}
+            onCheckout={() => {}}
+          />
+        ),
+      },
+      {
+        name: 'SearchBar',
+        component: (
+          <SearchBar
+            onSearch={async (query) => {
+              const results = await fetchProducts({ q: query });
+              console.log('Search results:', results);
+            }}
+            placeholder="Search products..."
+          />
+        ),
+      },
+      {
+        name: 'CategoryFilter',
+        component: (
+          <CategoryFilter
+            categories={['All', 'Tops', 'Bottoms', 'Shoes', 'Accessories']}
+            selected="All"
+            onSelect={async (category) => {
+              const results = await fetchProducts({ category: category === 'All' ? undefined : category });
+              console.log('Filtered results:', results);
+            }}
+          />
+        ),
+      },
       {
         name: 'CheckoutForm',
         component: <CheckoutForm onSubmit={() => {}} />,
@@ -100,7 +202,7 @@ export default function DemoStorybook() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
       <aside className="w-64 border-r bg-white p-4">
         <h2 className="text-lg font-semibold mb-4">Smart Fashion UI</h2>
