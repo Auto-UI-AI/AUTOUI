@@ -14,7 +14,10 @@ interface CartItem {
   quantity: number;
 }
 
-export function submitOrder(input: { user: UserInfo; cart: CartItem[] }): { orderId: string; eta: string } {
+export function submitOrder(input: { user: UserInfo; cart: CartItem[] }): {
+  orderId: string;
+  eta: string;
+} {
   console.log('Submitting order for user:', input.user);
   console.log('Cart items:', input.cart);
   // Mock implementation
