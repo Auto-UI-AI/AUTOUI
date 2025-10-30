@@ -40,6 +40,7 @@ export default [
       '@typescript-eslint/naming-convention': [
         'warn',
         { selector: 'variableLike', format: ['camelCase', 'UPPER_CASE'] },
+        { selector: 'variable', types: ['function'], format: ['PascalCase', 'camelCase'] },
         { selector: 'function', format: ['camelCase'] },
         { selector: 'typeLike', format: ['PascalCase'] },
       ],
