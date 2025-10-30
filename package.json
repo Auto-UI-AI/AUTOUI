@@ -25,6 +25,8 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
+    "@radix-ui/react-toggle": "^1.1.10",
+    "@radix-ui/react-toggle-group": "^1.1.11",
     "@tailwindcss/vite": "^4.1.16",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
