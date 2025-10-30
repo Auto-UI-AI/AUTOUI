@@ -205,7 +205,7 @@ export default function DemoStorybook() {
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
       <aside className="w-64 border-r bg-white p-4">
-        <h2 className="text-lg font-semibold mb-4">Smart Fashion UI</h2>
+        <h2 className="text-lg font-semibold mb-4">Auto UI Demo</h2>
         <ScrollArea className="h-[calc(100vh-5rem)] pr-2">
           {COMPONENT_CATEGORIES.map((category) => (
             <div key={category.name} className="mb-4">
