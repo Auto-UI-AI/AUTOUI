@@ -8,7 +8,10 @@ interface CartItem {
   quantity: number;
 }
 
-export function summarizeCart(input: { cart: CartItem[] }): { summary: string; total: number } {
+export function summarizeCart(input: { cart: CartItem[] }): {
+  summary: string;
+  total: number;
+} {
   const total = input.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const summary = input.cart.map((item) => `${item.quantity}x ${item.name}`).join(', ');
   return { summary, total };
