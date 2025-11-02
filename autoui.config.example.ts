@@ -1,170 +1,301 @@
+// autoui.config.example.ts
 import type { AutoUIConfig } from "./src/lib/types";
-import ExampleComp from "./src/demo/ExampleComp";
+
+// DEMO COMPONENTS (same barrel you used in DemoStorybook)
+import {
+  ProductDetailsModal,
+  ProductCard,
+  ProductGallery,
+  CartSummary,
+  SearchBar,
+  CategoryFilter,
+  SizeFilter,
+  CheckoutForm,
+  OrderConfirmation,
+  WishlistPanel,
+} from "./src/demo/components";
+
+// Optional interactive view shown in DemoStorybook
+import { InteractiveDemo } from "./src/demo/DemoInteractive";
+
+// DEMO FUNCTIONS (same as DemoStorybook)
+import { fetchProducts, addToCart } from "./src/demo/functions";
+
+// Optional assets/constants used by some components
+import { PLACEHOLDER_IMAGE } from "./src/demo/constants";
+
+// Pull model key from Vite env like in your example
 const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-// 👇 prototype config for “SmartSport” — e-commerce fashion demo
+
 export const autouiConfig: AutoUIConfig = {
-    /**
-   * 🧩 METADATA
-   * Optional metadata used for analytics, debugging, or LLM context.
-   */
-    metadata: {
-    appName: "SmartSport",
+  /* =========================
+   *   METADATA
+   * ========================= */
+  metadata: {
+    appName: "AutoUI Demo",
     appVersion: "0.1.0",
     author: "AutoUI Dev Team",
     createdAt: new Date().toISOString(),
     description:
-      "Example AutoUI config for e-commerce store with React components and mock functions.",
-    tags: ["ecommerce", "react", "autoui", "demo"],
+      "Config derived from DemoStorybook: registers demo e-commerce components and mock functions.",
+    tags: ["demo", "ecommerce", "react", "autoui"],
   },
-  /**
-   * 🧠 LLM SECTION
-   * Describes how AutoUI talks to the LLM provider.
-   */
+
+  /* =========================
+   *   LLM
+   * ========================= */
   llm: {
-    provider: "openrouter", // "openai" | "anthropic" | "openrouter" | etc.
-    apiKey: apiKey, // or use apiProxyUrl
-    apiProxyUrl: undefined, // optional proxy endpoint for server-side key safety
-    model: "openai/gpt-5-chat", // any valid model supported by provider
-    temperature: 0.2, // creativity vs. determinism
+    provider: "openrouter",
+    apiKey,
+    model: "openai/gpt-5-chat",
+    temperature: 0.2,
     appDescriptionPrompt:
-      "This app is an e-commerce store selling sport clothes worldwide with delivery and user accounts.",
-    maxTokens: 2048, // optional upper bound for LLM calls
+      "A demo e-commerce app with product listing, cart, checkout and wishlists.",
+    maxTokens: 2048,
     requestHeaders: {
-      // optional — forwarded headers like OpenRouter ranking, etc.
       "HTTP-Referer": "https://autoui.dev",
-      "X-Title": "AutoUI Example App",
+      "X-Title": "AutoUI Demo",
     },
   },
 
-  /**
-   * ⚙️ RUNTIME SECTION
-   * Controls internal AutoUI runtime behavior.
-   */
+  /* =========================
+   *   RUNTIME
+   * ========================= */
   runtime: {
-    validateLLMOutput: true, // validate JSON via zod before executing
-    storeChatToLocalStorage: true, // persist chat between reloads
-    localStorageKey: "autoui_chat_history", // optional key override
-    enableDebugLogs: true, // optional — log runtime steps
-    maxSteps: 20, // limit number of steps executed in one plan
-    errorHandling: {
-      showToUser: true,
-      retryOnFail: false,
-    },
+    validateLLMOutput: true,
+    storeChatToLocalStorage: true,
+    localStorageKey: "autoui_demo_chat",
+    enableDebugLogs: true,
+    maxSteps: 20,
+    errorHandling: { showToUser: true, retryOnFail: false },
   },
 
-  /**
-   * 🧰 FUNCTIONS SECTION
-   * These are backend or client functions AutoUI can call.
-   * Each has a human-readable prompt for the LLM.
-   */
+  /* =========================
+   *   FUNCTIONS
+   * ========================= */
   functions: {
     fetchProducts: {
       prompt:
-        "Fetch list of products filtered optionally by color, category, or query text.",
+        "Fetch a list of products filtered optionally by color, category, or query text.",
       params: {
         color: "string (optional) — color filter",
         category: "string (optional) — product category",
-        q: "string (optional) — search term",
+        q: "string (optional) — search query",
       },
-      callFunc: async ({
-        color,
-        category,
-        q,
-      }: {
-        color?: string;
-        category?: string;
-        q?: string;
-      }) => {
-        const all = [
-          { id: "1", name: "Red Tee", price: 19, color: "red", category: "tops" },
-          { id: "2", name: "Blue Shorts", price: 25, color: "blue", category: "bottoms" },
-          { id: "3", name: "Green Hoodie", price: 39, color: "green", category: "tops" },
-        ];
-        return all.filter(
-          (p) =>
-            (!color || p.color === color) &&
-            (!category || p.category === category) &&
-            (!q || p.name.toLowerCase().includes(q.toLowerCase()))
-        );
-      },
-      returns: `Product[ { id: "3", name: "Green Hoodie", price: 39, color: "green", category: "tops" }, ...] — list of filtered product objects`,
+      callFunc: fetchProducts,
+      returns:
+        "Product[] — array of products with id, name, description, price, image, color, category",
     },
 
     addToCart: {
-      prompt: "Add a product to cart with quantity.",
+      prompt: "Add a product to the cart with a certain quantity.",
       params: {
         productId: "string — product unique id",
-        quantity: "number — how many items to add",
+        quantity: "number — how many items to add (default 1)",
       },
-      callFunc: async ({
-        productId,
-        quantity,
-      }: {
-        productId: string;
-        quantity: number;
-      }) => {
-        console.log(`Added product ${productId} ×${quantity} to cart`);
-        return { ok: true, productId, quantity };
-      },
+      callFunc: addToCart,
       returns: "{ ok: boolean, productId: string, quantity: number }",
     },
-
-    fetchRecommendations: {
-      prompt: "Return recommended products based on cart or browsing history.",
-      params: {
-        userId: "string (optional) — user ID to personalize results",
-      },
-      callFunc: async ({ userId }: { userId?: string }) => {
-        console.log("Fetching recommendations for user:", userId);
-        return [
-          { id: "4", name: "Black Sneakers", price: 59 },
-          { id: "5", name: "Gray Sweatpants", price: 45 },
-        ];
-      },
-      returns: "Product[] — recommended products",
-    },
   },
 
-  /**
-   * 🧱 COMPONENTS SECTION
-   * UI building blocks the LLM can use when constructing instruction plans.
-   */
+  /* =========================
+   *   COMPONENTS
+   * ========================= */
   components: {
-    ProductList: {
-      prompt: "A grid of products with optional onAddToCart button handler.",
-      props: {
-        products: "Product[] — array of product data",
-        onAddToCart: "function(productId: string) — handler for add to cart",
-      },
-      callComponent: ExampleComp,
-      defaults: {
-        products: [],
-      },
-      category: "product-display", // optional grouping
-      exampleUsage:
-        "<ProductList products={mockProducts} onAddToCart={(id)=>{}} />",
+    // ---- Interactive view bucket (from DemoStorybook)
+    InteractiveDemo: {
+      prompt:
+        "An interactive end-to-end e-commerce showcase combining gallery, cart and checkout flow.",
+      props: {},
+      callComponent: InteractiveDemo,
+      category: "interactive",
     },
 
+    // ---- Product display
     ProductCard: {
-      prompt: "Card showing product image, name, price, and add button.",
+      prompt:
+        "A single product card with image, name, price and an Add to Cart button.",
       props: {
-        product: "Product — object containing id, name, price, image",
-        onAddToCart: "function(productId: string)",
+        product:
+          "Product — { id, name, description?, price, image } required for render",
+        onAddToCart:
+          "function(productId: string) — called when user adds item to cart",
       },
-      callComponent: ExampleComp,
-      category: "product-display"
+      defaults: {
+        product: {
+          id: "1",
+          name: "Beige Coat",
+          description: "A stylish beige coat for modern fashion.",
+          price: 89.99,
+          image: PLACEHOLDER_IMAGE,
+        },
+      },
+      callComponent: ProductCard,
+      category: "product-display",
+      exampleUsage:
+        "<ProductCard product={p} onAddToCart={(id)=>{}} />",
     },
 
-    CartSummary: {
-      prompt: "Displays list of items currently in the shopping cart.",
+    ProductGallery: {
+      prompt:
+        "A responsive gallery of ProductCard items with optional onAddToCart handler.",
       props: {
-        items: "CartItem[] — list of items with name, price, qty",
+        products: "Product[] — list of products to render",
+        onAddToCart:
+          "function(productId: string) — add a specific product to cart",
+      },
+      defaults: {
+        products: [
+          {
+            id: "1",
+            name: "Beige Coat",
+            description: "A stylish beige coat for modern fashion.",
+            price: 89.99,
+            image: PLACEHOLDER_IMAGE,
+          },
+          {
+            id: "2",
+            name: "Denim Jacket",
+            description: "Classic denim jacket for everyday wear.",
+            price: 69.99,
+            image: PLACEHOLDER_IMAGE,
+          },
+          {
+            id: "3",
+            name: "Black Jeans",
+            description: "Comfortable black jeans with modern fit.",
+            price: 49.99,
+            image: PLACEHOLDER_IMAGE,
+          },
+        ],
+      },
+      callComponent: ProductGallery,
+      category: "product-display",
+      exampleUsage:
+        "<ProductGallery products={list} onAddToCart={(id)=>{}} />",
+    },
+
+    // ---- Cart / Checkout
+    CartSummary: {
+      prompt:
+        "Shows cart items with quantities and total; triggers checkout when requested.",
+      props: {
+        items:
+          "CartItem[] — { id, name, price, quantity } lines to display in cart",
         onCheckout: "function() — proceed to checkout",
       },
-      callComponent: ExampleComp,
-      category: "checkout"
+      defaults: {
+        items: [
+          { id: "1", name: "Beige Coat", price: 89.99, quantity: 2 },
+          { id: "2", name: "Denim Jacket", price: 69.99, quantity: 1 },
+        ],
+      },
+      callComponent: CartSummary,
+      category: "checkout",
+    },
+
+    CheckoutForm: {
+      prompt:
+        "Form that collects shipping/billing data and submits an order for checkout.",
+      props: { onSubmit: "function(formData) — submit checkout payload" },
+      callComponent: CheckoutForm,
+      category: "checkout",
+    },
+
+    OrderConfirmation: {
+      prompt:
+        "A simple confirmation screen showing order id, delivery ETA and total cost.",
+      props: {
+        orderId: "string — order identifier",
+        eta: "string — estimated delivery time description",
+        totalCost: "number — final order total",
+      },
+      defaults: { orderId: "1234567890", eta: "2 days", totalCost: 100 },
+      callComponent: OrderConfirmation,
+      category: "checkout",
+    },
+
+    // ---- Detail / Filters / Search / Wishlist
+    ProductDetailsModal: {
+      prompt:
+        "Modal showing detailed product info with a close action and optional add to cart.",
+      props: {
+        product:
+          "Product — { id, name, description, price, image? } to display",
+        onClose: "function() — close the modal",
+      },
+      defaults: {
+        product: {
+          id: "1",
+          name: "Product 1",
+          description: "Product 1 description",
+          price: 100,
+        },
+      },
+      callComponent: ProductDetailsModal,
+      category: "product-display",
+    },
+
+    SearchBar: {
+      prompt:
+        "Input that triggers search via provided onSearch callback; useful to call fetchProducts.",
+      props: {
+        onSearch:
+          "function(query: string) — perform a search (typically calls fetchProducts)",
+        placeholder: "string (optional) — input placeholder",
+      },
+      defaults: { placeholder: "Search products..." },
+      callComponent: SearchBar,
+      category: "filters",
+    },
+
+    CategoryFilter: {
+      prompt:
+        "Pills or list to toggle a current category; invokes onSelect with chosen category.",
+      props: {
+        categories:
+          "string[] — available categories (e.g., ['All','Tops','Bottoms'])",
+        selected: "string — currently selected category",
+        onSelect:
+          "function(category: string) — selection handler (can call fetchProducts)",
+      },
+      defaults: {
+        categories: ["All", "Tops", "Bottoms", "Shoes", "Accessories"],
+        selected: "All",
+      },
+      callComponent: CategoryFilter,
+      category: "filters",
+    },
+
+    SizeFilter: {
+      prompt:
+        "Simple size filter control that emits chosen size(s) through onFilter.",
+      props: {
+        sizes: "string[] — size options (e.g., ['S','M','L','XL'])",
+        onFilter: "function(selected: string | string[])",
+      },
+      defaults: { sizes: ["S", "M", "L", "XL"] },
+      callComponent: SizeFilter,
+      category: "filters",
+    },
+
+    WishlistPanel: {
+      prompt:
+        "Panel showing the user's wishlist items with basic metadata and actions.",
+      props: {
+        wishlist:
+          "Array<{ id: string; name: string; price: number }> — items saved by user",
+      },
+      defaults: {
+        wishlist: [
+          { id: "1", name: "Product 1", price: 100 },
+          { id: "2", name: "Product 2", price: 200 },
+        ],
+      },
+      callComponent: WishlistPanel,
+      category: "account",
     },
   },
-
-  
 };
+
+export default autouiConfig;

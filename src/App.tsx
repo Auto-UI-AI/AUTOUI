@@ -1,10 +1,10 @@
-import PlayGround from './playground/PlayGround'
 import DemoPage from './demo/DemoPage';
+import { Chat } from '@lib';
 function App() {
   return (
     <>
       <DemoPage />
-      <PlayGround/>
+      <Chat/>
     </>
   )
 }
