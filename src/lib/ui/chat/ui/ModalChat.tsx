@@ -1,45 +1,45 @@
-import { lazy } from "react";
-import { createPortal } from "react-dom";
-import { ModalChatProvider, useModalChatContext } from "../context/modalChatContext";
-import { BtnOpenChat } from "./btnOpenChat";
-import type { ModalChatProps } from "../types";
+import { lazy } from 'react';
+import { createPortal } from 'react-dom';
+import { ModalChatProvider, useModalChatContext } from '../context/modalChatContext';
+import { BtnOpenChat } from './btnOpenChat';
+import type { ModalChatProps } from '../types';
 
 const LazyChat = lazy(() =>
-    import("./Chat").then((m) => ({
-        default: m.Chat,
-    }))
+  import('./Chat').then((m) => ({
+    default: m.Chat,
+  })),
 );
 
 export const ModalChat = ({ portalContainer }: ModalChatProps) => {
-    return (
-        <ModalChatProvider>
-            <ModalChatBody portalContainer={portalContainer} />
-        </ModalChatProvider>
-    );
+  return (
+    <ModalChatProvider>
+      <ModalChatBody portalContainer={portalContainer} />
+    </ModalChatProvider>
+  );
 };
 
 const ModalChatBody = ({ portalContainer }: ModalChatProps) => {
-    const { value, setValue } = useModalChatContext();
-    const { isOpen } = value;
+  const { value, setValue } = useModalChatContext();
+  const { isOpen } = value;
 
-    const onOpen = () => setValue((prev) => ({ ...prev, isOpen: true }));
-    const onClose = () => setValue((prev) => ({ ...prev, isOpen: false }));
-    const onOpenChange = () => setValue((prev) => ({ ...prev, isOpen: !prev.isOpen }));
+  const onOpen = () => setValue((prev) => ({ ...prev, isOpen: true }));
+  const onClose = () => setValue((prev) => ({ ...prev, isOpen: false }));
+  const onOpenChange = () => setValue((prev) => ({ ...prev, isOpen: !prev.isOpen }));
 
-    const container = portalContainer ?? document.body;
+  const container = portalContainer ?? document.body;
 
-    return (
-        <>
-            <BtnOpenChat onOpenChange={onOpenChange} isOpen={isOpen} />
-            {isOpen &&
-                createPortal(
-                    <div className="autoui-chat-portal">
-                        <div className="autoui-chat-wrapper">
-                            <LazyChat {...value} onClose={onClose} />
-                        </div>
-                    </div>,
-                    container
-                )}
-        </>
-    );
+  return (
+    <>
+      <BtnOpenChat onOpenChange={onOpenChange} isOpen={isOpen} />
+      {isOpen &&
+        createPortal(
+          <div className="autoui-chat-portal">
+            <div className="autoui-chat-wrapper">
+              <LazyChat {...value} onClose={onClose} />
+            </div>
+          </div>,
+          container,
+        )}
+    </>
+  );
 };

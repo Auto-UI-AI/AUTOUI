@@ -1,27 +1,23 @@
-import React from "react";
-import type { ChatMessage } from "../types";
-import { clsx } from "@lib/utils/clsx";
-import { useChatContext } from "../context/chatContext";
+import React from 'react';
+import type { ChatMessage } from '../types';
+import { clsx } from '@lib/utils/clsx';
+import { useChatContext } from '../context/chatContext';
 
 export interface ChatMessageListItemProps {
-    message: ChatMessage;
+  message: ChatMessage;
 }
 
 export const ChatMessageListItem: React.FC<ChatMessageListItemProps> = ({ message }) => {
-    const isUser = message.role === "user";
-    const { classNames } = useChatContext();
+  const isUser = message.role === 'user';
+  const { classNames } = useChatContext();
 
-    return (
-        <div
-            role="message"
-            className={clsx(
-                "autoui-chat-message",
-                isUser ? "user" : "assistant",
-                classNames?.message
-            )}
-            aria-label={isUser ? "User message" : "Assistant message"}
-        >
-            <div className="autoui-chat-bubble">{message.content}</div>
-        </div>
-    );
+  return (
+    <div
+      role="message"
+      className={clsx('autoui-chat-message', isUser ? 'user' : 'assistant', classNames?.message)}
+      aria-label={isUser ? 'User message' : 'Assistant message'}
+    >
+      <div className="autoui-chat-bubble">{message.content}</div>
+    </div>
+  );
 };

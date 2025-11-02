@@ -1,2 +1,2 @@
-export { Chat } from "./ui/Chat";
-export { ModalChat } from "./ui/ModalChat";
+export { Chat } from './ui/Chat';
+export { ModalChat } from './ui/ModalChat';

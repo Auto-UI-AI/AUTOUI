@@ -1,2 +1,2 @@
-export { Spinner } from "./spinner";
-export { Chat, ModalChat } from "./chat";
+export { Spinner } from './spinner';
+export { Chat, ModalChat } from './chat';
