@@ -7,6 +7,11 @@
     "module": "ESNext",
     "types": ["vite/client"],
     "skipLibCheck": true,
+    "baseUrl": "./",
+    "paths": {
+      "@lib": ["src/lib/index.ts"],
+      "@lib/*": ["src/lib/*"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
