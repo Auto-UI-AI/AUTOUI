@@ -1,7 +1,13 @@
+import PlayGround from './playground/PlayGround'
 import DemoPage from './demo/DemoPage';
-
 function App() {
-  return <DemoPage />;
+  return (
+    <>
+      <DemoPage />
+      <PlayGround/>
+    </>
+  )
 }
 
 export default App;
+
