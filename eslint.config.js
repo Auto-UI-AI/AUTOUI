@@ -7,6 +7,7 @@ import prettierConfig from 'eslint-config-prettier';
 import prettierPlugin from 'eslint-plugin-prettier';
 import noSecrets from 'eslint-plugin-no-secrets';
 import unicorn from 'eslint-plugin-unicorn';
+import path from 'node:path';
 
 export default [
   { ignores: ['dist', 'node_modules'] },
@@ -18,6 +19,8 @@ export default [
         ecmaVersion: 2020,
         sourceType: 'module',
         ecmaFeatures: { jsx: true },
+        project: ['./tsconfig.app.json'],
+        tsconfigRootDir: path.resolve('./'),
       },
       globals: globals.browser,
     },
