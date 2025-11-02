@@ -1,8 +1,7 @@
-import './App.css';
-import { Demo } from './demo';
+import DemoPage from './demo/DemoPage';
 
 function App() {
-  return <Demo />;
+  return <DemoPage />;
 }
 
 export default App;
