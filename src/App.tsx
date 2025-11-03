@@ -1,10 +1,10 @@
 import DemoPage from './demo/DemoPage';
-import { Chat } from '@lib';
+import { ModalChat } from '@lib';
 function App() {
   return (
     <>
       <DemoPage />
-      <Chat/>
+      <ModalChat/>
     </>
   )
 }

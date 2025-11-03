@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAutoUi } from './useAutoUi';
 import type { ChatContextType, ChatMessage, ChatProps } from '../types';
+import { useAutoUi } from './useAutoUI';
 
 export function useChat({
   onError,
@@ -10,15 +10,33 @@ export function useChat({
   classNames,
   isOpen,
 }: ChatProps): ChatContextType {
-  const { processMessage } = useAutoUi();
-
-  const [messages, setMessages] = useState<ChatMessage[]>(() => {
-    try {
-      return JSON.parse(localStorage.getItem(storageKey) ?? '[]');
-    } catch {
-      return [];
-    }
+  const { processMessage, setUIRenderer } = useAutoUi();
+ useEffect(() => {
+  setUIRenderer((ui) => {
+    const id = `${Date.now()}-ui`;
+    setMessages((prev) => [...prev, { id, role: "assistant", content: ui }]); 
   });
+}, [setUIRenderer]);
+
+const [messages, setMessages] = useState<ChatMessage[]>(() => {
+  try {
+    const raw = localStorage.getItem(storageKey);
+    const arr = raw ? (JSON.parse(raw) as { id: string; role: ChatMessage["role"]; content: string }[]) : [];
+    return arr.map((m) => ({ ...m, content: m.content })); 
+  } catch {
+    return [];
+  }
+});
+
+useEffect(() => {
+  const serializable = messages.map((m) => {
+    if (typeof m.content === "string") return m;
+
+    return { ...m, content: "[UI component]" };
+
+  }).filter(Boolean);
+  localStorage.setItem(storageKey, JSON.stringify(serializable));
+}, [messages, storageKey]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -42,6 +60,7 @@ export function useChat({
         };
         setMessages((prev) => [...prev, assistantMsg]);
       } catch (err: any) {
+        console.error('AutoUI Chat error:', err); 
         setMessages((prev) => [
           ...prev,
           {
@@ -85,7 +104,7 @@ export function useChat({
     }),
     [messages],
   );
-
+  
   return {
     isOpen,
     title,
