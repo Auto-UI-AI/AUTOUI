@@ -1,4 +1,4 @@
-import type { ComponentType } from "react";
+import type { ComponentType } from 'react';
 
 export interface AutoUIConfig {
   llm: LLMConfig;
@@ -88,7 +88,7 @@ export interface AutoUIComponent {
   props?: Record<string, string>;
 
   /** Actual React component reference */
-  callComponent: ComponentType<any>
+  callComponent: ComponentType<any>;
 
   /** Default prop values for runtime or mock previews */
   defaults?: Record<string, any>;

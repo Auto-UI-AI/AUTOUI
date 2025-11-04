@@ -1,12 +1,12 @@
-import type { AutoUIConfig } from "../types";
+import type { AutoUIConfig } from '../types';
 
 export function buildIntentPrompt(userMessage: string, config: AutoUIConfig) {
   const funcLines = Object.entries(config.functions).map(([name, f]) => {
     const params = f.params
       ? Object.entries(f.params)
           .map(([k, v]) => `- ${k}: ${v}`)
-          .join("\n")
-      : "(no documented params)";
+          .join('\n')
+      : '(no documented params)';
     return `FUNCTION ${name}:
 Description: ${f.prompt}
 Params:
@@ -17,8 +17,8 @@ ${params}`;
     const props = c.props
       ? Object.entries(c.props)
           .map(([k, v]) => `- ${k}: ${v}`)
-          .join("\n")
-      : "(no documented props)";
+          .join('\n')
+      : '(no documented props)';
     return `COMPONENT ${name}:
 Description: ${c.prompt}
 Props:
@@ -26,9 +26,7 @@ ${props}`;
   });
 
   // A very explicit contract the model must follow
-  const system =
-    
-    `You are AutoUI Intent Planner.
+  const system = `You are AutoUI Intent Planner.
 Return ONLY a valid JSON InstructionPlan and nothing else.
 Do not wrap in markdown fences. Do not include any fields outside the schema.
 
@@ -50,7 +48,7 @@ RULES:
 - Do not add "intent", "explanations", or any keys not in the schema.
 - Output a single JSON object (no arrays or strings at top-level).
 
-${config.llm.appDescriptionPrompt&&`Here is the description of the current app using AUTOUI library made by developer so that you would know the context of what your answers must be about. If userMessages are not related to that description below then inform user that you can only answer questions related to this current website: ${config.llm.appDescriptionPrompt} ${config.metadata?.appName}`}
+${config.llm.appDescriptionPrompt && `Here is the description of the current app using AUTOUI library made by developer so that you would know the context of what your answers must be about. If userMessages are not related to that description below then inform user that you can only answer questions related to this current website: ${config.llm.appDescriptionPrompt} ${config.metadata?.appName}`}
 `;
 
   const example = `VALID EXAMPLE:
@@ -65,17 +63,17 @@ ${config.llm.appDescriptionPrompt&&`Here is the description of the current app u
 
   return [
     system,
-    "",
-    "Available functions:",
-    funcLines.join("\n\n"),
-    "",
-    "Available components:",
-    compLines.join("\n\n"),
-    "",
+    '',
+    'Available functions:',
+    funcLines.join('\n\n'),
+    '',
+    'Available components:',
+    compLines.join('\n\n'),
+    '',
     example,
-    "",
+    '',
     `USER MESSAGE: "${userMessage}"`,
-    "",
-    "Respond with ONLY the plan JSON (no code fences, no commentary).",
-  ].join("\n");
+    '',
+    'Respond with ONLY the plan JSON (no code fences, no commentary).',
+  ].join('\n');
 }

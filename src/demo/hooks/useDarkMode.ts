@@ -52,8 +52,7 @@ export function initDarkMode() {
   if (typeof window === 'undefined') return;
 
   const stored = localStorage.getItem('darkMode');
-  const isDark =
-    stored !== null ? stored === 'true' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = stored !== null ? stored === 'true' : window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   if (isDark) {
     document.documentElement.classList.add('dark');
@@ -61,4 +60,3 @@ export function initDarkMode() {
     document.documentElement.classList.remove('dark');
   }
 }
-

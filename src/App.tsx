@@ -1,13 +1,14 @@
-import PlayGround from './playground/PlayGround'
+import PlayGround from './playground/PlayGround';
 import DemoPage from './demo/DemoPage';
+import { ModalChat } from '@lib';
 function App() {
   return (
     <>
       <DemoPage />
-      <PlayGround/>
+      <PlayGround />
+      <ModalChat />
     </>
-  )
+  );
 }
 
 export default App;
-
