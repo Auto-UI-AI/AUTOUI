@@ -1,6 +1,8 @@
 import type { AutoUIConfig } from './src/lib/types';
 import ExampleComp from './src/demo/ExampleComp';
 const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
+const aiModel = import.meta.env.VITE_AIMODEL_NAME
+const baseUrl = import.meta.env.VITE_BASE_URL
 // 👇 prototype config for “SmartSport” — e-commerce fashion demo
 export const autouiConfig: AutoUIConfig = {
   /**
@@ -21,18 +23,12 @@ export const autouiConfig: AutoUIConfig = {
    */
   llm: {
     provider: 'openrouter', // "openai" | "anthropic" | "openrouter" | etc.
+    baseUrl: baseUrl,
     apiKey: apiKey, // or use apiProxyUrl
     apiProxyUrl: undefined, // optional proxy endpoint for server-side key safety
-    model: 'openai/gpt-5-chat', // any valid model supported by provider
-    temperature: 0.2, // creativity vs. determinism
+    model: aiModel, // any valid model supported by provider
     appDescriptionPrompt:
       'This app is an e-commerce store selling sport clothes worldwide with delivery and user accounts.',
-    maxTokens: 2048, // optional upper bound for LLM calls
-    requestHeaders: {
-      // optional — forwarded headers like OpenRouter ranking, etc.
-      'HTTP-Referer': 'https://autoui.dev',
-      'X-Title': 'AutoUI Example App',
-    },
   },
 
   /**
