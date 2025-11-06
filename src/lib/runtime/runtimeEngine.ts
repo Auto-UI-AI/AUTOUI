@@ -60,7 +60,7 @@ export async function runInstructionPlan(
   resolveComponent: ResolveComponent,
   setUI: SetUI,
   opts?: RunOptions,
-) {
+){
   const shouldValidate = opts?.validate ?? config.runtime?.validateLLMOutput ?? true;
   if (shouldValidate) {
     validateInstructionPlan(plan);

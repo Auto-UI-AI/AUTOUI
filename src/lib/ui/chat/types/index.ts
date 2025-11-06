@@ -82,3 +82,10 @@ export type ModalChatProps = {
   portalContainer?: HTMLElement;
 } & ChatProps;
 
+export type UiNode =
+  | { t: 'text'; text: string }
+  | { t: 'component'; name: string; props?: Record<string, any>; children?: UiNode[] };
+
+export type StoredMessage =
+  | { id: string; role: 'user' | 'assistant'; kind: 'text'; text: string; ts?: number }
+  | { id: string; role: 'assistant'; kind: 'ui'; ui: UiNode; ts?: number };

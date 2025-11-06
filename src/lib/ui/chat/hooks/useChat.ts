@@ -11,8 +11,13 @@ export function useChat({
   classNames,
   isOpen,
 }: ChatProps): ChatContextType {
-  const { processMessage } = useAutoUi(config);
-
+  const { processMessage, setUIRenderer } = useAutoUi(config);
+  useEffect(() => {
+  setUIRenderer((ui) => {
+    const id = `${Date.now()}-ui`;
+    setMessages((prev) => [...prev, { id, role: "assistant", content: ui }]); 
+  });
+}, [setUIRenderer]);
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
     try {
       return JSON.parse(localStorage.getItem(storageKey) ?? '[]');
