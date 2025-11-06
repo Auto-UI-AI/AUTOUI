@@ -1,10 +1,10 @@
-import { createContext, useContext, type ReactNode } from 'react';
-import type { ChatContextType } from '../types';
+import { createContext, useContext } from 'react';
+import type { ChatContextType, ChatProviderPropsType } from '../types';
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
-export const ChatProvider = ({ children, value }: { children: ReactNode; value: ChatContextType }) => {
-  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
+export const ChatProvider = ({ children, value, config }: ChatProviderPropsType ) => {
+  return <ChatContext.Provider value={{...value, config}}>{children}</ChatContext.Provider>;
 };
 
 export const useChatContext = () => {

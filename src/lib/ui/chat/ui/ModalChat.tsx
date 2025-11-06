@@ -10,15 +10,15 @@ const LazyChat = lazy(() =>
   })),
 );
 
-export const ModalChat = ({ portalContainer }: ModalChatProps) => {
+export const ModalChat = ({ config, portalContainer }: ModalChatProps) => {
   return (
-    <ModalChatProvider>
-      <ModalChatBody portalContainer={portalContainer} />
+    <ModalChatProvider config={config}>
+      <ModalChatBody config={config} portalContainer={portalContainer} />
     </ModalChatProvider>
   );
 };
 
-const ModalChatBody = ({ portalContainer }: ModalChatProps) => {
+const ModalChatBody = ({  config, portalContainer }: ModalChatProps) => {
   const { value, setValue } = useModalChatContext();
   const { isOpen } = value;
 
@@ -35,7 +35,7 @@ const ModalChatBody = ({ portalContainer }: ModalChatProps) => {
         createPortal(
           <div className="autoui-chat-portal">
             <div className="autoui-chat-wrapper">
-              <LazyChat {...value} onClose={onClose} />
+              <LazyChat config={config} {...value} onClose={onClose} />
             </div>
           </div>,
           container,

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAutoUi } from './useAutoUi';
 import type { ChatContextType, ChatMessage, ChatProps } from '../types';
+import { useAutoUi } from './useAutoUI';
 
 export function useChat({
+  config,
   onError,
   onClose,
   storageKey = 'autoui_chat_history',
@@ -10,7 +11,7 @@ export function useChat({
   classNames,
   isOpen,
 }: ChatProps): ChatContextType {
-  const { processMessage } = useAutoUi();
+  const { processMessage } = useAutoUi(config);
 
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
     try {
@@ -87,6 +88,7 @@ export function useChat({
   );
 
   return {
+    config,
     isOpen,
     title,
     classNames,

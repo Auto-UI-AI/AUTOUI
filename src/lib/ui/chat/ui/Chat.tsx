@@ -9,6 +9,7 @@ import { ChatProvider } from '../context/chatContext';
 import { clsx } from '@lib/utils/clsx';
 
 export const Chat: React.FC<ChatProps> = ({
+  config,
   title = 'AutoUI Chat',
   isOpen = true,
   classNames,
@@ -16,12 +17,12 @@ export const Chat: React.FC<ChatProps> = ({
   onError,
   closeIcon,
 }) => {
-  const context = useChat({ title, isOpen, classNames, closeIcon, onClose, onError });
+  const context = useChat({ config, title, isOpen, classNames, closeIcon, onClose, onError });
 
   if (!isOpen) return;
 
   return (
-    <ChatProvider value={context}>
+    <ChatProvider config={config} value={context}>
       <section role={'base'} className={clsx('autoui-chat', classNames?.base)} aria-label="Chat">
         <ChatHeader />
         <ChatMessageList />

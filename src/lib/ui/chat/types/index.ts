@@ -1,3 +1,5 @@
+import type { AutoUIConfig } from '@lib/types';
+import type { ReactNode } from 'react';
 import type React from 'react';
 
 export type BtnOpenChatProps = {
@@ -12,6 +14,7 @@ export interface ModalChatContextValue {
 export interface ModalChatContext {
   value: ModalChatContextValue;
   setValue: React.Dispatch<React.SetStateAction<ModalChatContextValue>>;
+  config: AutoUIConfig
 }
 export interface ChatMessage {
   id: string;
@@ -32,8 +35,13 @@ interface ChatClassNames {
   messageList?: string;
   message?: string;
 }
-
+export interface ChatProviderPropsType { 
+  children: ReactNode;
+  value: ChatContextType;
+  config: AutoUIConfig;
+ }
 export interface ChatContextType {
+  config: AutoUIConfig;
   isOpen?: boolean;
   title?: string;
   classNames?: ChatClassNames;
@@ -59,6 +67,7 @@ export interface ChatContextType {
 export interface ChatMessageListProps {}
 
 export interface ChatProps {
+  config: AutoUIConfig;
   title?: string;
   isOpen?: boolean;
   storageKey?: string;
@@ -69,5 +78,7 @@ export interface ChatProps {
 }
 
 export type ModalChatProps = {
+  config: AutoUIConfig;
   portalContainer?: HTMLElement;
 } & ChatProps;
+
