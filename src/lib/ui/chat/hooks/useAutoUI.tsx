@@ -7,7 +7,6 @@ export function useAutoUi(config:AutoUIConfig) {
   const {resolveComponent, setUI} = useRendering(config)
   const processMessage = useCallback(async (text: string) => {
     let plan = await getInstructionPlan(text, config);
-    console.log("Returned plan:", plan, typeof plan);
 
     if (typeof plan === "string") {
       try {
