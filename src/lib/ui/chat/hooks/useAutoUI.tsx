@@ -1,25 +1,10 @@
 import { getInstructionPlan } from '@lib/core/llmClient';
 import type { AutoUIConfig } from '@lib/types';
-import { useCallback, useRef, type ComponentType, type ReactNode } from 'react';
+import { useCallback} from 'react';
+import { useRendering } from './useRendering';
 
 export function useAutoUi(config:AutoUIConfig) {
-   const uiRendererRef = useRef<null | ((node: React.ReactNode | string | ComponentType<any>) => void)>(null);
-
-  const setUIRenderer = useCallback((fn: (node: React.ReactNode | string | ComponentType<any>) => void) => {
-    uiRendererRef.current = fn;
-  }, []);
-
-  const resolveComponent = useCallback((name: string, props: any):ReactNode => {
-    const entry = config?.components?.[name];
-    if (!entry?.callComponent) throw new Error(`Unknown component: ${name}`);
-    const Comp = entry.callComponent as React.ComponentType<any>;
-    return <Comp {...props} />;
-  }, []);
-
-  const setUI = useCallback((ui: React.ReactNode | string) => {
-  console.log("setUI called with:", ui);
-  uiRendererRef.current?.(ui);
-}, []);
+  const {resolveComponent, setUI} = useRendering(config)
   const processMessage = useCallback(async (text: string) => {
     let plan = await getInstructionPlan(text, config);
     console.log("Returned plan:", plan, typeof plan);
@@ -42,5 +27,5 @@ export function useAutoUi(config:AutoUIConfig) {
     return plan;
   }, [resolveComponent, setUI]);
 
-  return { processMessage, setUIRenderer, resolveComponent, setUI };
+  return { processMessage};
 }

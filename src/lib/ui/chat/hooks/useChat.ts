@@ -3,6 +3,7 @@ import type { ChatContextType, ChatProps, SerializedMessage } from '../types';
 import { useAutoUi } from './useAutoUI';
 import { runInstructionPlan } from '@lib/runtime/runtimeEngine';
 import { useChatState } from './useChatState';
+import { useRendering } from './useRendering';
 
 export function useChat({
   config,
@@ -14,9 +15,10 @@ export function useChat({
   isOpen,
 }: ChatProps): ChatContextType {
 
-  const { messages, serializedMessages, setSerializedMessages } = useChatState(storageKey, config);
+  const { messages, setSerializedMessages } = useChatState(storageKey, config);
 
-  const { processMessage, resolveComponent, setUI } = useAutoUi(config);
+  const { processMessage} = useAutoUi(config);
+  const { resolveComponent, setUI } = useRendering(config);
 
   const [isLoading, setIsLoading] = useState(false);
 
