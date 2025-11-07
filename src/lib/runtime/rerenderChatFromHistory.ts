@@ -1,6 +1,5 @@
 import type { ChatMessage, SerializedMessage } from "@lib/ui/chat/types";
 import type { ResolveComponent, SetUI } from "./stepExecutor";
-import type { ComponentType, ReactNode } from "react";
 
 export const rerenderChatFromHistory = (chatHistory:SerializedMessage[], resolveComponent: ResolveComponent, setUI: SetUI,) =>{
     let messagesArray:ChatMessage[]= []

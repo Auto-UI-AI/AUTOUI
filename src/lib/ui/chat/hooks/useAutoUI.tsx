@@ -1,7 +1,5 @@
 import { getInstructionPlan } from '@lib/core/llmClient';
-import { runInstructionPlan } from '@lib/runtime/runtimeEngine';
 import type { AutoUIConfig } from '@lib/types';
-import type { InstructionPlan } from '@lib/types/llmTypes';
 import { useCallback, useRef, type ComponentType, type ReactNode } from 'react';
 
 export function useAutoUi(config:AutoUIConfig) {

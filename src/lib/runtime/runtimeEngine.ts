@@ -1,7 +1,6 @@
 import type { AutoUIConfig } from '../types';
 import type { InstructionPlan } from '@lib/types/llmTypes';
 import { executePlanSteps, type ResolveComponent, type SetUI } from './stepExecutor';
-import type React from 'react';
 import type { SerializedMessage } from '@lib/ui/chat/types';
 import type { Dispatch, SetStateAction } from 'react';
 

@@ -1,8 +1,8 @@
 import type { InstructionPlan, InstructionStep } from '@lib/types/llmTypes';
 import type { AutoUIConfig } from '../types';
 import { resolveProps } from '../utils/resolveProps';
-import type { ChatMessage, SerializedMessage, UiNode } from '@lib/ui/chat/types';
-import type { ComponentType, Dispatch, ReactNode, SetStateAction } from 'react';
+import type { SerializedMessage } from '@lib/ui/chat/types';
+import type { Dispatch, SetStateAction } from 'react';
 
 export type ResolveComponent = (name: string, props: any) => React.ReactNode;
 export type SetUI = (ui: React.ReactNode | string) => void;

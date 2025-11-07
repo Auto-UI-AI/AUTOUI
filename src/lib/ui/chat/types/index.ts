@@ -1,5 +1,4 @@
 import type { AutoUIConfig } from '@lib/types';
-import type { InstructionPlan } from '@lib/types/llmTypes';
 import type { ComponentType, ReactNode } from 'react';
 import type React from 'react';
 
