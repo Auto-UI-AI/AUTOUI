@@ -38,6 +38,7 @@ async function runStep(
   }
 
   if (step.type === 'component') {
+    console.log("component step already includes the context of the instructionPlan, so here it is:", JSON.stringify(ctx))
     const props = resolveProps(step.props ?? {}, ctx, config);
     const node = resolveComponent(step.name, props);
     

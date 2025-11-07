@@ -15,7 +15,7 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ orderId, eta, tot
       <h2>Order Confirmation</h2>
       <p>Order ID: {orderId}</p>
       <p>Estimated Delivery Time: {eta}</p>
-      <p>Total Cost: ${totalCost.toFixed(2)}</p>
+      <p>Total Cost: ${totalCost!=0?totalCost.toFixed(2):0}</p>
     </div>
   );
 };
