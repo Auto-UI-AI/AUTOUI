@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SerializedMessage, ChatMessage } from "../types";
 import { rerenderChatFromHistory } from "@lib/runtime/rerenderChatFromHistory";
-import { useAutoUi } from "./useAutoUI";
 import { useRendering } from "./useRendering";
 import type { AutoUIConfig } from "../types";
 export function useChatState(storageKey: string, config: AutoUIConfig) {
