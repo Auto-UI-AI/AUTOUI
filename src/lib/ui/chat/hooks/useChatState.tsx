@@ -20,11 +20,6 @@ export function useChatState(storageKey: string, config: AutoUIConfig) {
   }, []);
 
   useEffect(() => {
-    if (!hydratedRef.current) return;
-    localStorage.setItem(storageKey, JSON.stringify(serializedMessages));
-  }, [serializedMessages, storageKey]);
-
-  useEffect(() => {
     try {
       const s = localStorage.getItem(storageKey);
       setSerializedMessages(s ? (JSON.parse(s) as SerializedMessage[]) : []);
