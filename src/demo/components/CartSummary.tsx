@@ -32,7 +32,7 @@ interface CartSummaryProps {
 }
 
 export default function CartSummary({ items, onCheckout }: CartSummaryProps) {
-  const subtotal = items?items.reduce((acc, item) => acc + item.price * item.quantity, 0):0;
+  const subtotal = items ? items.reduce((acc, item) => acc + item.price * item.quantity, 0) : 0;
 
   return (
     <Card className="w-full max-w-md border shadow-sm rounded-xl">
