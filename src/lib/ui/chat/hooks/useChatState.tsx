@@ -3,9 +3,8 @@ import type { SerializedMessage, ChatMessage } from "../types";
 import { rerenderChatFromHistory } from "@lib/runtime/rerenderChatFromHistory";
 import { useAutoUi } from "./useAutoUI";
 import { useRendering } from "./useRendering";
-
-export function useChatState(storageKey: string, config: any) {
-
+import type { AutoUIConfig } from "../types";
+export function useChatState(storageKey: string, config: AutoUIConfig) {
   const {resolveComponent, setUI} = useRendering(config);
   const [serializedMessages, setSerializedMessages] = useState<SerializedMessage[]>(() => {
     try {
