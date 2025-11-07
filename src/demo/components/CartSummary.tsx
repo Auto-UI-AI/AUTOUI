@@ -32,7 +32,6 @@ interface CartSummaryProps {
 }
 
 export default function CartSummary({ items, onCheckout }: CartSummaryProps) {
-  // console.log('items passed to the cart: ')
   const subtotal = items?items.reduce((acc, item) => acc + item.price * item.quantity, 0):0;
 
   return (
