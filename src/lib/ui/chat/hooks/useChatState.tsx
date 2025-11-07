@@ -30,7 +30,7 @@ export function useChatState(storageKey: string, config: AutoUIConfig) {
 
   const messages: ChatMessage[] = useMemo(
     () => rerenderChatFromHistory(serializedMessages, resolveComponent, setUI ),
-    [serializedMessages, config]
+    [serializedMessages, resolveComponent, setUI]
   );
   useEffect(() => {
   if (!hydratedRef.current) return;
