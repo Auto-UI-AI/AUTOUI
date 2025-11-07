@@ -22,7 +22,6 @@ export function useAutoUi(config:AutoUIConfig) {
       throw new Error("Plan must be an object with 'type' and 'steps'.");
     }
 
-    // await runInstructionPlan(plan as InstructionPlan, config, resolveComponent, setUI, { validate: true });
     return plan;
   }, [resolveComponent, setUI]);
 
