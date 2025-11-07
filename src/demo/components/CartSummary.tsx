@@ -40,7 +40,7 @@ export default function CartSummary({ items, onCheckout }: CartSummaryProps) {
         <CardTitle>🛍️ Your Cart</CardTitle>
       </CardHeader>
       <CardContent>
-        {items==null ? (
+        {!items || items.length === 0 ? (
           <p className="text-sm text-gray-500">Your cart is empty.</p>
         ) : (
           <ScrollArea className="pr-2 max-h-60">
