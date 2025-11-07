@@ -2,16 +2,16 @@ import { getInstructionPlan } from '@lib/core/llmClient';
 import { runInstructionPlan } from '@lib/runtime/runtimeEngine';
 import type { AutoUIConfig } from '@lib/types';
 import type { InstructionPlan } from '@lib/types/llmTypes';
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, type ComponentType, type ReactNode } from 'react';
 
 export function useAutoUi(config:AutoUIConfig) {
-   const uiRendererRef = useRef<null | ((node: React.ReactNode | string) => void)>(null);
+   const uiRendererRef = useRef<null | ((node: React.ReactNode | string | ComponentType<any>) => void)>(null);
 
-  const setUIRenderer = useCallback((fn: (node: React.ReactNode | string) => void) => {
+  const setUIRenderer = useCallback((fn: (node: React.ReactNode | string | ComponentType<any>) => void) => {
     uiRendererRef.current = fn;
   }, []);
 
-  const resolveComponent = useCallback((name: string, props: any) => {
+  const resolveComponent = useCallback((name: string, props: any):ReactNode => {
     const entry = config?.components?.[name];
     if (!entry?.callComponent) throw new Error(`Unknown component: ${name}`);
     const Comp = entry.callComponent as React.ComponentType<any>;
@@ -40,9 +40,9 @@ export function useAutoUi(config:AutoUIConfig) {
       throw new Error("Plan must be an object with 'type' and 'steps'.");
     }
 
-    await runInstructionPlan(plan as InstructionPlan, config, resolveComponent, setUI, { validate: true });
-    return null;
+    // await runInstructionPlan(plan as InstructionPlan, config, resolveComponent, setUI, { validate: true });
+    return plan;
   }, [resolveComponent, setUI]);
 
-  return { processMessage, setUIRenderer };
+  return { processMessage, setUIRenderer, resolveComponent, setUI };
 }

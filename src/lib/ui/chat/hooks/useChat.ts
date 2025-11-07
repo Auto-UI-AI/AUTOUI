@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import type { ChatContextType, ChatMessage, ChatProps } from '../types';
+import { type ChatContextType, type ChatMessage, type ChatProps, type SerializedMessage } from '../types';
 import { useAutoUi } from './useAutoUI';
+import { runInstructionPlan } from '@lib/runtime/runtimeEngine';
+import { rerenderChatFromHistory } from '@lib/runtime/rerenderChatFromHistory';
 
 export function useChat({
   config,
@@ -11,7 +13,7 @@ export function useChat({
   classNames,
   isOpen,
 }: ChatProps): ChatContextType {
-  const { processMessage, setUIRenderer } = useAutoUi(config);
+  const { processMessage, setUIRenderer, resolveComponent, setUI } = useAutoUi(config);
   useEffect(() => {
   setUIRenderer((ui) => {
     const id = `${Date.now()}-ui`;
@@ -19,17 +21,28 @@ export function useChat({
   });
 }, [setUIRenderer]);
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
-    try {
-      return JSON.parse(localStorage.getItem(storageKey) ?? '[]');
-    } catch {
+
+  try {
+  const stored = localStorage.getItem(storageKey);
+
+  if (stored) {
+    const parsed: SerializedMessage[] = JSON.parse(stored);
+    return rerenderChatFromHistory(parsed, resolveComponent, setUI);
+  }else{
+    return []
+  }
+  
+  } catch {
       return [];
     }
   });
+  const [serializedMessages, setSerializedMessages] = useState<SerializedMessage[]>([])
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify(messages));
-  }, [messages, storageKey]);
+    localStorage.setItem(storageKey, JSON.stringify(serializedMessages));
+    // console.log("serializedMessages:",serializedMessages)
+  }, [messages, storageKey, serializedMessages]);
 
   const handleSend = useCallback(
     async (text: string) => {
@@ -40,13 +53,17 @@ export function useChat({
 
       try {
         setIsLoading(true);
-        const response = await processMessage(text);
-        const assistantMsg: ChatMessage = {
-          id: `${Date.now()}-a`,
-          role: 'assistant',
-          content: response ?? '🤖 No response.',
-        };
-        setMessages((prev) => [...prev, assistantMsg]);
+        const plan = await processMessage(text);
+
+        await runInstructionPlan(plan, config, resolveComponent, setUI, setSerializedMessages, { validate: true });
+
+        // const assistantMsg: ChatMessage = {
+        //   id: `${Date.now()}-a`,
+        //   role: 'assistant',
+        //   content: JSON.stringify(plan) ?? '🤖 No response.',
+
+        // };
+        // setMessages((prev) => [...prev, assistantMsg]);
       } catch (err: any) {
         setMessages((prev) => [
           ...prev,

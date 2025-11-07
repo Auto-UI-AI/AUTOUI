@@ -1,6 +1,8 @@
 import type { InstructionPlan, InstructionStep } from '@lib/types/llmTypes';
 import type { AutoUIConfig } from '../types';
 import { resolveProps } from '../utils/resolveProps';
+import type { ChatMessage, SerializedMessage, UiNode } from '@lib/ui/chat/types';
+import type { ComponentType, Dispatch, ReactNode, SetStateAction } from 'react';
 
 export type ResolveComponent = (name: string, props: any) => React.ReactNode;
 export type SetUI = (ui: React.ReactNode | string) => void;
@@ -10,10 +12,11 @@ export async function executePlanSteps(
   config: AutoUIConfig,
   resolveComponent: ResolveComponent,
   setUI: SetUI,
+  setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
 ) {
   const ctx: Record<string, any> = {};
   for (const step of plan.steps) {
-    await runStep(step, ctx, config, resolveComponent, setUI);
+    await runStep(step, ctx, config, resolveComponent, setUI, setSerializedMessages);
   }
   return ctx;
 }
@@ -24,6 +27,7 @@ async function runStep(
   config: AutoUIConfig,
   resolveComponent: ResolveComponent,
   setUI: SetUI,
+  setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>
 ) {
   if (step.type === 'function') {
     const f = config.functions[step.name];
@@ -36,12 +40,20 @@ async function runStep(
   if (step.type === 'component') {
     const props = resolveProps(step.props ?? {}, ctx, config);
     const node = resolveComponent(step.name, props);
+    
     setUI(node);
+    setSerializedMessages((prev)=>{
+      if(props?.children) return [...prev, {id: `${Date.now()}-a`, role: 'assistant', kind: "ui", ui: {t:"fragment", children: props.children}}]
+      else return [...prev, {id: `${Date.now()}-a`, role: 'assistant', kind: "ui", ui: {t:"component", name: step.name, props: props}}]
+    })
     return;
   }
 
   if (step.type === 'text') {
     const s = step as unknown as { type: 'text'; text: string };
+    setSerializedMessages((prev)=>{
+      return [...prev, {id: `${Date.now()}-a`, role: 'assistant', kind: "text", text:s.text}]
+    })
     setUI(s.text ?? '');
     return;
   }

@@ -1,5 +1,6 @@
 import type { AutoUIConfig } from '@lib/types';
-import type { ReactNode } from 'react';
+import type { InstructionPlan } from '@lib/types/llmTypes';
+import type { ComponentType, ReactNode } from 'react';
 import type React from 'react';
 
 export type BtnOpenChatProps = {
@@ -19,7 +20,7 @@ export interface ModalChatContext {
 export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant' | 'system';
-  content: string | React.ReactNode;
+  content: string | ReactNode | ComponentType<any>;
 }
 
 interface ChatClassNames {
@@ -82,10 +83,12 @@ export type ModalChatProps = {
   portalContainer?: HTMLElement;
 } & ChatProps;
 
+export type ActionRef = { __action: string; args?: Record<string, unknown> };
 export type UiNode =
   | { t: 'text'; text: string }
-  | { t: 'component'; name: string; props?: Record<string, any>; children?: UiNode[] };
+  | { t: 'component'; name: string; props?: Record<string, unknown>; children?: UiNode[] }
+  | { t: 'fragment'; children?: UiNode[] };
 
-export type StoredMessage =
-  | { id: string; role: 'user' | 'assistant'; kind: 'text'; text: string; ts?: number }
+export type SerializedMessage =
+  | { id: string; role: 'assistant' | 'user'; kind: 'text'; text: string; ts?: number }
   | { id: string; role: 'assistant'; kind: 'ui'; ui: UiNode; ts?: number };

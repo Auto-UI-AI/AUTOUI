@@ -1,6 +1,9 @@
 import type { AutoUIConfig } from '../types';
 import type { InstructionPlan } from '@lib/types/llmTypes';
 import { executePlanSteps, type ResolveComponent, type SetUI } from './stepExecutor';
+import type React from 'react';
+import type { SerializedMessage } from '@lib/ui/chat/types';
+import type { Dispatch, SetStateAction } from 'react';
 
 export type RunOptions = { validate?: boolean };
 
@@ -59,11 +62,12 @@ export async function runInstructionPlan(
   config: AutoUIConfig,
   resolveComponent: ResolveComponent,
   setUI: SetUI,
+  setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
   opts?: RunOptions,
 ){
   const shouldValidate = opts?.validate ?? config.runtime?.validateLLMOutput ?? true;
   if (shouldValidate) {
     validateInstructionPlan(plan);
   }
-  return await executePlanSteps(plan, config, resolveComponent, setUI);
+  return await executePlanSteps(plan, config, resolveComponent, setUI, setSerializedMessages);
 }
