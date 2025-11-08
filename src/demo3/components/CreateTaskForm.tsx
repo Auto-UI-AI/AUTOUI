@@ -1,9 +1,13 @@
-// src/demo3/components/CreateTaskForm.tsx
 import React, { useState } from "react";
-import { useTasksContext } from "../hooks/useTasksContext";
+import { useTasksContext } from "../hooks/useAppFunctions";
+import { Loader2, Plus } from "lucide-react";
+import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Input } from "../../demo/base";
+import { Textarea } from "../../demo/base/textarea";
+import { Alert, AlertDescription } from "../../demo/base/alert";
+import { Label } from "../../demo/base/label";
 
 type CreateTaskFormProps = {
-  onCreated?: (title: string) => void; // optional callback (e.g., close modal)
+  onCreated?: (title: string) => void;
 };
 
 const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onCreated }) => {
@@ -16,18 +20,14 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onCreated }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-
     const t = title.trim();
     const d = details.trim();
-
     if (!t) {
       setError("Title is required.");
       return;
     }
-
     try {
       setSubmitting(true);
-      // create the task right here via context
       addTask({ title: t, details: d });
       setTitle("");
       setDetails("");
@@ -40,38 +40,58 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onCreated }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-      <label className="flex flex-col">
-        <span className="text-sm font-medium">Title</span>
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="e.g., Write README"
-          className="px-2 py-1 border rounded"
-        />
-      </label>
+    <Card className="w-full max-w-xl">
+      <CardHeader>
+        <CardTitle>Create a Task</CardTitle>
+        <CardDescription>Add a clear title and optional details.</CardDescription>
+      </CardHeader>
+      <form onSubmit={handleSubmit}>
+        <CardContent className="space-y-4">
+          <div className="grid gap-2">
+            <Label htmlFor="task-title">Title</Label>
+            <Input
+              id="task-title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="e.g., Write README"
+            />
+          </div>
 
-      <label className="flex flex-col">
-        <span className="text-sm font-medium">Details</span>
-        <textarea
-          value={details}
-          onChange={(e) => setDetails(e.target.value)}
-          placeholder="Optional details…"
-          className="px-2 py-1 border rounded"
-          rows={3}
-        />
-      </label>
+          <div className="grid gap-2">
+            <Label htmlFor="task-details">Details</Label>
+            <Textarea
+              id="task-details"
+              value={details}
+              onChange={(e) => setDetails(e.target.value)}
+              placeholder="Optional details…"
+              rows={4}
+            />
+          </div>
 
-      {error && <div className="text-sm text-red-600">{error}</div>}
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+        </CardContent>
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="px-3 py-2 text-white bg-black rounded disabled:opacity-60"
-      >
-        {submitting ? "Creating…" : "Create Task"}
-      </button>
-    </form>
+        <CardFooter className="flex justify-end">
+          <Button type="submit" disabled={submitting}>
+            {submitting ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Creating…
+              </>
+            ) : (
+              <>
+                <Plus className="w-4 h-4 mr-2" />
+                Create Task
+              </>
+            )}
+          </Button>
+        </CardFooter>
+      </form>
+    </Card>
   );
 };
 

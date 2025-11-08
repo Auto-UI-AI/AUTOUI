@@ -67,7 +67,7 @@ export interface AutoUIFunction {
   returns?: string;
 
   /** The actual callable implementation (may be mocked) */
-  callFunc: (params?: any) => Promise<any> | any;
+  callFunc: Function
 
   /** Optional example usage or notes for LLM context */
   exampleUsage?: string;
