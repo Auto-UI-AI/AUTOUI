@@ -6,7 +6,7 @@ import type { ChatProps } from '../types';
 import { useChat } from '../hooks/useChat';
 import { ChatHeader } from './ChatHeader';
 import { ChatProvider } from '../context/chatContext';
-import { clsx } from '@lib/utils/clsx';
+import { clsx } from '../../../utils/clsx';
 
 export const Chat: React.FC<ChatProps> = ({
   title = 'AutoUI Chat',
