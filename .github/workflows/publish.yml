@@ -25,11 +25,17 @@ jobs:
       - name: Build library
         run: npm run build:lib
 
-      # 5. Автоматичний bump patch версії
+      # 5. Налаштування Git user для автоматичних комітів
+      - name: Setup Git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # 6. Автоматичний bump patch версії
       - name: Bump version
         run: npm version patch --git-tag-version
 
-      # 6. Publish на npm
+      # 7. Publish на npm
       - name: Publish to npm
         run: npm publish --registry https://registry.npmjs.org/
         env:
