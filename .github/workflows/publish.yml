@@ -35,7 +35,13 @@ jobs:
       - name: Bump version
         run: npm version patch --git-tag-version
 
-      # 7. Publish на npm
+      # 7. Authenticate npm
+      - name: Authenticate npm
+        run: npm config set //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # 8. Publish на npm
       - name: Publish to npm
         run: npm publish --registry https://registry.npmjs.org/
         env:
