@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import type { BtnOpenChatProps } from '@lib/ui/chat/types';
-import { clsx } from '@lib/utils/clsx';
+import clsx from 'clsx';
 
 export const BtnOpenChat: FC<BtnOpenChatProps> = ({ onOpenChange, isOpen, className }) => {
   const safeIsOpen = isOpen ?? true;

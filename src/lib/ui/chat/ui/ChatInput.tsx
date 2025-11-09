@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useChatContext } from '../context/chatContext';
-import { clsx } from '@lib/utils/clsx';
+import clsx from 'clsx';
 
 export interface ChatInputProps {}
 

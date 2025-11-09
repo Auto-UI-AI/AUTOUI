@@ -1,5 +1,5 @@
+import clsx from 'clsx';
 import React, { forwardRef, useMemo } from 'react';
-import { clsx } from '../../../utils/clsx';
 
 export interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'simple' | 'wave' | 'dots' | 'spinner';

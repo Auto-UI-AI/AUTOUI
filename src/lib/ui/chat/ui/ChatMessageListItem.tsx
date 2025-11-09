@@ -1,7 +1,7 @@
 import React from 'react';
 import type { ChatMessage } from '../types';
-import { clsx } from '@lib/utils/clsx';
 import { useChatContext } from '../context/chatContext';
+import clsx from 'clsx';
 
 export interface ChatMessageListItemProps {
   message: ChatMessage;

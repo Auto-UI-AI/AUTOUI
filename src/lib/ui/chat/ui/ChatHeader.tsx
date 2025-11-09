@@ -1,4 +1,5 @@
-import { clsx } from '@lib/utils/clsx';
+
+import clsx from 'clsx';
 import { useChatContext } from '../context/chatContext';
 
 export const ChatHeader = () => {

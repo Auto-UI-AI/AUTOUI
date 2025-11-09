@@ -2,9 +2,10 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import alias from '@rollup/plugin-alias';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tsconfigPaths()],
   resolve: {
     alias: {
       '@lib': path.resolve(__dirname, 'src/lib'),
@@ -20,15 +21,13 @@ export default defineConfig({
     rollupOptions: {
       plugins: [
         alias({
-          entries: [
-            { find: '@lib', replacement: path.resolve(__dirname, 'src/lib') },
-          ],
+          entries: [{ find: '@lib', replacement: path.resolve(__dirname, 'src/lib') }],
         }),
       ],
       external: ['react', 'react-dom'],
       output: {
         globals: {
-          react: 'React',
+          'react': 'React',
           'react-dom': 'ReactDOM',
         },
       },
