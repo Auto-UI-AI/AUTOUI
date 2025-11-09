@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAutoUi } from './useAutoUi';
 import type { ChatContextType, ChatMessage, ChatProps } from '../types';
-
+import { useAutoUi } from './useAutoUi';
 
 export function useChat({
   onError,
