@@ -1,6 +1,6 @@
 {
-  "name": "@auto-ui-ai/autoui",
-  "version": "0.0.3",
+  "name": "autoui",
+  "version": "0.0.4",
   "type": "module",
   "private": false,
   "scripts": {
@@ -13,11 +13,11 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "preview": "vite preview",
-    "deploy": "npm version patch && git push && git push --tags  &&  vite build && npm publish"
+    "deploy": "npm version patch && git push && git push --tags && vite build && npm publish"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Auto-UI-AI/AUTOUI.git"
+    "url": "git+https://github.com/Auto-UI-AI/AUTOUI.git"
   },
   "files": [
     "dist"
