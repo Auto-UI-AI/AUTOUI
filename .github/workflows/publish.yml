@@ -23,6 +23,7 @@ jobs:
 
       - run: npm version patch -m "chore: release %s [skip ci]"
 
-      - run: npm publish
+      - name: Publish to npm
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
