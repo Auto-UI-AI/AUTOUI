@@ -7,6 +7,7 @@ import type { AutoUIConfig } from "@lib/types";
 import { ModalChat } from "@lib";
 import { useTasksContext, type Task } from "./hooks/useAppFunctions";
 import ConfirmTaskDeletionForm from "./components/ConfirmTaskDeletionForm";
+import TaskListForChat from "./components/TaskListForChat";
 
 const Demo3App: React.FC = () => {
   const { tasks, setTasks, addTask } = useTasksContext();
@@ -148,6 +149,15 @@ const Demo3App: React.FC = () => {
 },
 
     components: {
+      TaskListForChat: {
+        props: {
+          tasks: "task[] - where task is {title: string, description: string}"
+        },
+        prompt:
+          "Displays the current snapshot of a list of tasks with title and details.",
+        callComponent: TaskListForChat,
+        category: "tasks",
+      },
       TaskItem: {
         prompt:
           "Displays a single task with its title and details. Used inside the task list.",

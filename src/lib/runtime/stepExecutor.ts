@@ -29,14 +29,48 @@ async function runStep(
   setUI: SetUI,
   setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>
 ) {
-  if (step.type === 'function') {
-    const f = config.functions[step.name];
-    if (!f) throw new Error(`Unknown function: ${step.name}`);
-    const out = await f.callFunc(step.params ?? {});
-    if (step.assign) ctx[step.assign] = out;
-    return;
+  const isPlainObject = (v: unknown): v is Record<string, unknown> =>
+  !!v && typeof v === 'object' && !Array.isArray(v);
+
+// --- inside runStep ---
+if (step.type === 'function') {
+  const fCfg = config.functions[step.name];
+  if (!fCfg) throw new Error(`Unknown function: ${step.name}`);
+
+  const fn = fCfg.callFunc as any;
+
+  // The plan may provide either .args (positional) or .params (object).
+  const anyStep = step as any;
+  const hasArgs = Array.isArray(anyStep.args);
+  const hasParamsObj = !!anyStep.params && typeof anyStep.params === 'object';
+
+  let out: any;
+
+  if (hasArgs) {
+    let args = anyStep.args as unknown[];
+    if (
+      args.length === 1 &&
+      isPlainObject(args[0]) &&
+      Array.isArray(fCfg.params) &&
+      fCfg.params.length > 0
+    ) {
+      const obj = args[0] as Record<string, unknown>;
+      args = (fCfg.params as string[]).map((k) => obj[k]);
+    }
+    try {
+      out = await (fn as (...a: unknown[]) => any)(...args);
+    } catch {
+      out = await (fn as (a?: unknown[]) => any)(args);
+    }
+  } else if (hasParamsObj) {
+    out = await (fn as (p?: any) => any)(anyStep.params);
+  } else {
+    out = await fn();
   }
 
+  if ((step as any).assign) ctx[(step as any).assign] = out;
+  return;
+}
   if (step.type === 'component') {
     console.log("component step already includes the context of the instructionPlan, so here it is:", JSON.stringify(ctx))
     const props = resolveProps(step.props ?? {}, ctx, config);
