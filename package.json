@@ -2,6 +2,7 @@
   "name": "@auto-ui-ai/autoui",
   "version": "0.0.3",
   "type": "module",
+  "private": false,
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -22,7 +23,8 @@
     "dist"
   ],
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
     "@radix-ui/react-toggle": "^1.1.10",
