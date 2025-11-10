@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import type { ChatMessage } from '../types';
 import { clsx } from '@lib/utils/clsx';
 import { useChatContext } from '../context/chatContext';
@@ -17,7 +17,7 @@ export const ChatMessageListItem: React.FC<ChatMessageListItemProps> = ({ messag
       className={clsx('autoui-chat-message', isUser ? 'user' : 'assistant', classNames?.message)}
       aria-label={isUser ? 'User message' : 'Assistant message'}
     >
-      <div className="autoui-chat-bubble">{message.content}</div>
+      <div className="autoui-chat-bubble">{message.content as ReactNode}</div>
     </div>
   );
 };

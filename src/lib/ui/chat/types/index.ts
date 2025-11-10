@@ -1,3 +1,5 @@
+import type { AutoUIConfig } from '@lib/types';
+import type { ComponentType, ReactNode } from 'react';
 import type React from 'react';
 
 export type BtnOpenChatProps = {
@@ -12,11 +14,12 @@ export interface ModalChatContextValue {
 export interface ModalChatContext {
   value: ModalChatContextValue;
   setValue: React.Dispatch<React.SetStateAction<ModalChatContextValue>>;
+  config: AutoUIConfig
 }
 export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant' | 'system';
-  content: string | React.ReactNode;
+  content: string | ReactNode | ComponentType<any>;
 }
 
 interface ChatClassNames {
@@ -32,8 +35,13 @@ interface ChatClassNames {
   messageList?: string;
   message?: string;
 }
-
+export interface ChatProviderPropsType { 
+  children: ReactNode;
+  value: ChatContextType;
+  config: AutoUIConfig;
+ }
 export interface ChatContextType {
+  config: AutoUIConfig;
   isOpen?: boolean;
   title?: string;
   classNames?: ChatClassNames;
@@ -59,6 +67,7 @@ export interface ChatContextType {
 export interface ChatMessageListProps {}
 
 export interface ChatProps {
+  config: AutoUIConfig;
   title?: string;
   isOpen?: boolean;
   storageKey?: string;
@@ -69,5 +78,16 @@ export interface ChatProps {
 }
 
 export type ModalChatProps = {
+  config: AutoUIConfig;
   portalContainer?: HTMLElement;
 } & ChatProps;
+
+export type ActionRef = { __action: string; args?: Record<string, unknown> };
+export type UiNode =
+  | { t: 'text'; text: string }
+  | { t: 'component'; name: string; props?: Record<string, unknown>; children?: UiNode[] }
+  | { t: 'fragment'; children?: UiNode[] };
+
+export type SerializedMessage =
+  | { id: string; role: 'assistant' | 'user'; kind: 'text'; text: string; ts?: number }
+  | { id: string; role: 'assistant'; kind: 'ui'; ui: UiNode; ts?: number };
