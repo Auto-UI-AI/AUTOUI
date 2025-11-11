@@ -1,6 +1,7 @@
 import type { InstructionPlan, InstructionStep } from '@lib/types/llmTypes';
 import type { AutoUIConfig } from '../types';
 import { resolveProps } from '../utils/resolveProps';
+import type React from 'react';
 
 export type ResolveComponent = (name: string, props: any) => React.ReactNode;
 export type SetUI = (ui: React.ReactNode | string) => void;
