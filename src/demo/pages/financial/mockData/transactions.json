@@ -1,0 +1,210 @@
+[
+  {
+    "id": 1,
+    "description": "Groceries at Lidl",
+    "amount": "$23.40",
+    "date": "2025-02-10",
+    "category": "Groceries",
+    "account": "Personal",
+    "status": "paid"
+  },
+  {
+    "id": 2,
+    "description": "Flat white coffee",
+    "amount": "$4.20",
+    "date": "2025-02-10",
+    "category": "Food & Drink",
+    "account": "Cash",
+    "status": "paid"
+  },
+  {
+    "id": 3,
+    "description": "Uber ride to office",
+    "amount": "$12.90",
+    "date": "2025-02-09",
+    "category": "Transport",
+    "account": "",
+    "status": "pending"
+  },
+  {
+    "id": 4,
+    "description": "Electricity bill",
+    "amount": "$68.00",
+    "date": "2025-02-01",
+    "category": "Bills",
+    "account": "Personal",
+    "status": "paid"
+  },
+  {
+    "id": 5,
+    "description": "Spotify subscription",
+    "amount": "$9.99",
+    "date": "2025-02-05",
+    "category": "Subscriptions",
+    "account": "",
+    "status": "pending"
+  },
+  {
+    "id": 6,
+    "description": "Dinner out",
+    "amount": "$32.50",
+    "date": "2025-02-08",
+    "category": "Food & Drink",
+    "account": "Business",
+    "status": "paid"
+  },
+  {
+    "id": 7,
+    "description": "Salary",
+    "amount": "$2500.00",
+    "date": "2025-02-01",
+    "category": "Income",
+    "account": "Personal",
+    "status": "paid"
+  },
+  {
+    "id": 8,
+    "description": "Taxi airport return",
+    "amount": "$21.00",
+    "date": "2025-02-07",
+    "category": "Transport",
+    "account": "",
+    "status": "pending"
+  },
+  {
+    "id": 9,
+    "description": "Pharmacy / vitamins",
+    "amount": "$14.80",
+    "date": "2025-02-03",
+    "category": "Health",
+    "account": "Personal",
+    "status": "paid"
+  },
+  {
+    "id": 10,
+    "description": "Gym membership",
+    "amount": "$45.00",
+    "date": "2025-02-02",
+    "category": "Health",
+    "account": "Personal",
+    "status": "paid"
+  },
+  {
+    "id": 11,
+    "description": "Amazon office supplies",
+    "amount": "$18.75",
+    "date": "2025-02-04",
+    "category": "Shopping",
+    "account": "Business",
+    "status": "paid"
+  },
+  {
+    "id": 12,
+    "description": "Water bill",
+    "amount": "$11.30",
+    "date": "2025-02-01",
+    "category": "Bills",
+    "account": "Personal",
+    "status": "paid"
+  },
+  {
+    "id": 13,
+    "description": "Taxi late night",
+    "amount": "$15.60"              ,
+    "date": "2025-02-09",
+    "category": "Transport",
+    "account": "",
+    "status": "pending"
+  },
+  {
+    "id": 14,
+    "description": "Cinema tickets",
+    "amount": "$22.00",
+    "date": "2025-02-06",
+    "category": "Entertainment",
+    "account": "Personal",
+    "status": "paid"
+  },
+  {
+    "id": 15,
+    "description": "Laptop sleeve",
+    "amount": "$29.99",
+    "date": "2025-02-04",
+    "category": "Shopping",
+    "account": "Business",
+    "status": "paid"
+  },
+  {
+    "id": 16,
+    "description": "Car fuel",
+    "amount": "$54.10",
+    "date": "2025-02-05",
+    "category": "Transport",
+    "account": "Personal",
+    "status": "paid"
+  },
+  {
+    "id": 17,
+    "description": "Lunch at workplace cafe",
+    "amount": "$8.50",
+    "date": "2025-02-10",
+    "category": "Food & Drink",
+    "account": "Cash",
+    "status": "paid"
+  },
+  {
+    "id": 18,
+    "description": "Phone bill",
+    "amount": "$24.99",
+    "date": "2025-02-03",
+    "category": "Bills",
+    "account": "Personal",
+    "status": "paid"
+  },
+  {
+    "id": 19,
+    "description": "Haircut",
+    "amount": "$17.00",
+    "date": "2025-02-07",
+    "category": "Personal Care",
+    "account": "Personal",
+    "status": "paid"
+  },
+  {
+    "id": 20,
+    "description": "YouTube Premium",
+    "amount": "$11.99",
+    "date": "2025-02-03",
+    "category": "Subscriptions",
+    "account": "",
+    "status": "pending"
+  },
+  {
+    "id": 21,
+    "description": "Public transit pass",
+    "amount": "$49.00",
+    "date": "2025-02-01",
+    "category": "Transport",
+    "account": "Personal",
+    "status": "paid"
+  },
+  {
+    "id": 22,
+    "description": "Client invoicing income",
+    "amount": "$875.00",
+    "date": "2025-02-08",
+    "category": "Income",
+    "account": "Business",
+    "status": "paid"
+  },
+  {
+    "id": 23,
+    "description": "Medication refill",
+    "amount": "$9.70",
+    "date": "2025-02-09",
+    "category": "Health",
+    "account": "Personal",
+    "status": "paid"
+  }
+]
+

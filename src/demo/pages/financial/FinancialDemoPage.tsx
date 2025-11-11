@@ -8,7 +8,7 @@ import {
   ChartAreaInteractive,
   DataTable,
 } from '@/demo/base';
-import data from './dashboard/data.json';
+import data from './mockData/transactions.json';
 
 export function FinancialDemoPage() {
   return (

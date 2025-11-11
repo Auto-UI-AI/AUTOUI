@@ -78,12 +78,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
 
 export const schema = z.object({
   id: z.number(),
-  header: z.string(),
-  type: z.string(),
+  description: z.string(),
+  amount: z.string(),
+  date: z.string(),
+  category: z.string(),
+  account: z.string(),
   status: z.string(),
-  target: z.string(),
-  limit: z.string(),
-  reviewer: z.string(),
 });
 
 // Create a separate component for the drag handle
@@ -136,20 +136,96 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'header',
-    header: 'Header',
+    accessorKey: 'description',
+    header: 'Description',
     cell: ({ row }) => {
       return <TableCellViewer item={row.original} />;
     },
     enableHiding: false,
   },
   {
-    accessorKey: 'type',
-    header: 'Section Type',
+    accessorKey: 'amount',
+    header: () => <div className="w-full text-right">Amount</div>,
+    cell: ({ row }) => (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+            loading: `Saving ${row.original.description}`,
+            success: 'Done',
+            error: 'Error',
+          });
+        }}
+      >
+        <Label htmlFor={`${row.original.id}-amount`} className="sr-only">
+          Amount
+        </Label>
+        <Input
+          className="h-8 min-w-16 border-transparent bg-transparent justify-end text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background"
+          defaultValue={row.original.amount}
+          id={`${row.original.id}-amount`}
+        />
+      </form>
+    ),
+  },
+  {
+    accessorKey: 'date',
+    header: () => <div className="w-full text-right">Date</div>,
+    cell: ({ row }) => (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+            loading: `Saving ${row.original.description}`,
+            success: 'Done',
+            error: 'Error',
+          });
+        }}
+      >
+        <Label htmlFor={`${row.original.id}-date`} className="sr-only">
+          Date
+        </Label>
+        <Input
+          className="h-8 min-w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background"
+          defaultValue={row.original.date}
+          id={`${row.original.id}-date`}
+        />
+      </form>
+    ),
+  },
+  {
+    accessorKey: 'account',
+    header: 'Account',
+    cell: ({ row }) => {
+      const accountValue = row.original.account || undefined;
+
+      return (
+        <>
+          <Label htmlFor={`${row.original.id}-account`} className="sr-only">
+            Account
+          </Label>
+          <Select defaultValue={accountValue}>
+            <SelectTrigger className="h-8 w-40" id={`${row.original.id}-account`}>
+              <SelectValue placeholder="Assign account" />
+            </SelectTrigger>
+            <SelectContent align="end">
+              <SelectItem value="Personal">Personal</SelectItem>
+              <SelectItem value="Business">Business</SelectItem>
+              <SelectItem value="Cash">Cash</SelectItem>
+              <SelectItem value="Bank">Bank</SelectItem>
+            </SelectContent>
+          </Select>
+        </>
+      );
+    },
+  },
+  {
+    accessorKey: 'category',
+    header: 'Category',
     cell: ({ row }) => (
       <div className="w-32">
         <Badge variant="outline" className="px-1.5 text-muted-foreground">
-          {row.original.type}
+          {row.original.category}
         </Badge>
       </div>
     ),
@@ -159,92 +235,14 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     header: 'Status',
     cell: ({ row }) => (
       <Badge variant="outline" className="flex gap-1 px-1.5 text-muted-foreground [&_svg]:size-3">
-        {row.original.status === 'Done' ? (
+        {row.original.status === 'paid' ? (
           <CheckCircle2Icon className="text-green-500 dark:text-green-400" />
         ) : (
           <LoaderIcon />
         )}
-        {row.original.status}
+        {row.original.status === 'paid' ? 'Paid' : 'Pending'}
       </Badge>
     ),
-  },
-  {
-    accessorKey: 'target',
-    header: () => <div className="w-full text-right">Target</div>,
-    cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.header}`,
-            success: 'Done',
-            error: 'Error',
-          });
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-target`} className="sr-only">
-          Target
-        </Label>
-        <Input
-          className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background"
-          defaultValue={row.original.target}
-          id={`${row.original.id}-target`}
-        />
-      </form>
-    ),
-  },
-  {
-    accessorKey: 'limit',
-    header: () => <div className="w-full text-right">Limit</div>,
-    cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.header}`,
-            success: 'Done',
-            error: 'Error',
-          });
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-limit`} className="sr-only">
-          Limit
-        </Label>
-        <Input
-          className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background"
-          defaultValue={row.original.limit}
-          id={`${row.original.id}-limit`}
-        />
-      </form>
-    ),
-  },
-  {
-    accessorKey: 'reviewer',
-    header: 'Reviewer',
-    cell: ({ row }) => {
-      const isAssigned = row.original.reviewer !== 'Assign reviewer';
-
-      if (isAssigned) {
-        return row.original.reviewer;
-      }
-
-      return (
-        <>
-          <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
-            Reviewer
-          </Label>
-          <Select>
-            <SelectTrigger className="h-8 w-40" id={`${row.original.id}-reviewer`}>
-              <SelectValue placeholder="Assign reviewer" />
-            </SelectTrigger>
-            <SelectContent align="end">
-              <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-              <SelectItem value="Jamik Tashpulatov">Jamik Tashpulatov</SelectItem>
-            </SelectContent>
-          </Select>
-        </>
-      );
-    },
   },
   {
     id: 'actions',
@@ -573,13 +571,13 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="link" className="w-fit px-0 text-left text-foreground">
-          {item.header}
+          {item.description}
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="flex flex-col">
         <SheetHeader className="gap-1">
-          <SheetTitle>{item.header}</SheetTitle>
-          <SheetDescription>Showing total visitors for the last 6 months</SheetDescription>
+          <SheetTitle>{item.description}</SheetTitle>
+          <SheetDescription>Showing total amount for the last 6 months</SheetDescription>
         </SheetHeader>
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
           {!isMobile && (
@@ -636,15 +634,15 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
           )}
           <form className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
-              <Label htmlFor="header">Header</Label>
-              <Input id="header" defaultValue={item.header} />
+              <Label htmlFor="description">Description</Label>
+              <Input id="description" defaultValue={item.description} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="type">Type</Label>
-                <Select defaultValue={item.type}>
-                  <SelectTrigger id="type" className="w-full">
-                    <SelectValue placeholder="Select a type" />
+                <Label htmlFor="category">Category</Label>
+                <Select defaultValue={item.category}>
+                  <SelectTrigger id="category" className="w-full">
+                    <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="Table of Contents">Table of Contents</SelectItem>
@@ -674,24 +672,25 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="target">Target</Label>
-                <Input id="target" defaultValue={item.target} />
+                <Label htmlFor="target">Amount</Label>
+                <Input id="amount" defaultValue={item.amount} />
               </div>
               <div className="flex flex-col gap-3">
-                <Label htmlFor="limit">Limit</Label>
-                <Input id="limit" defaultValue={item.limit} />
+                <Label htmlFor="date">Date</Label>
+                <Input id="date" defaultValue={item.date} />
               </div>
             </div>
             <div className="flex flex-col gap-3">
-              <Label htmlFor="reviewer">Reviewer</Label>
-              <Select defaultValue={item.reviewer}>
-                <SelectTrigger id="reviewer" className="w-full">
-                  <SelectValue placeholder="Select a reviewer" />
+              <Label htmlFor="account">Account</Label>
+              <Select defaultValue={item.account}>
+                <SelectTrigger id="account" className="w-full">
+                  <SelectValue placeholder="Select an account" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-                  <SelectItem value="Jamik Tashpulatov">Jamik Tashpulatov</SelectItem>
-                  <SelectItem value="Emily Whalen">Emily Whalen</SelectItem>
+                  <SelectItem value="Personal">Personal</SelectItem>
+                  <SelectItem value="Business">Business</SelectItem>
+                  <SelectItem value="Cash">Cash</SelectItem>
+                  <SelectItem value="Bank">Bank</SelectItem>
                 </SelectContent>
               </Select>
             </div>
