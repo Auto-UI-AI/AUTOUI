@@ -12,8 +12,8 @@
  * ```
  */
 
-import { ToggleGroup, ToggleGroupItem } from '../base/toggle-group';
-import { cn } from '../base/utils';
+import { ToggleGroup, ToggleGroupItem } from '@/demo/base/toggle-group';
+import { cn } from '@/demo/base/utils';
 
 interface CategoryFilterProps {
   categories: string[];
