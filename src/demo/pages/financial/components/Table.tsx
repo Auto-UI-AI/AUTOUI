@@ -46,11 +46,11 @@ import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { useIsMobile } from '../hooks/useIsMobile';
-import { Badge } from './badge';
-import { Button } from './button';
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from './chart';
-import { Checkbox } from './checkbox';
+import { useIsMobile } from '../../../hooks/useIsMobile';
+import { Badge } from '../../../base/badge';
+import { Button } from '../../../base/button';
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '../../../base/chart';
+import { Checkbox } from '../../../base/checkbox';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -58,11 +58,11 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './dropdown-menu';
-import { Input } from './input';
-import { Label } from './label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
-import { Separator } from './separator';
+} from '../../../base/dropdown-menu';
+import { Input } from '../../../base/input';
+import { Label } from '../../../base/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../base/select';
+import { Separator } from '../../../base/separator';
 import {
   Sheet,
   SheetClose,
@@ -72,9 +72,9 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from './sheet';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
+} from '../../../base/sheet';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../base/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../base/tabs';
 
 export const schema = z.object({
   id: z.number(),
