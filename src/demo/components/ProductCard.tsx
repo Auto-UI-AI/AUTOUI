@@ -18,19 +18,20 @@
  */
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../base/card';
 import { Button } from '../base/button';
+export type Product = {
 
-interface ProductCardProps {
-  product: {
     description: string;
     id: string;
     name: string;
     price: number;
     image: string;
-  };
+}
+interface ProductCardProps {
+  product: Product;
   onAddToCart: (productId: string) => void;
 }
 
-export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
+export default function ProductCard({ product, onAddToCart}: ProductCardProps) {
   return (
     <Card className="flex flex-col h-full overflow-hidden" data-testid="product-card">
       <div className="relative w-full overflow-hidden aspect-square">
