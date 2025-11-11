@@ -8,8 +8,7 @@ function App() {
   return (
     <>
       <CartProvider>
-        <DemoPage />
-        {/* <InteractiveDemo /> */}
+        <InteractiveDemo />
         <PlayGround />
         <ModalChat config={autouiConfig} />
       </CartProvider>

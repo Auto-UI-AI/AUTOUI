@@ -8,7 +8,9 @@ import {
   type Product,
   type CartItem,
 } from './functions';
-import { SearchBar, CategoryFilter, ProductGallery, CartSummary } from './components';
+import { SearchBar, CategoryFilter, ProductGallery } from './components';
+import { CartProvider } from './context/CartContext';
+import { CartSummary, CheckoutForm, OrderConfirmation } from './components';
 
 export function InteractiveDemo() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -18,6 +20,9 @@ export function InteractiveDemo() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [recommendations, setRecommendations] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isCheckout, setIsCheckout] = useState(false);
+  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
+  const [orderId, setOrderId] = useState('');
 
   // Load initial data
   useEffect(() => {
@@ -72,42 +77,70 @@ export function InteractiveDemo() {
   };
 
   const handleCheckout = () => {
-    alert(
-      `Checkout with ${cart.length} items. Total: $${cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}`,
-    );
+    setIsCheckout(true);
+  };
+
+  const handleOrderSubmit = () => {
+    // Simulate order submission
+    const generatedOrderId = `ORD-${Math.floor(Math.random() * 1000000)}`;
+    setOrderId(generatedOrderId);
+    setIsOrderConfirmed(true);
+    setIsCheckout(false);
+  };
+
+  const handleOrderClose = () => {
+    setIsOrderConfirmed(false);
   };
 
   return (
-    <div className="space-y-6">
-      {/* Search and Filters */}
-      <div className="space-y-4">
-        <SearchBar onSearch={setSearchQuery} placeholder="Search products..." />
-        <CategoryFilter categories={categories} selected={selectedCategory} onSelect={setSelectedCategory} />
-      </div>
+    <CartProvider>
+      <div className="space-y-6 p-4">
+        {/* Search and Filters */}
+        <div className="space-y-4">
+          <SearchBar onSearch={setSearchQuery} placeholder="Search products..." />
+          <CategoryFilter categories={categories} selected={selectedCategory} onSelect={setSelectedCategory} />
+        </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Products */}
-        <div className="lg:col-span-2">
-          {loading ? (
-            <div className="text-center py-12 text-muted-foreground">Loading products...</div>
-          ) : (
-            <ProductGallery products={products} onAddToCart={handleAddToCart} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Products */}
+          <div className="lg:col-span-2">
+            {loading ? (
+              <div className="text-center py-12 text-muted-foreground">Loading products...</div>
+            ) : (
+              <ProductGallery products={products} onAddToCart={handleAddToCart} />
+            )}
+          </div>
+
+          {/* Cart */}
+          {!isCheckout && !isOrderConfirmed && (
+            <div className="lg:col-span-1">
+              <CartSummary onCheckout={handleCheckout} />
+            </div>
+          )}
+
+          {/* Checkout Form */}
+          {isCheckout && !isOrderConfirmed && (
+            <div className="lg:col-span-1">
+              <CheckoutForm onSubmit={handleOrderSubmit} submitLabel="Place Order" />
+            </div>
+          )}
+
+          {/* Order Confirmation */}
+          {isOrderConfirmed && (
+            <div className="lg:col-span-1">
+              <OrderConfirmation orderId={orderId} onClose={handleOrderClose} />
+            </div>
           )}
         </div>
 
-        {/* Cart */}
-        <div className="lg:col-span-1">
-          <CartSummary items={cart} onCheckout={handleCheckout} />
-        </div>
+        {/* Recommendations */}
+        {recommendations.length > 0 && (
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Recommended for You</h3>
+            <ProductGallery products={recommendations} onAddToCart={handleAddToCart} />
+          </div>
+        )}
       </div>
-
-      {/* Recommendations */}
-      {recommendations.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">Recommended for You</h3>
-          <ProductGallery products={recommendations} onAddToCart={handleAddToCart} />
-        </div>
-      )}
-    </div>
+    </CartProvider>
   );
 }
