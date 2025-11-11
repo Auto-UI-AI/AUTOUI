@@ -1,4 +1,4 @@
-name: Build & Publish AUTOUI
+name: Build, Test & Deploy AUTOUI to GitHub Packages
 
 on:
   push:
@@ -6,23 +6,37 @@ on:
       - main
 
 jobs:
-  build-and-publish:
+  deploy:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
+    permissions:
+      contents: write # для push тегів
+      packages: write # для публікації в GitHub Packages
+
+    steps:
+      - uses: actions/checkout@v4
         with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org/'
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@auto-ui-ai'
 
       - name: Install dependencies
         run: npm ci
 
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
       - name: Build library
         run: npm run build:lib
 
-      - name: Setup Git user
+      - name: Configure git user
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -30,12 +44,17 @@ jobs:
       - name: Bump version
         run: npm version patch --git-tag-version
 
-      - name: Authenticate npm
-        run: npm config set //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Push changes and tags
+        run: |
+          git push origin main
+          git push origin --tags
 
-      - name: Publish to npm
-        run: npm publish --access public
+      - name: Authenticate GitHub Packages
+        run: npm config set //npm.pkg.github.com/:_authToken=${GH_PACKAGES_TOKEN}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+
+      - name: Publish to GitHub Packages
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
