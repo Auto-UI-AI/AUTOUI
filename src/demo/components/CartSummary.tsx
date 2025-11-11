@@ -61,7 +61,7 @@ export default function CartSummary({ onCheckout }: CartSummaryProps) {
       </CardContent>
 
       <CardFooter>
-        <Button onClick={onCheckout} className="w-full" size="lg">
+        <Button onClick={onCheckout} className="w-full" size="lg" disabled={!cartItems || cartItems.length === 0}>
           Proceed to Checkout
         </Button>
       </CardFooter>
