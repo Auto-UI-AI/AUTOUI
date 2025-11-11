@@ -1,4 +1,3 @@
-// Interactive Demo Component
 import { useState, useEffect } from 'react';
 import {
   fetchProducts,
