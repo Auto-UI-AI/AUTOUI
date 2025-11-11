@@ -5,17 +5,17 @@ import React from 'react';
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from '../base/card';
 import { Button } from '../base/button';
 import { Separator } from '../base/separator';
+import { ScrollArea } from '../base/scroll-area';
+import { useCart } from '../hooks/useCart';
 
 interface OrderConfirmationProps {
   orderId: string;
-  eta?: string;
-  totalCost: number;
   className?: string;
   onClose?: () => void;
 }
 
-const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ orderId, eta, totalCost, className = '', onClose }) => {
-  const formattedTotal = typeof totalCost === 'number' ? `$${totalCost.toFixed(2)}` : '-';
+const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ orderId, className = '', onClose }) => {
+  const { items, totalCost } = useCart();
 
   return (
     <Card className={`w-full max-w-md border shadow-sm rounded-xl ${className}`}>
@@ -26,34 +26,38 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ orderId, eta, tot
       <CardContent>
         <div className="space-y-3 text-sm">
           <div>
-            <div className="text-xs">Order ID</div>
+            <div className="text-xs text-gray-500">Order ID</div>
             <div className="font-mono text-sm mt-1">{orderId}</div>
-          </div>
-
-          {eta && (
-            <div>
-              <div className="text-xs">Estimated delivery</div>
-              <div className="mt-1">{eta}</div>
-            </div>
-          )}
-
-          <div>
-            <div className="text-xs">Total</div>
-            <div className="font-medium mt-1">{formattedTotal}</div>
           </div>
 
           <Separator className="my-2" />
 
-          <div className="text-sm">Thank you for your purchase! We'll email you updates about your order.</div>
+          <ScrollArea className="pr-2 max-h-60">
+            <div className="space-y-3">
+              {items.map((item) => (
+                <div key={item.id} className="flex justify-between text-sm">
+                  <span className="truncate">
+                    {item.name} <span className="text-gray-400">× {item.quantity}</span>
+                  </span>
+                  <span>${(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
+
+          <Separator className="my-2" />
+
+          <div className="flex justify-between text-base font-medium">
+            <span>Total</span>
+            <span>${totalCost.toFixed(2)}</span>
+          </div>
         </div>
       </CardContent>
 
       <CardFooter>
-        <div className="w-full">
-          <Button className="w-full" onClick={onClose}>
-            Done
-          </Button>
-        </div>
+        <Button onClick={onClose} className="w-full" size="lg">
+          Done
+        </Button>
       </CardFooter>
     </Card>
   );

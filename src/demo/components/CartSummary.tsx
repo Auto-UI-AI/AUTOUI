@@ -5,10 +5,6 @@
  * @example
  * ```tsx
  * <CartSummary
- *   items={[
- *     { id: "1", name: "Beige Coat", price: 89.99, quantity: 2 },
- *     { id: "2", name: "Denim Jacket", price: 69.99, quantity: 1 }
- *   ]}
  *   onCheckout={() => console.log("Proceed to checkout")}
  * />
  * ```
@@ -18,21 +14,16 @@ import { Card, CardHeader, CardContent, CardFooter, CardTitle } from '../base/ca
 import { Button } from '../base/button';
 import { Separator } from '../base/separator';
 import { ScrollArea } from '../base/scroll-area';
-
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-}
+import { useCart } from '../hooks/useCart';
 
 interface CartSummaryProps {
-  items?: CartItem[];
   onCheckout: () => void;
 }
 
-export default function CartSummary({ items, onCheckout }: CartSummaryProps) {
-  const subtotal = items ? items.reduce((acc, item) => acc + item.price * item.quantity, 0) : 0;
+export default function CartSummary({ onCheckout }: CartSummaryProps) {
+  const { items: cartItems, totalCost } = useCart();
+
+  const subtotal = cartItems ? cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0) : 0;
 
   return (
     <Card className="w-full max-w-md border shadow-sm rounded-xl">
@@ -40,12 +31,12 @@ export default function CartSummary({ items, onCheckout }: CartSummaryProps) {
         <CardTitle>🛍️ Your Cart</CardTitle>
       </CardHeader>
       <CardContent>
-        {!items || items.length === 0 ? (
-          <p className="text-sm text-gray-500">Your cart is empty.</p>
+        {!cartItems || cartItems.length === 0 ? (
+          <p className="text-sm">Your cart is empty.</p>
         ) : (
           <ScrollArea className="pr-2 max-h-60">
             <div className="space-y-3">
-              {items.map((item) => (
+              {cartItems.map((item) => (
                 <div key={item.id} className="flex justify-between text-sm">
                   <span className="truncate">
                     {item.name} <span className="text-gray-400">× {item.quantity}</span>
@@ -63,10 +54,14 @@ export default function CartSummary({ items, onCheckout }: CartSummaryProps) {
           <span>Subtotal</span>
           <span>${subtotal.toFixed(2)}</span>
         </div>
+        <div className="flex justify-between text-base font-medium">
+          <span>Total</span>
+          <span>${totalCost.toFixed(2)}</span>
+        </div>
       </CardContent>
 
       <CardFooter>
-        <Button onClick={onCheckout} className="w-full" size="lg" >
+        <Button onClick={onCheckout} className="w-full" size="lg">
           Proceed to Checkout
         </Button>
       </CardFooter>

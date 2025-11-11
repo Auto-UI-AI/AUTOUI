@@ -12,12 +12,12 @@
  *     price: 89.99,
  *     image: "https://example.com/coat.jpg"
  *   }}
- *   onAddToCart={(productId) => console.log("Added", productId)}
  * />
  * ```
  */
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../base/card';
 import { Button } from '../base/button';
+import { useCart } from '../hooks/useCart';
 
 interface ProductCardProps {
   product: {
@@ -27,10 +27,20 @@ interface ProductCardProps {
     price: number;
     image: string;
   };
-  onAddToCart: (productId: string) => void;
 }
 
-export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
+export default function ProductCard({ product }: ProductCardProps) {
+  const { addItem } = useCart();
+
+  const handleAddToCart = () => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+    });
+  };
+
   return (
     <Card className="flex flex-col h-full overflow-hidden" data-testid="product-card">
       <div className="relative w-full overflow-hidden aspect-square">
@@ -55,7 +65,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
         </p>
       </CardContent>
       <CardFooter>
-        <Button onClick={() => {console.log(product.id); onAddToCart(product.id)}} className="w-full" data-testid="product-card-add-to-cart">
+        <Button onClick={handleAddToCart} className="w-full" data-testid="product-card-add-to-cart">
           Add to Cart
         </Button>
       </CardFooter>
