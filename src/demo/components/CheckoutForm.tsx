@@ -63,7 +63,7 @@ export default function CheckoutForm({
           <ScrollArea className="pr-2 max-h-72">
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                <label className="block text-sm font-medium mb-1">Name</label>
                 <input
                   name="name"
                   value={userInfo.name}
@@ -75,7 +75,7 @@ export default function CheckoutForm({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <label className="block text-sm font-medium mb-1">Email</label>
                 <input
                   name="email"
                   type="email"
@@ -88,7 +88,7 @@ export default function CheckoutForm({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                <label className="block text-sm font-medium mb-1">Address</label>
                 <input
                   name="address"
                   value={userInfo.address}
@@ -103,7 +103,7 @@ export default function CheckoutForm({
 
           <Separator className="my-4" />
 
-          <div className="text-sm text-gray-500">We will only use this information to process the order.</div>
+          <div className="text-sm">We will only use this information to process the order.</div>
         </CardContent>
 
         <CardFooter>
