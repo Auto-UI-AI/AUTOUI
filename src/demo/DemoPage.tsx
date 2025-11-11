@@ -8,10 +8,8 @@ import {
   CartSummary,
   SearchBar,
   CategoryFilter,
-  SizeFilter,
   CheckoutForm,
   OrderConfirmation,
-  WishlistPanel,
 } from './components';
 import { fetchProducts, addToCart } from './functions';
 import { InteractiveDemo } from './DemoInteractive';
@@ -142,23 +140,14 @@ const COMPONENT_CATEGORIES: ComponentCategory[] = [
         name: 'ProductDetailsModal',
         component: (
           <ProductDetailsModal
-            product={{ id: '1', name: 'Product 1', description: 'Product 1 description', price: 100 }}
+            product={{
+              id: '1',
+              name: 'Product 1',
+              description: 'Product 1 description',
+              price: 100,
+              image: PLACEHOLDER_IMAGE,
+            }}
             onClose={() => {}}
-          />
-        ),
-      },
-      {
-        name: 'SizeFilter',
-        component: <SizeFilter sizes={['S', 'M', 'L', 'XL']} onFilter={() => {}} />,
-      },
-      {
-        name: 'WishlistPanel',
-        component: (
-          <WishlistPanel
-            wishlist={[
-              { id: '1', name: 'Product 1', price: 100 },
-              { id: '2', name: 'Product 2', price: 200 },
-            ]}
           />
         ),
       },
