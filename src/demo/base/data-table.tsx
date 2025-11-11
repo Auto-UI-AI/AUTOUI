@@ -581,7 +581,7 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
           <SheetTitle>{item.header}</SheetTitle>
           <SheetDescription>Showing total visitors for the last 6 months</SheetDescription>
         </SheetHeader>
-        <div className="flex flex-1 flex-col gap-4 overflow-y-auto py-4 text-sm">
+        <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
           {!isMobile && (
             <>
               <ChartContainer config={chartConfig}>

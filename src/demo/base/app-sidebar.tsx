@@ -1,20 +1,22 @@
 import React from 'react';
 import {
   ArrowUpCircleIcon,
-  BarChartIcon,
   CameraIcon,
-  ClipboardListIcon,
-  DatabaseIcon,
   FileCodeIcon,
-  FileIcon,
   FileTextIcon,
-  FolderIcon,
   HelpCircleIcon,
   LayoutDashboardIcon,
-  ListIcon,
   SearchIcon,
   SettingsIcon,
-  UsersIcon,
+  BanknoteArrowDownIcon,
+  ChartPieIcon,
+  ChartLineIcon,
+  CreditCardIcon,
+  GoalIcon,
+  ArrowLeftRightIcon,
+  ChartSplineIcon,
+  TagsIcon,
+  ZapIcon,
 } from 'lucide-react';
 
 import { NavDocuments } from './nav-documents';
@@ -44,24 +46,29 @@ const data = {
       icon: LayoutDashboardIcon,
     },
     {
-      title: 'Lifecycle',
+      title: 'Spendings',
       url: '#',
-      icon: ListIcon,
+      icon: BanknoteArrowDownIcon,
     },
     {
-      title: 'Analytics',
+      title: 'Budgets',
       url: '#',
-      icon: BarChartIcon,
+      icon: ChartPieIcon,
     },
     {
-      title: 'Projects',
+      title: 'Accounts',
       url: '#',
-      icon: FolderIcon,
+      icon: CreditCardIcon,
     },
     {
-      title: 'Team',
+      title: 'Goals',
       url: '#',
-      icon: UsersIcon,
+      icon: GoalIcon,
+    },
+    {
+      title: 'Insights',
+      url: '#',
+      icon: ChartLineIcon,
     },
   ],
   navClouds: [
@@ -119,7 +126,7 @@ const data = {
       icon: SettingsIcon,
     },
     {
-      title: 'Get Help',
+      title: 'Help & Support',
       url: '#',
       icon: HelpCircleIcon,
     },
@@ -131,19 +138,24 @@ const data = {
   ],
   documents: [
     {
-      name: 'Data Library',
+      name: 'Transactions',
       url: '#',
-      icon: DatabaseIcon,
+      icon: ArrowLeftRightIcon,
     },
     {
       name: 'Reports',
       url: '#',
-      icon: ClipboardListIcon,
+      icon: ChartSplineIcon,
     },
     {
-      name: 'Word Assistant',
+      name: 'Rules',
       url: '#',
-      icon: FileIcon,
+      icon: TagsIcon,
+    },
+    {
+      name: 'Automations',
+      url: '#',
+      icon: ZapIcon,
     },
   ],
 };
@@ -157,7 +169,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <a href="#">
                 <ArrowUpCircleIcon className="h-5 w-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <span className="text-base font-semibold">Acme Finance.</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
