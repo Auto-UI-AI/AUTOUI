@@ -63,4 +63,11 @@ export default [
     files: ['*.config.{js,ts}', 'vite.config.*'],
     languageOptions: { globals: globals.node },
   },
+  {
+    // Ignore filename-case rule for demo/base components
+    files: ['src/demo/base/**/*.{ts,tsx}'],
+    rules: {
+      'unicorn/filename-case': 'off',
+    },
+  },
 ];
