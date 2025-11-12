@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useChatContext } from '../context/chatContext';
-import { Xmark } from 'src/assets';
+import Xmark from 'src/assets/xmark-svgrepo-com.svg';
 
 export const ChatHeader = () => {
   const { title, classNames, onClose, closeIcon } = useChatContext();
