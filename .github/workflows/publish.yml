@@ -34,7 +34,7 @@ jobs:
         run: npm run lint
 
       - name: Build library
-        run: npm run build:lib
+        run: npm run build
 
       - name: Configure git user
         run: |
