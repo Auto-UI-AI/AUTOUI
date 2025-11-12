@@ -10,7 +10,7 @@ const TaskList: React.FC = () => {
   }
 
   return (
-    <ScrollArea className="h-[420px] w-full rounded border p-3">
+    <ScrollArea className="w-full h-full p-3 border rounded">
       <div className="flex flex-col gap-3">
         {tasks.map((task, i) => (
           <React.Fragment key={`${task.title}-${i}`}>
