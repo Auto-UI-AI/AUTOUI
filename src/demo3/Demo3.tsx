@@ -1,13 +1,15 @@
 import { TasksProvider } from './hooks/useAppFunctions';
 // import Demo3App from './Demo3App';
 import Tasks from './MainPage';
+import TasksApp from './TasksApp';
 
 const Demo3 = () => {
     
   return (
     
     <TasksProvider>
-      <Tasks/>
+      <TasksApp/>
+      
         {/* <Demo3App/> */}
     </TasksProvider>
   )
