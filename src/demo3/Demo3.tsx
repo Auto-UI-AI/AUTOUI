@@ -1,5 +1,5 @@
 import { TasksProvider } from './hooks/useAppFunctions';
-import Demo3App from './Demo3App';
+// import Demo3App from './Demo3App';
 import Tasks from './MainPage';
 
 const Demo3 = () => {

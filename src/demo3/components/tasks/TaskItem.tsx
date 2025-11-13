@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   Button,
 } from '../../../demo/base';
@@ -7,17 +7,29 @@ import { format } from 'date-fns';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../../../demo/base/dropdown-menu';
 import { Badge } from '../../../demo/base/badge';
 import type { Task } from '../../types/tasks';
+import { useTasksContext } from '../../hooks/useAppFunctions';
 
 type Status = 'todo' | 'in_progress' | 'done';
 type Priority = 'low' | 'medium' | 'high';
 interface TaskItemProps {
   task: Task;
-  onEdit: (task: Task) => void;
-  onDelete: (task: Task) => void;
-  onStatusChange: (task: Task, nextStatus: Status) => void;
 }
 
-export default function TaskItem({ task, onEdit, onDelete, onStatusChange }: TaskItemProps) {
+export default function TaskItem({ task }: TaskItemProps) {
+  const {setTasks, setEditingTask, setShowForm} = useTasksContext()
+  const onStatusChange = useCallback((task: Task, nextStatus: Status) => {
+    setTasks((prev) => prev.map((t) => (t.id === task.id ? { ...t, status: nextStatus } : t)));
+  }, [setTasks]);
+  const onDelete = useCallback((task: Task) => {
+      if (window.confirm('Are you sure you want to delete this task?')) {
+        setTasks((prev) => prev.filter((t) => t.id !== task.id));
+      }
+    }, [setTasks]);
+  const onEdit = useCallback((task: Task) => {
+      setEditingTask(task);
+      setShowForm(true);
+    }, []);
+  
   const priorityConfig: Record<
     Priority,
     { bg: string; text: string; border: string; dot: string }
@@ -80,7 +92,7 @@ export default function TaskItem({ task, onEdit, onDelete, onStatusChange }: Tas
               </h3>
 
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
+                <DropdownMenuTrigger className='bg-indigo-600 hover:bg-indigo-700' asChild>
                   <Button
                     variant="ghost"
                     size="icon"
@@ -89,14 +101,14 @@ export default function TaskItem({ task, onEdit, onDelete, onStatusChange }: Tas
                     <MoreVertical className="w-4 h-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-40">
-                  <DropdownMenuItem onClick={() => onEdit(task)}>
+                <DropdownMenuContent align="end" className="w-40 bg-indigo-600 hover:bg-indigo-700">
+                  <DropdownMenuItem onClick={() => onEdit(task)} className='hover:bg-indigo-400'>
                     <Pencil className="w-4 h-4 mr-2" />
                     Edit
                   </DropdownMenuItem>
-                  <DropdownMenuItem
+                  <DropdownMenuItem 
                     onClick={() => onDelete(task)}
-                    className="text-rose-600 focus:text-rose-600"
+                    className=" hover:bg-indigo-400"
                   >
                     <Trash2 className="w-4 h-4 mr-2" />
                     Delete

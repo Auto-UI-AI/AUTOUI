@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Calendar as CalendarIcon, X, Sparkles } from 'lucide-react';
 import { format } from 'date-fns';
 import { Button, Input } from '../../../demo/base';
@@ -7,17 +7,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Popover, PopoverContent, PopoverTrigger } from '../../../demo/base/popover';
 import { Calendar } from '../../../demo/base/calendar';
 import type { Task, TaskDraft } from '../../types/tasks';
+import { useTasksContext } from '../../hooks/useAppFunctions';
 
 type Status = 'todo' | 'in_progress' | 'done';
 type Priority = 'low' | 'medium' | 'high';
 
 interface TaskFormProps {
   task?: Partial<Task>;
-  onSubmit: (draft: TaskDraft) => void;
-  onCancel: () => void;
 }
 
-export default function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
+export default function TaskForm({ task  }: TaskFormProps) {
+  const {setShowForm, setEditingTask, editingTask, handleUpdateTask, handleCreateTask} = useTasksContext()
   const [formData, setFormData] = useState<TaskDraft>({
     title: task?.title ?? '',
     description: task?.description ?? '',
@@ -25,6 +25,22 @@ export default function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
     priority: (task?.priority as Priority) ?? 'medium',
     due_date: task?.due_date ?? '',
   });
+  const onCancel = useCallback(() => {
+    setShowForm(false);
+    setEditingTask(null);
+  }, []);
+const onSubmit = useCallback(
+    (draft: TaskDraft) => {
+      if (editingTask) {
+        handleUpdateTask(draft, editingTask.id);
+      } else {
+        handleCreateTask(draft);
+      }
+      setShowForm(false);
+      setEditingTask(null);
+    },
+    [editingTask, handleCreateTask, handleUpdateTask]
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,5 +1,5 @@
 // Tasks.tsx
-import React, { useEffect, useState, useCallback, type JSX } from 'react';
+import React, { useEffect, useState, useCallback, type JSX, useRef } from 'react';
 import { Plus, Sparkles } from 'lucide-react';
 import { Button } from '../demo/base';
 
@@ -9,79 +9,43 @@ import TaskItem from './components/tasks/TaskItem';
 import TaskStats from './components/tasks/TaskStats';
 import type { Task, TaskDraft, Status } from './types/tasks';
 import './tasks.css'
+import { useTasksContext } from './hooks/useAppFunctions';
 const STORAGE_KEY = 'task_management_tasks';
 
 export default function Tasks(): JSX.Element {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [showForm, setShowForm] = useState(false);
-  const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const {tasks, setTasks, editingTask, setEditingTask, showForm, setShowForm} = useTasksContext();
+  
   const [filters, setFilters] = useState<TaskFiltersState>({ status: 'all', priority: 'all' });
 
   // Load tasks
+ const hydratedRef = useRef(false);
+
+  // 1) Гидрация из localStorage
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) return;
+    if (!stored) {
+      hydratedRef.current = true;
+      return;
+    }
+
     try {
       const parsed = JSON.parse(stored) as Task[];
-      if (Array.isArray(parsed)) setTasks(parsed);
+      if (Array.isArray(parsed)) {
+        setTasks(parsed);
+      }
     } catch (err) {
       console.error('Failed to parse tasks from localStorage:', err);
+    } finally {
+      hydratedRef.current = true;
     }
-  }, []);
+  }, [setTasks]);
 
-  // Persist tasks
+  // 2) Сохранение задач в localStorage, но только ПОСЛЕ гидрации
   useEffect(() => {
+    if (!hydratedRef.current) return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
   }, [tasks]);
-
-  const handleCreateTask = useCallback((data: TaskDraft) => {
-    const newTask: Task = {
-      ...data,
-      id: Date.now().toString(),
-      created_at: new Date().toISOString(),
-    };
-    setTasks((prev) => [newTask, ...prev]);
-  }, []);
-
-  const handleUpdateTask = useCallback((data: TaskDraft, id: string) => {
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, ...data } : t)));
-  }, []);
-
-  const handleDeleteTask = useCallback((task: Task) => {
-    if (window.confirm('Are you sure you want to delete this task?')) {
-      setTasks((prev) => prev.filter((t) => t.id !== task.id));
-    }
-  }, []);
-
-  const handleStatusChange = useCallback((task: Task, nextStatus: Status) => {
-    setTasks((prev) => prev.map((t) => (t.id === task.id ? { ...t, status: nextStatus } : t)));
-  }, []);
-
-  const handleEdit = useCallback((task: Task) => {
-    setEditingTask(task);
-    setShowForm(true);
-  }, []);
-
-  // ✅ Proper onSubmit: create or update, then close and clear edit state
-  const handleFormSubmit = useCallback(
-    (draft: TaskDraft) => {
-      if (editingTask) {
-        handleUpdateTask(draft, editingTask.id);
-      } else {
-        handleCreateTask(draft);
-      }
-      setShowForm(false);
-      setEditingTask(null);
-    },
-    [editingTask, handleCreateTask, handleUpdateTask]
-  );
-
-  // ✅ Proper onCancel: close modal and clear edit state
-  const handleFormCancel = useCallback(() => {
-    setShowForm(false);
-    setEditingTask(null);
-  }, []);
-
+  
   const filteredTasks = tasks.filter((task) => {
     const statusMatch = filters.status === 'all' || task.status === filters.status;
     const priorityMatch = filters.priority === 'all' || task.priority === filters.priority;
@@ -131,9 +95,6 @@ export default function Tasks(): JSX.Element {
               <TaskItem
                 key={task.id}
                 task={task}
-                onEdit={handleEdit}
-                onDelete={handleDeleteTask}
-                onStatusChange={handleStatusChange}
               />
             ))
           ) : (
@@ -155,8 +116,6 @@ export default function Tasks(): JSX.Element {
         {showForm && (
           <TaskForm
             task={editingTask ?? undefined}
-            onSubmit={handleFormSubmit}   // <- proper handler
-            onCancel={handleFormCancel}   // <- proper handler
           />
         )}
       </div>
