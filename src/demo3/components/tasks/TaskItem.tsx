@@ -1,24 +1,15 @@
 import React from 'react';
 import {
   Button,
-} from 'src/demo/base';
+} from '../../../demo/base';
 import { Calendar, MoreVertical, Pencil, Trash2, CheckCircle2, Circle, Clock } from 'lucide-react';
 import { format } from 'date-fns';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from 'src/demo/base/dropdown-menu';
-import { Badge } from 'src/demo/base/badge';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../../../demo/base/dropdown-menu';
+import { Badge } from '../../../demo/base/badge';
+import type { Task } from '../../types/tasks';
 
 type Status = 'todo' | 'in_progress' | 'done';
 type Priority = 'low' | 'medium' | 'high';
-
-export interface Task {
-  id?: string;
-  title: string;
-  description?: string;
-  status: Status;
-  priority: Priority;
-  due_date?: string; // yyyy-MM-dd
-}
-
 interface TaskItemProps {
   task: Task;
   onEdit: (task: Task) => void;

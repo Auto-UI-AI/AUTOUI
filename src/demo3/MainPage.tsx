@@ -1,27 +1,15 @@
 // Tasks.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, type JSX } from 'react';
 import { Plus, Sparkles } from 'lucide-react';
-import { Button } from 'src/demo/base';
+import { Button } from '../demo/base';
 
 import TaskForm from './components/tasks/TaskForm';
 import TaskFilters, { type TaskFiltersState } from './components/tasks/TaskFilters';
 import TaskItem from './components/tasks/TaskItem';
 import TaskStats from './components/tasks/TaskStats';
-
+import type { Task, TaskDraft, Status } from './types/tasks';
+import './tasks.css'
 const STORAGE_KEY = 'task_management_tasks';
-
-type Status = 'todo' | 'in_progress' | 'done';
-type Priority = 'low' | 'medium' | 'high';
-
-export interface Task {
-  id: string;
-  title: string;
-  description?: string;
-  status: Status;
-  priority: Priority;
-  due_date?: string;     // yyyy-MM-dd
-  created_at: string;    // ISO
-}
 
 export default function Tasks(): JSX.Element {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -29,68 +17,79 @@ export default function Tasks(): JSX.Element {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [filters, setFilters] = useState<TaskFiltersState>({ status: 'all', priority: 'all' });
 
-  // Load tasks from localStorage on mount
+  // Load tasks
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored) as Task[];
-        if (Array.isArray(parsed)) setTasks(parsed);
-      } catch (err) {
-        console.error('Failed to parse tasks from localStorage:', err);
-      }
+    if (!stored) return;
+    try {
+      const parsed = JSON.parse(stored) as Task[];
+      if (Array.isArray(parsed)) setTasks(parsed);
+    } catch (err) {
+      console.error('Failed to parse tasks from localStorage:', err);
     }
   }, []);
 
-  // Save tasks to localStorage whenever they change
+  // Persist tasks
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
   }, [tasks]);
 
-  const handleCreateTask = (taskData: Omit<Task, 'id' | 'created_at'>) => {
+  const handleCreateTask = useCallback((data: TaskDraft) => {
     const newTask: Task = {
-      ...taskData,
+      ...data,
       id: Date.now().toString(),
       created_at: new Date().toISOString(),
     };
     setTasks((prev) => [newTask, ...prev]);
-    setShowForm(false);
-  };
+  }, []);
 
-  const handleUpdateTask = (taskData: Omit<Task, 'id' | 'created_at'>) => {
-    if (!editingTask) return;
-    setTasks((prev) =>
-      prev.map((t) =>
-        t.id === editingTask.id ? { ...t, ...taskData, id: t.id, created_at: t.created_at } : t
-      )
-    );
-    setShowForm(false);
-    setEditingTask(null);
-  };
+  const handleUpdateTask = useCallback((data: TaskDraft, id: string) => {
+    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, ...data } : t)));
+  }, []);
 
-  const handleDeleteTask = (task: Task) => {
+  const handleDeleteTask = useCallback((task: Task) => {
     if (window.confirm('Are you sure you want to delete this task?')) {
       setTasks((prev) => prev.filter((t) => t.id !== task.id));
     }
-  };
+  }, []);
 
-  const handleStatusChange = (task: Task, newStatus: Status) => {
-    setTasks((prev) => prev.map((t) => (t.id === task.id ? { ...t, status: newStatus } : t)));
-  };
+  const handleStatusChange = useCallback((task: Task, nextStatus: Status) => {
+    setTasks((prev) => prev.map((t) => (t.id === task.id ? { ...t, status: nextStatus } : t)));
+  }, []);
 
-  const handleEdit = (task: Task) => {
+  const handleEdit = useCallback((task: Task) => {
     setEditingTask(task);
     setShowForm(true);
-  };
+  }, []);
+
+  // ✅ Proper onSubmit: create or update, then close and clear edit state
+  const handleFormSubmit = useCallback(
+    (draft: TaskDraft) => {
+      if (editingTask) {
+        handleUpdateTask(draft, editingTask.id);
+      } else {
+        handleCreateTask(draft);
+      }
+      setShowForm(false);
+      setEditingTask(null);
+    },
+    [editingTask, handleCreateTask, handleUpdateTask]
+  );
+
+  // ✅ Proper onCancel: close modal and clear edit state
+  const handleFormCancel = useCallback(() => {
+    setShowForm(false);
+    setEditingTask(null);
+  }, []);
 
   const filteredTasks = tasks.filter((task) => {
     const statusMatch = filters.status === 'all' || task.status === filters.status;
     const priorityMatch = filters.priority === 'all' || task.priority === filters.priority;
     return statusMatch && priorityMatch;
-  });
+    });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-white via-indigo-400/90 to-white">
       <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8 transition-all">
@@ -156,11 +155,8 @@ export default function Tasks(): JSX.Element {
         {showForm && (
           <TaskForm
             task={editingTask ?? undefined}
-            onSubmit={editingTask ? handleUpdateTask : handleCreateTask}
-            onCancel={() => {
-              setShowForm(false);
-              setEditingTask(null);
-            }}
+            onSubmit={handleFormSubmit}   // <- proper handler
+            onCancel={handleFormCancel}   // <- proper handler
           />
         )}
       </div>

@@ -1,17 +1,10 @@
 import React from 'react';
 import { CheckCircle2, Clock, TrendingUp, AlertCircle } from 'lucide-react';
+import type { Task } from '../../types/tasks';
 
 type Status = 'todo' | 'in_progress' | 'done';
 type Priority = 'low' | 'medium' | 'high';
 
-export interface Task {
-  id?: string;
-  title: string;
-  description?: string;
-  status: Status;
-  priority: Priority;
-  due_date?: string;
-}
 
 interface TaskStatsProps {
   tasks: Task[];

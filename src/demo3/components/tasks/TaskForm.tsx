@@ -1,32 +1,30 @@
 import React, { useState } from 'react';
 import { Calendar as CalendarIcon, X, Sparkles } from 'lucide-react';
 import { format } from 'date-fns';
-import { Button, Input } from 'src/demo/base';
-import { Textarea } from 'src/demo/base/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'src/demo/base/select';
+import { Button, Input } from '../../../demo/base';
+import { Textarea } from '../../../demo/base/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../demo/base/select';
+import { Popover, PopoverContent, PopoverTrigger } from '../../../demo/base/popover';
+import { Calendar } from '../../../demo/base/calendar';
+import type { Task, TaskDraft } from '../../types/tasks';
 
 type Status = 'todo' | 'in_progress' | 'done';
 type Priority = 'low' | 'medium' | 'high';
 
-export interface Task {
-  id?: string;
-  title: string;
-  description?: string;
-  status: Status;
-  priority: Priority;
-  due_date?: string; // yyyy-MM-dd
-}
-
 interface TaskFormProps {
-  task?: Task;
-  onSubmit: (task: Task) => void;
+  task?: Partial<Task>;
+  onSubmit: (draft: TaskDraft) => void;
   onCancel: () => void;
 }
 
 export default function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
-  const [formData, setFormData] = useState<Task>(
-    task || { title: '', description: '', status: 'todo', priority: 'medium', due_date: '' }
-  );
+  const [formData, setFormData] = useState<TaskDraft>({
+    title: task?.title ?? '',
+    description: task?.description ?? '',
+    status: (task?.status as Status) ?? 'todo',
+    priority: (task?.priority as Priority) ?? 'medium',
+    due_date: task?.due_date ?? '',
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,109 +32,104 @@ export default function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
     onSubmit(formData);
   };
 
-  const priorityGradients: Record<Priority, string> = {
-    low: 'from-blue-500 to-cyan-500',
-    medium: 'from-amber-500 to-orange-500',
-    high: 'from-rose-500 to-pink-500',
-  };
-
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
-      onClick={onCancel}
-      role="dialog"
-      aria-modal="true"
-    >
-      <div
-        className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="sticky top-0 p-6 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-t-3xl">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
+    <div className="tm-overlay" onClick={onCancel} role="dialog" aria-modal="true">
+      <div className="tm-modal" onClick={(e) => e.stopPropagation()}>
+        {/* Header */}
+        <div className="tm-modal-header">
+          <div className="tm-header-row">
+            <div className="tm-header-left">
+              <div className="tm-header-icon">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
-              <h2 className="text-2xl font-bold text-white">{task ? 'Edit Task' : 'Create New Task'}</h2>
+              <h2 className="tm-header-title">{task ? 'Edit Task' : 'Create New Task'}</h2>
             </div>
-            <Button variant="ghost" size="icon" onClick={onCancel} className="text-white hover:bg-white/20 rounded-xl">
+            <Button variant="ghost" size="icon" onClick={onCancel} className="tm-header-close">
               <X className="w-5 h-5" />
             </Button>
           </div>
         </div>
 
+        {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-700">
-              Task Title <span className="text-rose-500">*</span>
+          {/* Title */}
+          <div className="tm-field">
+            <label className="tm-label">
+              Task Title <span className="tm-label-asterisk">*</span>
             </label>
             <Input
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               placeholder="What needs to be done?"
-              className="h-12 text-lg border-slate-200 focus:border-indigo-500 rounded-xl"
+              className="tm-input"
               required
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-700">Description</label>
+          {/* Description */}
+          <div className="tm-field">
+            <label className="tm-label">Description</label>
             <Textarea
               value={formData.description || ''}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Add more details..."
-              className="min-h-[120px] border-slate-200 focus:border-indigo-500 rounded-xl resize-none"
+              className="tm-textarea"
             />
           </div>
 
+          {/* Status / Priority / Due Date */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-700">Status</label>
+            {/* Status */}
+            <div className="tm-field">
+              <label className="tm-label">Status</label>
               <Select value={formData.status} onValueChange={(v) => setFormData({ ...formData, status: v as Status })}>
-                <SelectTrigger className="rounded-xl border-slate-200 h-11">
+                <SelectTrigger className="tm-select-trigger">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="todo">📋 To Do</SelectItem>
-                  <SelectItem value="in_progress">🚀 In Progress</SelectItem>
-                  <SelectItem value="done">✅ Done</SelectItem>
+                <SelectContent className="tm-select-content">
+                  <SelectItem value="todo" className="tm-select-item">📋 To Do</SelectItem>
+                  <SelectItem value="in_progress" className="tm-select-item">🚀 In Progress</SelectItem>
+                  <SelectItem value="done" className="tm-select-item">✅ Done</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-700">Priority</label>
+            {/* Priority */}
+            <div className="tm-field">
+              <label className="tm-label">Priority</label>
               <Select
                 value={formData.priority}
                 onValueChange={(v) => setFormData({ ...formData, priority: v as Priority })}
               >
-                <SelectTrigger className="rounded-xl border-slate-200 h-11">
+                <SelectTrigger className="tm-select-trigger">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="low">🟢 Low</SelectItem>
-                  <SelectItem value="medium">🟡 Medium</SelectItem>
-                  <SelectItem value="high">🔴 High</SelectItem>
+                <SelectContent className="tm-select-content">
+                  <SelectItem value="low" className="tm-select-item">🟢 Low</SelectItem>
+                  <SelectItem value="medium" className="tm-select-item">🟡 Medium</SelectItem>
+                  <SelectItem value="high" className="tm-select-item">🔴 High</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-700">Due Date</label>
+            {/* Due Date */}
+            <div className="tm-field">
+              <label className="tm-label">Due Date</label>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" className="justify-start w-full font-normal text-left rounded-xl border-slate-200 h-11">
-                    <CalendarIcon className="w-4 h-4 mr-2 text-slate-500" />
+                  <Button variant="outline" className="tm-calendar-trigger">
+                    <CalendarIcon className="tm-calendar-icon" />
                     {formData.due_date ? (
                       <span>{format(new Date(formData.due_date), 'MMM d, yyyy')}</span>
                     ) : (
-                      <span className="text-slate-500">Pick a date</span>
+                      <span className="tm-calendar-placeholder">Pick a date</span>
                     )}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
+                <PopoverContent className="relative w-[300px] py-2 bg-purple-600" align="start">
                   <Calendar
                     mode="single"
+                    className='w-full p-5 bg-purple-600 checked:bg-red'
                     selected={formData.due_date ? new Date(formData.due_date) : undefined}
                     onSelect={(date?: Date) =>
                       setFormData({ ...formData, due_date: date ? format(date, 'yyyy-MM-dd') : '' })
@@ -148,18 +141,19 @@ export default function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
             </div>
           </div>
 
+          {/* Footer */}
           <div className="flex gap-3 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onCancel}
-              className="flex-1 h-12 rounded-xl border-slate-300 hover:bg-slate-50"
-            >
+            <Button type="button" variant="outline" onClick={onCancel} className="tm-btn-outline">
               Cancel
             </Button>
             <Button
               type="submit"
-              className={`flex-1 h-12 rounded-xl bg-gradient-to-r ${priorityGradients[formData.priority]} text-white font-semibold hover:shadow-lg transition-all`}
+              className={[
+                'tm-btn-primary',
+                formData.priority === 'low' ? 'tm-btn-low' : '',
+                formData.priority === 'medium' ? 'tm-btn-medium' : '',
+                formData.priority === 'high' ? 'tm-btn-high' : '',
+              ].join(' ')}
             >
               {task ? 'Update Task' : 'Create Task'}
             </Button>
