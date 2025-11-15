@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
-import { AppSidebar, SidebarInset, SidebarProvider, SiteHeader, SectionCards, ChartAreaInteractive } from '@/demo/base';
+import { AppSidebar, SidebarInset, SidebarProvider, SiteHeader, SectionCards } from '@/demo/base';
 import data from './mockData/transactions.json';
-import { DataTable } from './components';
+import { DataTable, SpendingBreakdownChart } from './components';
 import { useFinanceStore } from './store/useFinanceStore';
 
 export function FinancialDemoPage() {
@@ -45,7 +45,7 @@ export function FinancialDemoPage() {
               <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
                 <SectionCards />
                 <div className="px-4 lg:px-6">
-                  <ChartAreaInteractive />
+                  <SpendingBreakdownChart />
                 </div>
                 <DataTable data={displayData} />
               </div>

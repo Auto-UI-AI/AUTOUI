@@ -11,4 +11,3 @@ export { AppSidebar } from './app-sidebar';
 export { SidebarProvider, SidebarInset } from './sidebar';
 export { SiteHeader } from './site-header';
 export { SectionCards } from './section-cards';
-export { ChartAreaInteractive } from './chart-area-interactive';
