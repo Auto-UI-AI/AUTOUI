@@ -2,22 +2,17 @@ import { ModalChat } from '@lib';
 import Tasks from './MainPage';
 import type { AutoUIConfig } from '@lib/types';
 import type { Task, TaskDraft } from './types/tasks';
-import TaskForm from './components/tasks/TaskForm';
 import TaskItem from './components/tasks/TaskItem';
-import TaskFilters from './components/tasks/TaskFilters';
 import TaskStats from './components/tasks/TaskStats';
 import TasksList from './componentsForChat.tsx/TasksList';
 import { useTasksContext } from './hooks/useAppFunctions';
-import { usePointerContext } from './hooks/PointerContext';
 import { useCallback } from 'react';
-import { SmartCursor } from './components/cursor/smartCursor';
 import { PointerHintButton } from './componentsForChat.tsx/PointerHintButton';
 const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
 const aiModel = import.meta.env.VITE_AIMODEL_NAME;
 const baseUrl = import.meta.env.VITE_BASE_URL;
 const TasksApp = () => {
-  const { tasks, showForm, setShowForm } = useTasksContext();
-  const { pointTo } = usePointerContext();
+  const { tasks, setShowForm } = useTasksContext();
 
   const createTaskFromDraft = useCallback((draft: TaskDraft): Task => {
     return {
@@ -129,9 +124,7 @@ const TasksApp = () => {
       openTaskForm: {
         prompt:
           'function opening the TaskForm on the main apps page so that the user would just input the data by himself. After opening it, say in the next message that user can close the chat and input data in that newly opened form',
-        callFunc: () => {
-          setTimeout(() => setShowForm(true), 2000);
-        },
+        callFunc: () => {setShowForm(true)},
       },
       fetchCurrentTasksState: {
         prompt: 'function which fetches the current state of the tasks state and returns it',
@@ -145,93 +138,6 @@ const TasksApp = () => {
           return tasks.length;
         },
       },
-//       pointToElementByDataGuideAttr: {
-//         /**
-//          * Prompt used by the LLM to decide when/how to call this function
-//          */
-//         prompt: `
-// Use this function when you want to visually guide the user to a specific UI element
-// on the page by moving a custom pointer/cursor to that element.
-
-// This function highlights ONE existing element by its data-guide-id attribute.
-
-// The parameter MUST be a string that matches one of the known data-guide-id values
-// already present in the UI. For this demo, the allowed values are:
-
-// - "TaskFilters"
-
-// You MUST pass the parameter inside an object with a single field "dataGuideAttr".
-// Example of a correct call inside a plan:
-
-// {
-//   "type": "function",
-//   "name": "pointToElementByDataGuideAttr",
-//   "params": { "dataGuideAttr": "TaskFilters" }
-// }
-
-// Use this function only when the user needs help finding that UI part
-// (e.g. "Where can I change the filters?", "Show me where the filters are").
-// If none of the allowed ids is relevant, do NOT call this function.
-//   `.trim(),
-
-//         /**
-//          * Descriptive list of parameters (for documentation & LLM guidance)
-//          */
-//         params: {
-//           dataGuideAttr:
-//             `Required. String. The data-guide-id of the element to point at. ` +
-//             `For this demo it MUST be exactly one of: "TaskFilters".`,
-//         },
-
-//         /**
-//          * Description of the expected return type
-//          */
-//         returns: 'void. Triggers an animation of the custom cursor towards the target element; no value is returned.',
-
-//         /**
-//          * The actual callable implementation (may be mocked)
-//          *
-//          * We normalize the params object and pass only the string to pointTo,
-//          * so we never get [object Object] again.
-//          */
-//         callFunc: (params: { dataGuideAttr: string }) => {
-//           // defensive: handle bad shapes just in case
-//           const id =
-//             typeof params === 'string'
-//               ? params
-//               : typeof params?.dataGuideAttr === 'string'
-//                 ? params.dataGuideAttr
-//                 : undefined;
-
-//           if (!id) {
-//             console.warn('pointToElementByDataGuideAttr called without a valid dataGuideAttr string');
-//             return;
-//           }
-
-//           // your existing pointer function, which expects a string
-//           pointTo(id);
-//         },
-
-//         /**
-//          * Optional example usage or notes for LLM context
-//          */
-//         exampleUsage: `
-// User: "I can't find where to change the filters."
-
-// Plan step:
-
-// {
-//   "type": "function",
-//   "name": "pointToElementByDataGuideAttr",
-//   "params": { "dataGuideAttr": "TaskFilters" }
-// }
-//   `.trim(),
-
-//         /**
-//          * Optional tags for organization
-//          */
-//         tags: ['ui-guide', 'pointer', 'navigation', 'demo'],
-//       },
     },
 
     /* =========================
@@ -352,6 +258,8 @@ already present in the UI. For this demo, the allowed values are:
 
 - "TaskFilters"
 - "TaskFormButton"
+- "StatusFilters"
+- "PriorityFilters"
 You MUST pass the single string parameter
 `,
               textToBeInserted: "optional prop, string, the prop which means what would be rendered inside that button, the actual text of it",
@@ -367,7 +275,6 @@ You MUST pass the single string parameter
     <main>
       <Tasks />
       <ModalChat config={TasksAppConfig} />
-      <SmartCursor/>
     </main>
   );
 };

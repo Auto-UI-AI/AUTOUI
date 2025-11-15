@@ -1,5 +1,3 @@
-import React from 'react';
-
 type Status = 'all' | 'todo' | 'in_progress' | 'done';
 type Priority = 'all' | 'low' | 'medium' | 'high';
 
@@ -58,7 +56,7 @@ export default function TaskFilters({ filters, onFilterChange }: TaskFiltersProp
 
   return (
     <div className="mb-8 space-y-4" data-guide-id="TaskFilters">
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2" data-guide-id="StatusFilters">
         {statusOptions.map((option) => {
           const active = filters.status === option.value;
           return (
@@ -78,7 +76,7 @@ export default function TaskFilters({ filters, onFilterChange }: TaskFiltersProp
         })}
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2" data-guide-id="PriorityFilters">
         <span className="text-sm font-semibold text-slate-600">Priority:</span>
         <div className="flex flex-wrap gap-2">
           {priorityOptions.map((option) => {

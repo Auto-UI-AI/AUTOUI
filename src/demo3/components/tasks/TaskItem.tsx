@@ -35,14 +35,13 @@ type Status = 'todo' | 'in_progress' | 'done';
 type Priority = 'low' | 'medium' | 'high';
 
 interface TaskItemProps {
-  task: Task; // can be from context OR from external source (e.g. chat history)
+  task: Task;
 }
 
 export default function TaskItem({ task }: TaskItemProps) {
   const { tasks, setTasks, setEditingTask, setShowForm } = useTasksContext();
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // 👇 Always try to use the "live" version from context
   const taskFromContext = tasks.find(t => t.id === task.id);
   const currentTask = taskFromContext ?? task;
   const isDeleted = !taskFromContext;
@@ -62,7 +61,6 @@ export default function TaskItem({ task }: TaskItemProps) {
   }, [setTasks, currentTask.id]);
 
   const onDeleteClick = useCallback(() => {
-    // если задача уже удалена – просто закрываем диалог
     if (isDeleted) {
       setShowConfirm(false);
       return;
@@ -71,7 +69,7 @@ export default function TaskItem({ task }: TaskItemProps) {
   }, [isDeleted]);
 
   const onEdit = useCallback(() => {
-    if (isDeleted) return; // редактировать нечего
+    if (isDeleted) return; 
     setEditingTask(currentTask);
     setShowForm(true);
   }, [currentTask, isDeleted, setEditingTask, setShowForm]);
@@ -129,7 +127,6 @@ export default function TaskItem({ task }: TaskItemProps) {
     },
   };
 
-  // Если задача уже удалена из контекста — показываем отдельную "deleted" карточку
   if (isDeleted) {
     return (
       <div className="relative group">
@@ -154,7 +151,6 @@ export default function TaskItem({ task }: TaskItemProps) {
     );
   }
 
-  // ---------- обычный рендер, но уже на основе currentTask ----------
   const config = priorityConfig[currentTask.priority];
   const statusInfo = statusConfig[currentTask.status];
   const StatusIcon = statusInfo.icon;
@@ -276,7 +272,6 @@ export default function TaskItem({ task }: TaskItemProps) {
         </div>
       </div>
 
-      {/* Confirmation dialog */}
       <AlertDialog open={showConfirm} onOpenChange={setShowConfirm}>
         <AlertDialogContent className="max-w-md bg-white border shadow-2xl rounded-2xl border-slate-200">
           <AlertDialogHeader className="space-y-3">

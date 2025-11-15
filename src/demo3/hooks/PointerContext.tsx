@@ -1,13 +1,12 @@
-import React, { createContext, useContext, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+} from "react";
 
 export interface PointerContextType {
   pointTo: (dataGuideAttr: string) => void;
-  cursorState: {
-    x: number;
-    y: number;
-    visible: boolean;
-    animationKey: number;
-  };
 }
 
 export const PointerContext = createContext<PointerContextType | undefined>(
@@ -17,15 +16,24 @@ export const PointerContext = createContext<PointerContextType | undefined>(
 export const PointerContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [cursorState, setCursorState] = useState({
-    x: 0,
-    y: 0,
-    visible: false,
-    animationKey: 0,
-  });
+  const highlightedElRef = useRef<HTMLElement | null>(null);
+  const timeoutRef = useRef<number | null>(null);
+
+  const clearHighlight = () => {
+    if (highlightedElRef.current) {
+      highlightedElRef.current.classList.remove("autoui-highlight");
+      highlightedElRef.current = null;
+    }
+    if (timeoutRef.current !== null) {
+      window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  };
 
   const pointTo = (dataGuideAttr: string) => {
     try {
+      clearHighlight();
+
       const el = document.querySelector(
         `[data-guide-id="${dataGuideAttr}"]`
       ) as HTMLElement | null;
@@ -37,41 +45,30 @@ export const PointerContextProvider: React.FC<{ children: React.ReactNode }> = (
         return;
       }
 
-      const rect = el.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2 + window.scrollX;
-      const centerY = rect.top + rect.height / 2 + window.scrollY;
-
       console.log("Found element:", el);
-      console.log("Element center:", { centerX, centerY });
 
-      // unique key to restart animation
-      const animationKey = Date.now();
+      el.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
 
-      // 1) show cursor at target
-      setCursorState({
-        x: centerX,
-        y: centerY,
-        visible: true,
-        animationKey,
-      });
+      el.classList.add("autoui-highlight");
+      highlightedElRef.current = el;
 
-      // 2) hide after animation finishes (e.g. 0.6s * 3 = 1.8s)
-      const totalDurationMs = 2000; // little margin
-      setTimeout(() => {
-        // do not hide if there was a newer pointTo call
-        setCursorState((prev) =>
-          prev.animationKey === animationKey
-            ? { ...prev, visible: false }
-            : prev
-        );
-      }, totalDurationMs);
+      const durationMs = 2000; 
+      timeoutRef.current = window.setTimeout(() => {
+        clearHighlight();
+      }, durationMs);
     } catch (e) {
       console.error("pointTo error:", e);
     }
   };
 
+  useEffect(() => {
+    return () => {
+      clearHighlight();
+    };
+  }, []);
+
   return (
-    <PointerContext.Provider value={{ pointTo, cursorState }}>
+    <PointerContext.Provider value={{ pointTo }}>
       {children}
     </PointerContext.Provider>
   );

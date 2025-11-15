@@ -25,8 +25,8 @@ export default function TaskStats({ tasks }: TaskStatsProps) {
     label: string;
     value: number;
     icon: React.ComponentType<{ className?: string }>;
-    gradient: string; // e.g. 'from-indigo-500 to-purple-600'
-    bgGlow: string; // e.g. 'bg-indigo-500/10'
+    gradient: string;
+    bgGlow: string; 
   }> = [
     {
       label: 'Total Tasks',

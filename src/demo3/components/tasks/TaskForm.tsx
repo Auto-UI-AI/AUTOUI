@@ -51,7 +51,6 @@ const onSubmit = useCallback(
   return (
     <div className="tm-overlay" onClick={onCancel} role="dialog" aria-modal="true">
       <div className="tm-modal" onClick={(e) => e.stopPropagation()}>
-        {/* Header */}
         <div className="tm-modal-header">
           <div className="tm-header-row">
             <div className="tm-header-left">
@@ -66,9 +65,8 @@ const onSubmit = useCallback(
           </div>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* Title */}
+
           <div className="tm-field">
             <label className="tm-label">
               Task Title <span className="tm-label-asterisk">*</span>
@@ -93,9 +91,7 @@ const onSubmit = useCallback(
             />
           </div>
 
-          {/* Status / Priority / Due Date */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            {/* Status */}
             <div className="tm-field">
               <label className="tm-label">Status</label>
               <Select value={formData.status} onValueChange={(v) => setFormData({ ...formData, status: v as Status })}>
@@ -110,7 +106,6 @@ const onSubmit = useCallback(
               </Select>
             </div>
 
-            {/* Priority */}
             <div className="tm-field">
               <label className="tm-label">Priority</label>
               <Select
@@ -128,7 +123,6 @@ const onSubmit = useCallback(
               </Select>
             </div>
 
-            {/* Due Date */}
             <div className="tm-field">
               <label className="tm-label">Due Date</label>
               <Popover>
