@@ -7,7 +7,7 @@ import TaskForm from './components/tasks/TaskForm';
 import TaskFilters, { type TaskFiltersState } from './components/tasks/TaskFilters';
 import TaskItem from './components/tasks/TaskItem';
 import TaskStats from './components/tasks/TaskStats';
-import type { Task, TaskDraft, Status } from './types/tasks';
+import type { Task } from './types/tasks';
 import './tasks.css'
 import { useTasksContext } from './hooks/useAppFunctions';
 const STORAGE_KEY = 'task_management_tasks';
@@ -74,6 +74,7 @@ export default function Tasks(): JSX.Element {
                 setEditingTask(null);
                 setShowForm(true);
               }}
+              data-guide-id="TaskFormButton"
               className="h-12 px-6 text-white transition-all shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-xl shadow-indigo-500/30 hover:shadow-xl"
             >
               <Plus className="w-5 h-5 mr-2" />

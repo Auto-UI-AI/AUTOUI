@@ -11,6 +11,7 @@ import { useTasksContext } from './hooks/useAppFunctions';
 import { usePointerContext } from './hooks/PointerContext';
 import { useCallback } from 'react';
 import { SmartCursor } from './components/cursor/smartCursor';
+import { PointerHintButton } from './componentsForChat.tsx/PointerHintButton';
 const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
 const aiModel = import.meta.env.VITE_AIMODEL_NAME;
 const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -144,93 +145,93 @@ const TasksApp = () => {
           return tasks.length;
         },
       },
-      pointToElementByDataGuideAttr: {
-        /**
-         * Prompt used by the LLM to decide when/how to call this function
-         */
-        prompt: `
-Use this function when you want to visually guide the user to a specific UI element
-on the page by moving a custom pointer/cursor to that element.
+//       pointToElementByDataGuideAttr: {
+//         /**
+//          * Prompt used by the LLM to decide when/how to call this function
+//          */
+//         prompt: `
+// Use this function when you want to visually guide the user to a specific UI element
+// on the page by moving a custom pointer/cursor to that element.
 
-This function highlights ONE existing element by its data-guide-id attribute.
+// This function highlights ONE existing element by its data-guide-id attribute.
 
-The parameter MUST be a string that matches one of the known data-guide-id values
-already present in the UI. For this demo, the allowed values are:
+// The parameter MUST be a string that matches one of the known data-guide-id values
+// already present in the UI. For this demo, the allowed values are:
 
-- "TaskFilters"
+// - "TaskFilters"
 
-You MUST pass the parameter inside an object with a single field "dataGuideAttr".
-Example of a correct call inside a plan:
+// You MUST pass the parameter inside an object with a single field "dataGuideAttr".
+// Example of a correct call inside a plan:
 
-{
-  "type": "function",
-  "name": "pointToElementByDataGuideAttr",
-  "params": { "dataGuideAttr": "TaskFilters" }
-}
+// {
+//   "type": "function",
+//   "name": "pointToElementByDataGuideAttr",
+//   "params": { "dataGuideAttr": "TaskFilters" }
+// }
 
-Use this function only when the user needs help finding that UI part
-(e.g. "Where can I change the filters?", "Show me where the filters are").
-If none of the allowed ids is relevant, do NOT call this function.
-  `.trim(),
+// Use this function only when the user needs help finding that UI part
+// (e.g. "Where can I change the filters?", "Show me where the filters are").
+// If none of the allowed ids is relevant, do NOT call this function.
+//   `.trim(),
 
-        /**
-         * Descriptive list of parameters (for documentation & LLM guidance)
-         */
-        params: {
-          dataGuideAttr:
-            `Required. String. The data-guide-id of the element to point at. ` +
-            `For this demo it MUST be exactly one of: "TaskFilters".`,
-        },
+//         /**
+//          * Descriptive list of parameters (for documentation & LLM guidance)
+//          */
+//         params: {
+//           dataGuideAttr:
+//             `Required. String. The data-guide-id of the element to point at. ` +
+//             `For this demo it MUST be exactly one of: "TaskFilters".`,
+//         },
 
-        /**
-         * Description of the expected return type
-         */
-        returns: 'void. Triggers an animation of the custom cursor towards the target element; no value is returned.',
+//         /**
+//          * Description of the expected return type
+//          */
+//         returns: 'void. Triggers an animation of the custom cursor towards the target element; no value is returned.',
 
-        /**
-         * The actual callable implementation (may be mocked)
-         *
-         * We normalize the params object and pass only the string to pointTo,
-         * so we never get [object Object] again.
-         */
-        callFunc: (params: { dataGuideAttr: string }) => {
-          // defensive: handle bad shapes just in case
-          const id =
-            typeof params === 'string'
-              ? params
-              : typeof params?.dataGuideAttr === 'string'
-                ? params.dataGuideAttr
-                : undefined;
+//         /**
+//          * The actual callable implementation (may be mocked)
+//          *
+//          * We normalize the params object and pass only the string to pointTo,
+//          * so we never get [object Object] again.
+//          */
+//         callFunc: (params: { dataGuideAttr: string }) => {
+//           // defensive: handle bad shapes just in case
+//           const id =
+//             typeof params === 'string'
+//               ? params
+//               : typeof params?.dataGuideAttr === 'string'
+//                 ? params.dataGuideAttr
+//                 : undefined;
 
-          if (!id) {
-            console.warn('pointToElementByDataGuideAttr called without a valid dataGuideAttr string');
-            return;
-          }
+//           if (!id) {
+//             console.warn('pointToElementByDataGuideAttr called without a valid dataGuideAttr string');
+//             return;
+//           }
 
-          // your existing pointer function, which expects a string
-          pointTo(id);
-        },
+//           // your existing pointer function, which expects a string
+//           pointTo(id);
+//         },
 
-        /**
-         * Optional example usage or notes for LLM context
-         */
-        exampleUsage: `
-User: "I can't find where to change the filters."
+//         /**
+//          * Optional example usage or notes for LLM context
+//          */
+//         exampleUsage: `
+// User: "I can't find where to change the filters."
 
-Plan step:
+// Plan step:
 
-{
-  "type": "function",
-  "name": "pointToElementByDataGuideAttr",
-  "params": { "dataGuideAttr": "TaskFilters" }
-}
-  `.trim(),
+// {
+//   "type": "function",
+//   "name": "pointToElementByDataGuideAttr",
+//   "params": { "dataGuideAttr": "TaskFilters" }
+// }
+//   `.trim(),
 
-        /**
-         * Optional tags for organization
-         */
-        tags: ['ui-guide', 'pointer', 'navigation', 'demo'],
-      },
+//         /**
+//          * Optional tags for organization
+//          */
+//         tags: ['ui-guide', 'pointer', 'navigation', 'demo'],
+//       },
     },
 
     /* =========================
@@ -343,6 +344,23 @@ Plan step:
         category: 'stats',
         exampleUsage: '<TaskStats tasks={tasks} />',
       },
+      PointerHintButton: {
+        prompt: "button which triggers the custom cursor showing specified components",
+        props:{
+            target: `string, the actual data-guide-id of the component to be pointed out. The parameter MUST be a string that matches one of the known data-guide-id values
+already present in the UI. For this demo, the allowed values are:
+
+- "TaskFilters"
+- "TaskFormButton"
+You MUST pass the single string parameter
+`,
+              textToBeInserted: "optional prop, string, the prop which means what would be rendered inside that button, the actual text of it",
+              className: "optional prop, string, some styles which could be written in tailwindcss"
+        },
+        callComponent: PointerHintButton,
+        category: "guide",
+        exampleUsage: '<PointerHintButton target="TaskFilters">show me where are task filters</PointerHintButton>',
+      }
     },
   };
   return (
