@@ -1,10 +1,11 @@
 export type Transaction = {
   id: number;
+  description: string;
   amount: string;
-  currency: string;
-  category: string;
-  note?: string;
   date: string;
+  category: string;
+  account: string;
+  status: string;
 };
 
 export type Rule = {
