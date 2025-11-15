@@ -24,7 +24,6 @@ interface TaskFormForChatProps {
   task?: Partial<Task>;
 }
 
-// ❗ ВАЖНО: это вариант формы, которая рендерится через портал и висит над всем приложением
 export default function TaskFormForChat({ task }: TaskFormForChatProps) {
   const {
     setShowForm,
@@ -242,7 +241,6 @@ export default function TaskFormForChat({ task }: TaskFormForChatProps) {
     </div>
   );
 
-  // Рендерим в body, чтобы форма была поверх всего приложения
   if (typeof document === 'undefined') return null;
   return createPortal(content, document.body);
 }

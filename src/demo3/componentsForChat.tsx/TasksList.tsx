@@ -1,4 +1,3 @@
-import React from 'react'
 import { useTasksContext } from '../hooks/useAppFunctions'
 import TaskItem from '../components/tasks/TaskItem'
 import type { Task } from '../types/tasks'

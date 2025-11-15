@@ -1,3 +1,4 @@
+import { PointerContextProvider } from './hooks/PointerContext';
 import { TasksProvider } from './hooks/useAppFunctions';
 // import Demo3App from './Demo3App';
 import Tasks from './MainPage';
@@ -8,8 +9,9 @@ const Demo3 = () => {
   return (
     
     <TasksProvider>
+      <PointerContextProvider>
       <TasksApp/>
-      
+      </PointerContextProvider>
         {/* <Demo3App/> */}
     </TasksProvider>
   )

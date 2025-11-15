@@ -57,7 +57,7 @@ export default function TaskFilters({ filters, onFilterChange }: TaskFiltersProp
   ];
 
   return (
-    <div className="mb-8 space-y-4">
+    <div className="mb-8 space-y-4" data-guide-id="TaskFilters">
       <div className="flex flex-wrap gap-2">
         {statusOptions.map((option) => {
           const active = filters.status === option.value;
