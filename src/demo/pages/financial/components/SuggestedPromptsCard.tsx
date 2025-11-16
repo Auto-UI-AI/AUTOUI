@@ -9,7 +9,7 @@ export function SuggestedPromptsCard() {
     'Show my total spending by category for the last 30 days',
     'Show me all my upcoming bills',
     'Mark the Spotify bill as paid',
-    'Show my spending by category for the last 7 days',
+    'How much did I spend on Groceries in the last 90 days?',
   ];
 
   const sendMessageToChat = React.useCallback((message: string) => {

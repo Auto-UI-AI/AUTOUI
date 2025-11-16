@@ -40,13 +40,13 @@ export function mockSummaries({
     categoryTotals.set(category, (categoryTotals.get(category) || 0) + amount);
   });
 
-  // Convert to array, sort by total (descending), and return top 3
+  // Convert to array, sort by total (descending), and return top 5
   return Array.from(categoryTotals.entries())
     .map(([category, total]) => ({
       category,
       total: Math.round(total * 100) / 100,
     }))
     .sort((a, b) => b.total - a.total)
-    .slice(0, 3);
+    .slice(0, 5);
 }
 

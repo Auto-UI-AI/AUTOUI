@@ -7,8 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useFinanceStore } from '@/demo/pages/financial/store/useFinanceStore';
 import { mockSummaries } from '@/demo/pages/financial/services/summaries';
 
-export function SpendingByCategoryCard() {
-  const [period, setPeriod] = React.useState<7 | 30 | 90>(30);
+export function SpendingByCategoryCard({ period: initialPeriod }: { period?: 7 | 30 | 90 }) {
+  const [period, setPeriod] = React.useState<7 | 30 | 90>(initialPeriod || 30);
   const transactions = useFinanceStore((state) => state.transactions);
 
   const summaries = React.useMemo(() => {
