@@ -32,12 +32,12 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
   return (
-    <Card className="overflow-hidden flex flex-col h-full" data-testid="product-card">
-      <div className="relative aspect-square w-full overflow-hidden">
+    <Card className="flex flex-col h-full overflow-hidden" data-testid="product-card">
+      <div className="relative w-full overflow-hidden aspect-square">
         <img
           src={product.image}
           alt={product.name}
-          className="h-full w-full object-cover transition-transform hover:scale-105"
+          className="object-cover w-full h-full transition-transform hover:scale-105"
           data-testid="product-card-image"
         />
       </div>
@@ -55,7 +55,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
         </p>
       </CardContent>
       <CardFooter>
-        <Button onClick={() => onAddToCart(product.id)} className="w-full" data-testid="product-card-add-to-cart">
+        <Button onClick={() => {console.log(product.id); onAddToCart(product.id)}} className="w-full" data-testid="product-card-add-to-cart">
           Add to Cart
         </Button>
       </CardFooter>
