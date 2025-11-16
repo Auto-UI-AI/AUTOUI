@@ -19,7 +19,7 @@ export const Chat: React.FC<ChatProps> = ({
 }) => {
   const context = useChat({ config, title, isOpen, classNames, closeIcon, onClose, onError });
 
-  if (!isOpen) return;
+  if (!isOpen) return null;
 
   return (
     <ChatProvider config={config} value={context}>

@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { ModalChatProvider, useModalChatContext } from '../context/modalChatContext';
 import { BtnOpenChat } from './btnOpenChat';
@@ -18,7 +19,7 @@ export const ModalChat = ({ config, portalContainer }: ModalChatProps) => {
   );
 };
 
-const ModalChatBody = ({  config, portalContainer }: ModalChatProps) => {
+const ModalChatBody = ({ config, portalContainer }: ModalChatProps) => {
   const { value, setValue } = useModalChatContext();
   const { isOpen } = value;
 

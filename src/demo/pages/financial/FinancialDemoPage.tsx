@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo } from 'react';
-import { AppSidebar, SidebarInset, SidebarProvider, SiteHeader, SectionCards } from '@/demo/base';
+import { AppSidebar, SidebarInset, SidebarProvider, SiteHeader } from '@/demo/base';
 import data from './mockData/transactions.json';
 import { DataTable, SpendingBreakdownChart } from './components';
 import { useFinanceStore } from './store/useFinanceStore';
+import { InsightCards } from './components/InsightCards';
 
 export function FinancialDemoPage() {
   const transactions = useFinanceStore((state) => state.transactions);
@@ -43,7 +44,7 @@ export function FinancialDemoPage() {
           <div className="flex flex-1 flex-col">
             <div className="@container/main flex flex-1 flex-col gap-2">
               <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-                <SectionCards />
+                <InsightCards />
                 <div className="px-4 lg:px-6">
                   <SpendingBreakdownChart />
                 </div>
