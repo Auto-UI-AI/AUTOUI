@@ -5,10 +5,11 @@ import { MessageSquareIcon } from 'lucide-react';
 
 export function SuggestedPromptsCard() {
   const prompts = [
-    "Add 'coffee €4' to my expenses.",
-    'Show my spending in the last 30 days.',
-    'Set a €250 budget for Groceries.',
-    "Create a rule: tag all 'Uber' as Transport.",
+    'Add a $15.50 transaction for Starbucks today in Food & Drink category',
+    'Show my total spending by category for the last 30 days',
+    'Show me all my upcoming bills',
+    'Mark the Spotify bill as paid',
+    'Show my spending by category for the last 7 days',
   ];
 
   const sendMessageToChat = React.useCallback((message: string) => {
