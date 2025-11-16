@@ -27,24 +27,23 @@ interface CartItem {
 }
 
 interface CartSummaryProps {
-  items: CartItem[];
+  items?: CartItem[];
   onCheckout: () => void;
 }
 
 export default function CartSummary({ items, onCheckout }: CartSummaryProps) {
-  const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotal = items ? items.reduce((acc, item) => acc + item.price * item.quantity, 0) : 0;
 
   return (
-    <Card className="w-full max-w-md shadow-sm border rounded-xl">
+    <Card className="w-full max-w-md border shadow-sm rounded-xl">
       <CardHeader>
         <CardTitle>🛍️ Your Cart</CardTitle>
       </CardHeader>
-
       <CardContent>
-        {items.length === 0 ? (
-          <p className="text-gray-500 text-sm">Your cart is empty.</p>
+        {!items || items.length === 0 ? (
+          <p className="text-sm text-gray-500">Your cart is empty.</p>
         ) : (
-          <ScrollArea className="max-h-60 pr-2">
+          <ScrollArea className="pr-2 max-h-60">
             <div className="space-y-3">
               {items.map((item) => (
                 <div key={item.id} className="flex justify-between text-sm">
@@ -60,14 +59,14 @@ export default function CartSummary({ items, onCheckout }: CartSummaryProps) {
 
         <Separator className="my-4" />
 
-        <div className="flex justify-between font-medium text-base">
+        <div className="flex justify-between text-base font-medium">
           <span>Subtotal</span>
           <span>${subtotal.toFixed(2)}</span>
         </div>
       </CardContent>
 
       <CardFooter>
-        <Button onClick={onCheckout} className="w-full" size="lg" disabled={items.length === 0}>
+        <Button onClick={onCheckout} className="w-full" size="lg" >
           Proceed to Checkout
         </Button>
       </CardFooter>

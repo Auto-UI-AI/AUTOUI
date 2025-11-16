@@ -33,7 +33,7 @@
   border-bottom: 1px solid var(--autoui-border);
   display: flex;
   justify-content: space-between;
-  alig-items: center;
+  align-items: center;
 }
 
 .autoui-chat-title {

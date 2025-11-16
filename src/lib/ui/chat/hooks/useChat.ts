@@ -1,8 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
-import type { ChatContextType, ChatMessage, ChatProps } from '../types';
+import { useCallback, useState } from 'react';
+import type { ChatContextType, ChatProps } from '../types';
 import { useAutoUi } from './useAutoUiChat';
+import type { SerializedMessage } from '../types';
+import { runInstructionPlan } from '@lib/runtime/runtimeEngine';
+import { useChatState } from './useChatState';
+import { useRendering } from './useRendering';
 
 export function useChat({
+  config,
   onError,
   onClose,
   storageKey = 'autoui_chat_history',
@@ -10,59 +15,57 @@ export function useChat({
   classNames,
   isOpen,
 }: ChatProps): ChatContextType {
-  const { processMessage } = useAutoUi();
+  const { messages, setSerializedMessages } = useChatState(storageKey, config);
 
-  const [messages, setMessages] = useState<ChatMessage[]>(() => {
-    try {
-      return JSON.parse(localStorage.getItem(storageKey) ?? '[]');
-    } catch {
-      return [];
-    }
-  });
+  const { processMessage } = useAutoUi(config);
+  const { resolveComponent, setUI } = useRendering(config);
+
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify(messages));
-  }, [messages, storageKey]);
 
   const handleSend = useCallback(
     async (text: string) => {
       if (!text.trim()) return;
 
-      const userMsg: ChatMessage = { id: Date.now().toString(), role: 'user', content: text };
-      setMessages((prev) => [...prev, userMsg]);
+      const now = Date.now().toString();
+      const serializedUserMessage: SerializedMessage = {
+        id: now,
+        role: 'user',
+        kind: 'text',
+        text,
+        ts: Date.now(),
+      };
+      setSerializedMessages((prev) => [...prev, serializedUserMessage]);
 
       try {
         setIsLoading(true);
-        const response = await processMessage(text);
-        const assistantMsg: ChatMessage = {
-          id: `${Date.now()}-a`,
-          role: 'assistant',
-          content: response ?? '🤖 No response.',
-        };
-        setMessages((prev) => [...prev, assistantMsg]);
-      } catch (err: any) {
-        setMessages((prev) => [
+
+        const plan = await processMessage(text);
+
+        await runInstructionPlan(plan, config, resolveComponent, setUI, setSerializedMessages, { validate: true });
+      } catch (err) {
+        setSerializedMessages((prev) => [
           ...prev,
           {
             id: `${Date.now()}-e`,
             role: 'assistant',
-            content: '⚠️ Something went wrong.',
+            kind: 'text',
+            text: '⚠️ Something went wrong.',
+            ts: Date.now(),
           },
         ]);
-        onError?.(err);
+        onError?.(err as any);
       } finally {
         setIsLoading(false);
       }
     },
-    [processMessage, onError],
+    [processMessage, config, resolveComponent, setUI, setSerializedMessages, onError],
   );
 
   const handleClear = useCallback(() => {
-    setMessages([]);
-    localStorage.removeItem(storageKey);
-  }, [storageKey]);
+    setSerializedMessages([]);
 
+    localStorage.removeItem(storageKey);
+  }, [setSerializedMessages, storageKey]);
   const getChatInputProps = useCallback(
     () => ({
       onSend: handleSend,
@@ -87,6 +90,7 @@ export function useChat({
   );
 
   return {
+    config,
     isOpen,
     title,
     classNames,

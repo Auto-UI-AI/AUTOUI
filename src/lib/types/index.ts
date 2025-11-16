@@ -13,7 +13,7 @@ export interface LLMConfig {
 
   /** Direct API key (client-side) */
   apiKey?: string;
-
+  baseUrl?:string;
   /** Backend proxy endpoint (safer for production) */
   apiProxyUrl?: string;
 
