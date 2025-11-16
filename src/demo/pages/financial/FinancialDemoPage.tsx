@@ -1,23 +1,31 @@
 import React, { useEffect, useMemo } from 'react';
 import { AppSidebar, SidebarInset, SidebarProvider, SiteHeader } from '@/demo/base';
-import data from './mockData/transactions.json';
+import transactionsData from './mockData/transactions.json';
+import billsData from './mockData/bills.json';
 import { DataTable, SpendingBreakdownChart } from './components';
 import { useFinanceStore } from './store/useFinanceStore';
 import { InsightCards } from './components/InsightCards';
+import type { Bill } from './types/finance';
 
 export function FinancialDemoPage() {
   const transactions = useFinanceStore((state) => state.transactions);
   const setTransactions = useFinanceStore((state) => state.setTransactions);
+  const bills = useFinanceStore((state) => state.bills);
+  const setBills = useFinanceStore((state) => state.setBills);
 
   // Initialize store with mock data if empty
   useEffect(() => {
     if (transactions.length === 0) {
-      setTransactions(data);
+      setTransactions(transactionsData);
     }
-  }, [transactions.length, setTransactions]);
+    if (bills.length === 0) {
+      // Type assertion for bills data to ensure status is 'pending' | 'paid'
+      setBills(billsData as Bill[]);
+    }
+  }, [transactions.length, setTransactions, bills.length, setBills]);
 
   // Use store transactions if available, otherwise fall back to mock data
-  const rawData = transactions.length > 0 ? transactions : data;
+  const rawData = transactions.length > 0 ? transactions : transactionsData;
 
   // Sort transactions by date (most recent first)
   const displayData = useMemo(() => {

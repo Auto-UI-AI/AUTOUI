@@ -1,0 +1,6 @@
+[
+  { "id": 1, "name": "Spotify", "amount": 9.99, "due": "2025-11-20", "status": "pending" },
+  { "id": 2, "name": "Phone bill", "amount": 24.99, "due": "2025-11-22", "status": "pending" },
+  { "id": 3, "name": "Water", "amount": 11.30, "due": "2025-12-01", "status": "pending" }
+]
+
