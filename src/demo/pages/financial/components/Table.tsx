@@ -356,16 +356,19 @@ export function DataTable({ data: initialData }: { data: z.infer<typeof schema>[
             <SelectValue placeholder="Select a view" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="outline">Outline</SelectItem>
-            <SelectItem value="past-performance">Past Performance</SelectItem>
-            <SelectItem value="key-personnel">Key Personnel</SelectItem>
-            <SelectItem value="focus-documents">Focus Documents</SelectItem>
+            <SelectItem value="outline">Expenses</SelectItem>
+            <SelectItem value="past-performance">Incomes</SelectItem>
+            <SelectItem value="key-personnel">Bills</SelectItem>
+            <SelectItem value="focus-documents">Subscriptions</SelectItem>
           </SelectContent>
         </Select>
         <TabsList className="@4xl/main:flex hidden">
-          <TabsTrigger value="outline">Outline</TabsTrigger>
+          <TabsTrigger value="outline">Expenses</TabsTrigger>
           <TabsTrigger value="past-performance" className="gap-1">
-            Past Performance{' '}
+            Incomes{' '}
+          </TabsTrigger>
+          <TabsTrigger value="key-personnel" className="gap-1">
+            Bills{' '}
             <Badge
               variant="secondary"
               className="flex h-5 w-5 items-center justify-center rounded-full bg-muted-foreground/30"
@@ -373,16 +376,7 @@ export function DataTable({ data: initialData }: { data: z.infer<typeof schema>[
               3
             </Badge>
           </TabsTrigger>
-          <TabsTrigger value="key-personnel" className="gap-1">
-            Key Personnel{' '}
-            <Badge
-              variant="secondary"
-              className="flex h-5 w-5 items-center justify-center rounded-full bg-muted-foreground/30"
-            >
-              2
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
+          <TabsTrigger value="focus-documents">Subscriptions</TabsTrigger>
         </TabsList>
         <div className="flex items-center gap-2">
           <DropdownMenu>
