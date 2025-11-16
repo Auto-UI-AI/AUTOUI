@@ -104,7 +104,7 @@ export function SuggestedPromptsCard() {
   return (
     <Card className="@container/card">
       <CardHeader className="relative">
-        <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold">Try Asking…</CardTitle>
+        <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold">Try asking…</CardTitle>
       </CardHeader>
       <CardContent className="px-6 pt-0">
         <div className="flex flex-col gap-2">
@@ -113,11 +113,11 @@ export function SuggestedPromptsCard() {
               key={index}
               variant="outline"
               size="sm"
-              className="h-auto justify-start whitespace-normal text-left font-normal hover:bg-accent"
+              className="h-auto gap-0 py-1 justify-start whitespace-normal text-left font-normal hover:bg-accent"
               onClick={() => handlePromptClick(prompt)}
             >
               <MessageSquareIcon className="mr-2 size-4 shrink-0 text-muted-foreground" />
-              <span className="text-sm">{prompt}</span>
+              <span className="text-xs">{prompt}</span>
             </Button>
           ))}
         </div>
