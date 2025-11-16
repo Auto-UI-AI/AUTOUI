@@ -1,4 +1,4 @@
-import type { AutoUIConfig } from '@lib/types';
+import type { AutoUIConfig } from '../../lib/types/index';
 import { Chat, ModalChat } from '../../lib/ui';
 
 const config: AutoUIConfig = {
