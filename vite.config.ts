@@ -5,10 +5,11 @@ import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
-  plugins: [react(), cssInjectedByJsPlugin(),svgr()],
+  plugins: [react(), cssInjectedByJsPlugin(), svgr()],
   resolve: {
     alias: {
       '@lib': path.resolve(__dirname, 'src/lib'),
+      'src': path.resolve(__dirname, 'src'),
     },
   },
   build: {
