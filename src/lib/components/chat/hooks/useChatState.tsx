@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import type { SerializedMessage, ChatMessage } from "../types";
-import { rerenderChatFromHistory } from "@lib/runtime/rerenderChatFromHistory";
-import { useRendering } from "./useRendering";
-import type { AutoUIConfig } from "../types";
+import { useEffect, useMemo, useRef, useState } from 'react';
+import type { SerializedMessage, ChatMessage } from '../types';
+import { rerenderChatFromHistory } from '@lib/runtime/rerenderChatFromHistory';
+import { useRendering } from './useRendering';
+import type { AutoUIConfig } from '@lib/types';
+
 export function useChatState(storageKey: string, config: AutoUIConfig) {
-  const {resolveComponent, setUI} = useRendering(config);
+  const { resolveComponent, setUI } = useRendering(config);
   const [serializedMessages, setSerializedMessages] = useState<SerializedMessage[]>(() => {
     try {
       const s = localStorage.getItem(storageKey);
@@ -29,17 +30,16 @@ export function useChatState(storageKey: string, config: AutoUIConfig) {
   }, [storageKey]);
 
   const messages: ChatMessage[] = useMemo(
-    () => rerenderChatFromHistory(serializedMessages, resolveComponent, setUI ),
-    [serializedMessages, resolveComponent, setUI]
+    () => rerenderChatFromHistory(serializedMessages, resolveComponent, setUI),
+    [serializedMessages, resolveComponent, setUI],
   );
   useEffect(() => {
-  if (!hydratedRef.current) return;
-  const id = setTimeout(() => {
-    localStorage.setItem(storageKey, JSON.stringify(serializedMessages));
-  }, 50);
-  return () => clearTimeout(id);
-}, [serializedMessages, storageKey]);
-
+    if (!hydratedRef.current) return;
+    const id = setTimeout(() => {
+      localStorage.setItem(storageKey, JSON.stringify(serializedMessages));
+    }, 50);
+    return () => clearTimeout(id);
+  }, [serializedMessages, storageKey]);
 
   return { messages, serializedMessages, setSerializedMessages };
 }

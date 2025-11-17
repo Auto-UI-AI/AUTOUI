@@ -17,7 +17,7 @@
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from '../base/card';
 import { Button } from '../base/button';
 import { Separator } from '../base/separator';
-import { ScrollArea } from '../base/scroll-area';
+import { ScrollArea } from '../base/scrollArea';
 
 interface CartItem {
   id: string;
@@ -66,7 +66,7 @@ export default function CartSummary({ items, onCheckout }: CartSummaryProps) {
       </CardContent>
 
       <CardFooter>
-        <Button onClick={onCheckout} className="w-full" size="lg" >
+        <Button onClick={onCheckout} className="w-full" size="lg">
           Proceed to Checkout
         </Button>
       </CardFooter>

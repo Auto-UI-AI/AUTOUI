@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import type { ChatContextType, ChatProps, SerializedMessage } from '../types';
-import { useAutoUi } from './useAutoUI';
+import { useAutoUiChat } from './useAutoUiChat';
 import { runInstructionPlan } from '@lib/runtime/runtimeEngine';
 import { useChatState } from './useChatState';
 import { useRendering } from './useRendering';
@@ -14,10 +14,9 @@ export function useChat({
   classNames,
   isOpen,
 }: ChatProps): ChatContextType {
-
   const { messages, setSerializedMessages } = useChatState(storageKey, config);
 
-  const { processMessage} = useAutoUi(config);
+  const { processMessage } = useAutoUiChat(config);
   const { resolveComponent, setUI } = useRendering(config);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -34,24 +33,16 @@ export function useChat({
         text,
         ts: Date.now(),
       };
-      setSerializedMessages(prev => [...prev, serializedUserMessage]);
+      setSerializedMessages((prev) => [...prev, serializedUserMessage]);
 
       try {
         setIsLoading(true);
 
         const plan = await processMessage(text);
 
-        await runInstructionPlan(
-          plan,
-          config,
-          resolveComponent,
-          setUI,
-          setSerializedMessages,
-          { validate: true }
-        );
-
+        await runInstructionPlan(plan, config, resolveComponent, setUI, setSerializedMessages, { validate: true });
       } catch (err) {
-        setSerializedMessages(prev => [
+        setSerializedMessages((prev) => [
           ...prev,
           {
             id: `${Date.now()}-e`,
@@ -66,11 +57,10 @@ export function useChat({
         setIsLoading(false);
       }
     },
-    [processMessage, config, resolveComponent, setUI, setSerializedMessages, onError]
+    [processMessage, config, resolveComponent, setUI, setSerializedMessages, onError],
   );
 
   const handleClear = useCallback(() => {
-
     setSerializedMessages([]);
 
     localStorage.removeItem(storageKey);
@@ -110,7 +100,7 @@ export function useChat({
     handleClear,
     getChatInputProps,
     getChatHeaderProps,
-    getMessageListProps
+    getMessageListProps,
   };
 }
 

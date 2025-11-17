@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import type { BtnOpenChatProps } from '@lib/ui/chat/types';
+import type { BtnOpenChatProps } from '@lib/components/chat/types';
 import { clsx } from '@lib/utils/clsx';
 
 export const BtnOpenChat: FC<BtnOpenChatProps> = ({ onOpenChange, isOpen, className }) => {
