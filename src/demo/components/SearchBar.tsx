@@ -1,17 +1,3 @@
-/**
- * Debounced search input component that calls onSearch after user stops typing.
- * Implements debouncing to avoid excessive API calls while user types.
- *
- * @example
- * ```tsx
- * <SearchBar
- *   onSearch={(query) => console.log("Searching for", query)}
- *   placeholder="Search products..."
- *   debounceMs={300}
- * />
- * ```
- */
-
 import { useState, useEffect } from 'react';
 import { Input } from '../base/input';
 import { Button } from '../base/button';

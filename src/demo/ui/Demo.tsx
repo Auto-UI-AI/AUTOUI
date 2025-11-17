@@ -1,5 +1,5 @@
 import type { AutoUIConfig } from '../../lib/types/index';
-import { Chat, ModalChat } from '../../lib/ui';
+import { Chat, ModalChat } from '../../lib/components';
 
 const config: AutoUIConfig = {
   llm: {

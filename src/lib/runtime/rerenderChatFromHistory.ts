@@ -1,4 +1,4 @@
-import type { ChatMessage, SerializedMessage } from '@lib/ui/chat/types';
+import type { ChatMessage, SerializedMessage } from '@lib/components/chat/types';
 import type { ResolveComponent, SetUI } from './stepExecutor';
 
 export const rerenderChatFromHistory = (

@@ -2,7 +2,7 @@ import type { InstructionPlan, InstructionStep } from '@lib/types/llmTypes';
 import type { AutoUIConfig } from '../types';
 import { resolveProps } from '../utils/resolveProps';
 import type React from 'react';
-import type { SerializedMessage } from '@lib/ui/chat/types';
+import type { SerializedMessage } from '@lib/components/chat/types';
 import type { Dispatch, SetStateAction } from 'react';
 
 export type ResolveComponent = (name: string, props: any) => React.ReactNode;
@@ -76,6 +76,6 @@ async function runStep(
     return;
   }
 
-  const _never: never = step;
-  return _never;
+  const result: never = step;
+  return result;
 }
