@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { Calendar as CalendarIcon, X, Sparkles } from 'lucide-react';
 import { format } from 'date-fns';
-import { Button, Input } from '../../../demo/base';
-import { Textarea } from '../../../demo/base/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../demo/base/select';
-import { Popover, PopoverContent, PopoverTrigger } from '../../../demo/base/popover';
-import { Calendar } from '../../../demo/base/calendar';
+import { Button, Input } from '../../../../base';
+import { Textarea } from '../../../../base/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../base/select';
+import { Popover, PopoverContent, PopoverTrigger } from '../../../../base/popover';
+import { Calendar } from '../../../../base/calendar';
 import type { Task, TaskDraft } from '../../types/tasks';
 import { useTasksContext } from '../../hooks/useAppFunctions';
 
@@ -16,8 +16,8 @@ interface TaskFormProps {
   task?: Partial<Task>;
 }
 
-export default function TaskForm({ task  }: TaskFormProps) {
-  const {showForm, setShowForm, setEditingTask, editingTask, handleUpdateTask, handleCreateTask} = useTasksContext()
+export default function TaskForm({ task }: TaskFormProps) {
+  const { showForm, setShowForm, setEditingTask, editingTask, handleUpdateTask, handleCreateTask } = useTasksContext();
   const [formData, setFormData] = useState<TaskDraft>({
     title: task?.title ?? '',
     description: task?.description ?? '',
@@ -29,7 +29,7 @@ export default function TaskForm({ task  }: TaskFormProps) {
     setShowForm(false);
     setEditingTask(null);
   }, []);
-const onSubmit = useCallback(
+  const onSubmit = useCallback(
     (draft: TaskDraft) => {
       if (editingTask) {
         handleUpdateTask(draft, editingTask.id);
@@ -39,7 +39,7 @@ const onSubmit = useCallback(
       setShowForm(false);
       setEditingTask(null);
     },
-    [editingTask, handleCreateTask, handleUpdateTask]
+    [editingTask, handleCreateTask, handleUpdateTask],
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -66,7 +66,6 @@ const onSubmit = useCallback(
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
-
           <div className="tm-field">
             <label className="tm-label">
               Task Title <span className="tm-label-asterisk">*</span>
@@ -99,9 +98,15 @@ const onSubmit = useCallback(
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="tm-select-content">
-                  <SelectItem value="todo" className="tm-select-item">📋 To Do</SelectItem>
-                  <SelectItem value="in_progress" className="tm-select-item">🚀 In Progress</SelectItem>
-                  <SelectItem value="done" className="tm-select-item">✅ Done</SelectItem>
+                  <SelectItem value="todo" className="tm-select-item">
+                    📋 To Do
+                  </SelectItem>
+                  <SelectItem value="in_progress" className="tm-select-item">
+                    🚀 In Progress
+                  </SelectItem>
+                  <SelectItem value="done" className="tm-select-item">
+                    ✅ Done
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -116,9 +121,15 @@ const onSubmit = useCallback(
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="tm-select-content">
-                  <SelectItem value="low" className="tm-select-item">🟢 Low</SelectItem>
-                  <SelectItem value="medium" className="tm-select-item">🟡 Medium</SelectItem>
-                  <SelectItem value="high" className="tm-select-item">🔴 High</SelectItem>
+                  <SelectItem value="low" className="tm-select-item">
+                    🟢 Low
+                  </SelectItem>
+                  <SelectItem value="medium" className="tm-select-item">
+                    🟡 Medium
+                  </SelectItem>
+                  <SelectItem value="high" className="tm-select-item">
+                    🔴 High
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -139,7 +150,7 @@ const onSubmit = useCallback(
                 <PopoverContent className="relative w-[300px] py-2 bg-purple-600" align="start">
                   <Calendar
                     mode="single"
-                    className='w-full p-5 bg-purple-600 checked:bg-red'
+                    className="w-full p-5 bg-purple-600 checked:bg-red"
                     selected={formData.due_date ? new Date(formData.due_date) : undefined}
                     onSelect={(date?: Date) =>
                       setFormData({ ...formData, due_date: date ? format(date, 'yyyy-MM-dd') : '' })

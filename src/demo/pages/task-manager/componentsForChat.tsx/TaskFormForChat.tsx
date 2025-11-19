@@ -2,17 +2,11 @@ import React, { useCallback, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Calendar as CalendarIcon, X, Sparkles } from 'lucide-react';
 import { format } from 'date-fns';
-import { Button, Input } from '../../demo/base';
-import { Textarea } from '../../demo/base/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../../demo/base/select';
-import { Popover, PopoverContent, PopoverTrigger } from '../../demo/base/popover';
-import { Calendar } from '../../demo/base/calendar';
+import { Button, Input } from '../../../base';
+import { Textarea } from '../../../base/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../base/select';
+import { Popover, PopoverContent, PopoverTrigger } from '../../../base/popover';
+import { Calendar } from '../../../base/calendar';
 import type { Task, TaskDraft } from '../types/tasks';
 import { useTasksContext } from '../hooks/useAppFunctions';
 
@@ -24,13 +18,7 @@ interface TaskFormForChatProps {
 }
 
 export default function TaskFormForChat({ task }: TaskFormForChatProps) {
-  const {
-    setShowForm,
-    setEditingTask,
-    editingTask,
-    handleUpdateTask,
-    handleCreateTask,
-  } = useTasksContext();
+  const { setShowForm, setEditingTask, editingTask, handleUpdateTask, handleCreateTask } = useTasksContext();
 
   const [formData, setFormData] = useState<TaskDraft>({
     title: task?.title ?? '',
@@ -55,7 +43,7 @@ export default function TaskFormForChat({ task }: TaskFormForChatProps) {
       setShowForm(false);
       setEditingTask(null);
     },
-    [editingTask, handleCreateTask, handleUpdateTask, setShowForm, setEditingTask]
+    [editingTask, handleCreateTask, handleUpdateTask, setShowForm, setEditingTask],
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -129,10 +117,7 @@ export default function TaskFormForChat({ task }: TaskFormForChatProps) {
             {/* Status */}
             <div className="space-y-1 tm-field">
               <label className="text-sm font-medium tm-label text-slate-700">Status</label>
-              <Select
-                value={formData.status}
-                onValueChange={(v) => setFormData({ ...formData, status: v as Status })}
-              >
+              <Select value={formData.status} onValueChange={(v) => setFormData({ ...formData, status: v as Status })}>
                 <SelectTrigger className="tm-select-trigger">
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
@@ -184,9 +169,7 @@ export default function TaskFormForChat({ task }: TaskFormForChatProps) {
                     {formData.due_date ? (
                       <span>{format(new Date(formData.due_date), 'MMM d, yyyy')}</span>
                     ) : (
-                      <span className="tm-calendar-placeholder text-slate-400">
-                        Pick a date
-                      </span>
+                      <span className="tm-calendar-placeholder text-slate-400">Pick a date</span>
                     )}
                   </Button>
                 </PopoverTrigger>
@@ -213,12 +196,7 @@ export default function TaskFormForChat({ task }: TaskFormForChatProps) {
 
           {/* Footer */}
           <div className="flex justify-end gap-3 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onCancel}
-              className="tm-btn-outline"
-            >
+            <Button type="button" variant="outline" onClick={onCancel} className="tm-btn-outline">
               Cancel
             </Button>
             <Button

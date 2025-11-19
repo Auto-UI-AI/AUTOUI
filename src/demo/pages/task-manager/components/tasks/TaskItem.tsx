@@ -1,23 +1,14 @@
 import React, { useCallback, useState } from 'react';
-import { Button } from '../../../demo/base';
-import {
-  Calendar,
-  MoreVertical,
-  Pencil,
-  Trash2,
-  CheckCircle2,
-  Circle,
-  Clock,
-  AlertTriangle,
-} from 'lucide-react';
+import { Button } from '../../../../base';
+import { Calendar, MoreVertical, Pencil, Trash2, CheckCircle2, Circle, Clock, AlertTriangle } from 'lucide-react';
 import { format } from 'date-fns';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../../../demo/base/dropdown-menu';
-import { Badge } from '../../../demo/base/badge';
+} from '../../../../base/dropdown-menu';
+import { Badge } from '../../../../base/badge';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -27,7 +18,7 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-} from '../../../demo/base/alert-dialog';
+} from '../../../../base/alert-dialog';
 import type { Task } from '../../types/tasks';
 import { useTasksContext } from '../../hooks/useAppFunctions';
 
@@ -42,21 +33,19 @@ export default function TaskItem({ task }: TaskItemProps) {
   const { tasks, setTasks, setEditingTask, setShowForm } = useTasksContext();
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const taskFromContext = tasks.find(t => t.id === task.id);
+  const taskFromContext = tasks.find((t) => t.id === task.id);
   const currentTask = taskFromContext ?? task;
   const isDeleted = !taskFromContext;
 
   const onStatusChange = useCallback(
     (taskId: string, nextStatus: Status) => {
-      setTasks(prev =>
-        prev.map(t => (t.id === taskId ? { ...t, status: nextStatus } : t)),
-      );
+      setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, status: nextStatus } : t)));
     },
     [setTasks],
   );
 
   const actuallyDelete = useCallback(() => {
-    setTasks(prev => prev.filter(t => t.id !== currentTask.id));
+    setTasks((prev) => prev.filter((t) => t.id !== currentTask.id));
     setShowConfirm(false);
   }, [setTasks, currentTask.id]);
 
@@ -69,15 +58,12 @@ export default function TaskItem({ task }: TaskItemProps) {
   }, [isDeleted]);
 
   const onEdit = useCallback(() => {
-    if (isDeleted) return; 
+    if (isDeleted) return;
     setEditingTask(currentTask);
     setShowForm(true);
   }, [currentTask, isDeleted, setEditingTask, setShowForm]);
 
-  const priorityConfig: Record<
-    Priority,
-    { bg: string; text: string; border: string; dot: string }
-  > = {
+  const priorityConfig: Record<Priority, { bg: string; text: string; border: string; dot: string }> = {
     low: {
       bg: 'bg-blue-50',
       text: 'text-blue-700',
@@ -137,12 +123,9 @@ export default function TaskItem({ task }: TaskItemProps) {
               <AlertTriangle className="w-5 h-5 text-rose-500" />
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-semibold text-slate-800">
-                Task deleted
-              </span>
+              <span className="text-sm font-semibold text-slate-800">Task deleted</span>
               <span className="text-xs text-slate-500">
-                This task (<span className="font-medium">{currentTask.title}</span>) no longer
-                exists in your task list.
+                This task (<span className="font-medium">{currentTask.title}</span>) no longer exists in your task list.
               </span>
             </div>
           </div>
@@ -156,9 +139,7 @@ export default function TaskItem({ task }: TaskItemProps) {
   const StatusIcon = statusInfo.icon;
 
   const isOverdue =
-    currentTask.due_date &&
-    new Date(currentTask.due_date) < new Date() &&
-    currentTask.status !== 'done';
+    currentTask.due_date && new Date(currentTask.due_date) < new Date() && currentTask.status !== 'done';
 
   const nextStatus: Record<Status, Status> = {
     todo: 'in_progress',
@@ -198,10 +179,7 @@ export default function TaskItem({ task }: TaskItemProps) {
                 </h3>
 
                 <DropdownMenu>
-                  <DropdownMenuTrigger
-                    className="bg-indigo-600 hover:bg-indigo-700"
-                    asChild
-                  >
+                  <DropdownMenuTrigger className="bg-indigo-600 hover:bg-indigo-700" asChild>
                     <Button
                       variant="ghost"
                       size="icon"
@@ -214,17 +192,11 @@ export default function TaskItem({ task }: TaskItemProps) {
                     align="end"
                     className="w-40 bg-indigo-600 hover:bg-indigo-700 z-[10000] rounded-xl"
                   >
-                    <DropdownMenuItem
-                      onClick={onEdit}
-                      className="text-white cursor-pointer hover:bg-indigo-400"
-                    >
+                    <DropdownMenuItem onClick={onEdit} className="text-white cursor-pointer hover:bg-indigo-400">
                       <Pencil className="w-4 h-4 mr-2" />
                       Edit
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={onDeleteClick}
-                      className="text-white cursor-pointer hover:bg-indigo-400"
-                    >
+                    <DropdownMenuItem onClick={onDeleteClick} className="text-white cursor-pointer hover:bg-indigo-400">
                       <Trash2 className="w-4 h-4 mr-2" />
                       Delete
                     </DropdownMenuItem>
@@ -233,15 +205,11 @@ export default function TaskItem({ task }: TaskItemProps) {
               </div>
 
               {currentTask.description && (
-                <p className="mb-3 text-sm text-slate-600 line-clamp-2">
-                  {currentTask.description}
-                </p>
+                <p className="mb-3 text-sm text-slate-600 line-clamp-2">{currentTask.description}</p>
               )}
 
               <div className="flex flex-wrap items-center gap-2">
-                <Badge
-                  className={`${config.bg} ${config.text} border ${config.border} px-3 py-1`}
-                >
+                <Badge className={`${config.bg} ${config.text} border ${config.border} px-3 py-1`}>
                   <span className={`w-2 h-2 rounded-full ${config.dot} mr-2`} />
                   {currentTask.priority} priority
                 </Badge>
@@ -261,9 +229,7 @@ export default function TaskItem({ task }: TaskItemProps) {
                   </Badge>
                 )}
 
-                <Badge
-                  className={`${statusInfo.bg} ${statusInfo.color} border-transparent px-3 py-1`}
-                >
+                <Badge className={`${statusInfo.bg} ${statusInfo.color} border-transparent px-3 py-1`}>
                   {statusInfo.label}
                 </Badge>
               </div>
@@ -279,21 +245,16 @@ export default function TaskItem({ task }: TaskItemProps) {
               <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-rose-50">
                 <AlertTriangle className="w-5 h-5 text-rose-500" />
               </div>
-              <AlertDialogTitle className="text-lg font-semibold text-slate-900">
-                Delete this task?
-              </AlertDialogTitle>
+              <AlertDialogTitle className="text-lg font-semibold text-slate-900">Delete this task?</AlertDialogTitle>
             </div>
             <AlertDialogDescription className="text-sm text-slate-600">
               You are about to permanently delete{' '}
-              <span className="font-medium text-slate-800">"{currentTask.title}"</span>. This
-              action cannot be undone.
+              <span className="font-medium text-slate-800">"{currentTask.title}"</span>. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
 
           <AlertDialogFooter className="flex justify-end gap-2 mt-4">
-            <AlertDialogCancel className="tm-btn-outline">
-              Cancel
-            </AlertDialogCancel>
+            <AlertDialogCancel className="tm-btn-outline">Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={actuallyDelete}
               className="px-4 py-2 font-medium text-white rounded-lg shadow-sm bg-rose-600 hover:bg-rose-700"

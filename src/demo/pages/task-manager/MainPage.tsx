@@ -1,24 +1,24 @@
 // Tasks.tsx
 import React, { useEffect, useState, useCallback, type JSX, useRef } from 'react';
 import { Plus, Sparkles } from 'lucide-react';
-import { Button } from '../demo/base';
+import { Button } from '../../base';
 
 import TaskForm from './components/tasks/TaskForm';
 import TaskFilters, { type TaskFiltersState } from './components/tasks/TaskFilters';
 import TaskItem from './components/tasks/TaskItem';
 import TaskStats from './components/tasks/TaskStats';
 import type { Task } from './types/tasks';
-import './tasks.css'
+import './tasks.css';
 import { useTasksContext } from './hooks/useAppFunctions';
 const STORAGE_KEY = 'task_management_tasks';
 
 export default function Tasks(): JSX.Element {
-  const {tasks, setTasks, editingTask, setEditingTask, showForm, setShowForm} = useTasksContext();
-  
+  const { tasks, setTasks, editingTask, setEditingTask, showForm, setShowForm } = useTasksContext();
+
   const [filters, setFilters] = useState<TaskFiltersState>({ status: 'all', priority: 'all' });
   // useComponentsLocationBy()
   // Load tasks
- const hydratedRef = useRef(false);
+  const hydratedRef = useRef(false);
 
   // 1) Гидрация из localStorage
   useEffect(() => {
@@ -45,12 +45,12 @@ export default function Tasks(): JSX.Element {
     if (!hydratedRef.current) return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
   }, [tasks]);
-  
+
   const filteredTasks = tasks.filter((task) => {
     const statusMatch = filters.status === 'all' || task.status === filters.status;
     const priorityMatch = filters.priority === 'all' || task.priority === filters.priority;
     return statusMatch && priorityMatch;
-    });
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-indigo-400/90 to-white">
@@ -92,12 +92,7 @@ export default function Tasks(): JSX.Element {
         {/* Tasks List */}
         <div className="space-y-4">
           {filteredTasks.length > 0 ? (
-            filteredTasks.map((task) => (
-              <TaskItem
-                key={task.id}
-                task={task}
-              />
-            ))
+            filteredTasks.map((task) => <TaskItem key={task.id} task={task} />)
           ) : (
             <div className="py-16 text-center">
               <div className="inline-block p-6 mb-4 rounded-full bg-slate-100">
@@ -114,11 +109,7 @@ export default function Tasks(): JSX.Element {
         </div>
 
         {/* Form Modal */}
-        {showForm && (
-          <TaskForm
-            task={editingTask ?? undefined}
-          />
-        )}
+        {showForm && <TaskForm task={editingTask ?? undefined} />}
       </div>
     </div>
   );

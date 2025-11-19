@@ -110,12 +110,6 @@ if (step.type === 'function') {
     return;
   }
 
-<<<<<<< HEAD
   const _never: never = step;
   return _never;
 }
-=======
-  const res: never = step;
-  return res;
-}
->>>>>>> feat/demo2

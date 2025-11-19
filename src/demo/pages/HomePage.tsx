@@ -41,6 +41,10 @@ const COMPONENT_CATEGORIES: ComponentCategory[] = [
         name: 'Personal Finance Copilot',
         route: '/demo/financial',
       },
+      {
+        name: 'Task Manager',
+        route: '/demo/task-manager',
+      },
     ],
   },
   {
