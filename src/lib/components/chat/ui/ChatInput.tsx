@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useChatContext } from '../context/chatContext';
 import { clsx } from '@lib/utils/clsx';
+import { arrowUp } from '../../../../assets';
 
 export interface ChatInputProps {}
 
@@ -36,7 +37,7 @@ export const ChatInput: React.FC<ChatInputProps> = () => {
         className={clsx('autoui-chat-send', classNames?.inputButton)}
         aria-label="Send message"
       >
-        ➤
+        <img src={arrowUp} alt="arrow up" />
       </button>
     </form>
   );

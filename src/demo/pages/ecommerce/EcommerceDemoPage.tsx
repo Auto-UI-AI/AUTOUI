@@ -18,7 +18,6 @@ export function EcommerceDemoPage() {
   const [recommendations, setRecommendations] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // Load initial data
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -30,7 +29,6 @@ export function EcommerceDemoPage() {
     loadData();
   }, []);
 
-  // Load products when category or search changes
   useEffect(() => {
     const loadProducts = async () => {
       setLoading(true);
@@ -44,7 +42,6 @@ export function EcommerceDemoPage() {
     loadProducts();
   }, [selectedCategory, searchQuery]);
 
-  // Load recommendations when cart changes
   useEffect(() => {
     const loadRecommendations = async () => {
       if (cart.length > 0) {

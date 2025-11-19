@@ -1,10 +1,8 @@
 import { getInstructionPlan } from '@lib/core/llmClient';
 import type { AutoUIConfig } from '@lib/types';
 import { useCallback } from 'react';
-import { useRendering } from './useRendering';
 
-export function useAutoUi(config: AutoUIConfig) {
-  const { resolveComponent, setUI } = useRendering(config);
+export function useAutoUiChat(config: AutoUIConfig) {
   const processMessage = useCallback(
     async (text: string) => {
       let plan = await getInstructionPlan(text, config);
@@ -12,7 +10,7 @@ export function useAutoUi(config: AutoUIConfig) {
       if (typeof plan === 'string') {
         try {
           plan = JSON.parse(plan);
-        } catch (err) {
+        } catch {
           console.error('❌ Failed to parse plan JSON:', plan);
           throw new Error('Invalid plan format: could not parse JSON');
         }
@@ -25,7 +23,7 @@ export function useAutoUi(config: AutoUIConfig) {
 
       return plan;
     },
-    [resolveComponent, setUI],
+    [config],
   );
 
   return { processMessage };

@@ -17,7 +17,7 @@
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from '@/demo/base/card';
 import { Button } from '@/demo/base/button';
 import { Separator } from '@/demo/base/separator';
-import { ScrollArea } from '@/demo/base/scroll-area';
+import { ScrollArea } from '@/demo/base/scrollArea';
 
 interface CartItem {
   id: string;

@@ -11,7 +11,7 @@ export const ChatHeader = () => {
       </h2>
       {onClose && (
         <button role="closeButton" className={clsx('autoui-chat-closebtn', classNames?.closeButton)} onClick={onClose}>
-          {closeIcon ?? <img src={'/xmark-svgrepo-com.svg'} alt={'Close chat'} width={24} height={24} />}
+          {closeIcon ?? <img src={'xmark-svgrepo-com.svg'} alt={'Open char'} width={24} height={24} />}
         </button>
       )}
     </header>

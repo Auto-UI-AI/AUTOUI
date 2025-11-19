@@ -1,1 +1,1 @@
-export { Chat, ModalChat } from './ui';
+export { Chat, ModalChat } from './components';
