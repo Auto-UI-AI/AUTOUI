@@ -8,7 +8,7 @@ import { useFinanceStore } from '../store/useFinanceStore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/demo/base/card';
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/demo/base/chart';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/demo/base/select';
-import { ToggleGroup, ToggleGroupItem } from '@/demo/base/toggle-group';
+import { ToggleGroup, ToggleGroupItem } from '@/demo/base/toggleGroup';
 
 const chartConfig = {
   cumulative: {

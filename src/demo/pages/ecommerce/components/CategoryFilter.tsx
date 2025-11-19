@@ -12,7 +12,7 @@
  * ```
  */
 
-import { ToggleGroup, ToggleGroupItem } from '@/demo/base/toggle-group';
+import { ToggleGroup, ToggleGroupItem } from '@/demo/base/toggleGroup';
 import { cn } from '@/demo/base/utils';
 
 interface CategoryFilterProps {
