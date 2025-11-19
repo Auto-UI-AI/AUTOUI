@@ -63,7 +63,7 @@ export async function runInstructionPlan(
   setUI: SetUI,
   setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
   opts?: RunOptions,
-){
+) {
   const shouldValidate = opts?.validate ?? config.runtime?.validateLLMOutput ?? true;
   if (shouldValidate) {
     validateInstructionPlan(plan);

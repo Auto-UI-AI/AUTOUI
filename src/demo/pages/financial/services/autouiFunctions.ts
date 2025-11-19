@@ -24,9 +24,7 @@ export async function addTransaction(params: {
 
   // Get max ID from existing transactions
   const transactions = useFinanceStore.getState().transactions;
-  const maxId = transactions.length > 0
-    ? Math.max(...transactions.map(t => t.id))
-    : 0;
+  const maxId = transactions.length > 0 ? Math.max(...transactions.map((t) => t.id)) : 0;
 
   const newTransaction: Transaction = {
     id: maxId + 1,
@@ -45,9 +43,7 @@ export async function addTransaction(params: {
 /**
  * Get spending breakdown by category for a specific period
  */
-export async function getSpendingByCategory(params: {
-  period?: 7 | 30 | 90;
-}) {
+export async function getSpendingByCategory(params: { period?: 7 | 30 | 90 }) {
   const transactions = useFinanceStore.getState().transactions;
   const period = params.period || 30;
 
@@ -85,19 +81,14 @@ export async function getUpcomingBills() {
 /**
  * Mark a bill as paid by name or ID
  */
-export async function markBillAsPaidByName(params: {
-  billName?: string;
-  billId?: number;
-}) {
+export async function markBillAsPaidByName(params: { billName?: string; billId?: number }) {
   const bills = useFinanceStore.getState().bills;
 
   let billToMark;
   if (params.billId) {
-    billToMark = bills.find(b => b.id === params.billId);
+    billToMark = bills.find((b) => b.id === params.billId);
   } else if (params.billName) {
-    billToMark = bills.find(b =>
-      b.name.toLowerCase().includes(params.billName!.toLowerCase())
-    );
+    billToMark = bills.find((b) => b.name.toLowerCase().includes(params.billName!.toLowerCase()));
   }
 
   if (!billToMark) {
@@ -107,4 +98,3 @@ export async function markBillAsPaidByName(params: {
   markBillAsPaid(billToMark.id);
   return { success: true, bill: { ...billToMark, status: 'paid' as const } };
 }
-

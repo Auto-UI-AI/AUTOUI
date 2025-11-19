@@ -113,7 +113,7 @@
 }
 
 /* Allow full-width components in chat bubbles - detect when bubble contains a component wrapper */
-.autoui-chat-message.assistant .autoui-chat-bubble:has(> div[class*="w-full"]) {
+.autoui-chat-message.assistant .autoui-chat-bubble:has(> div[class*='w-full']) {
   max-width: 100%;
   width: 100%;
   padding: 1rem;
@@ -121,7 +121,7 @@
 }
 
 /* Also target direct component wrappers */
-.autoui-chat-bubble > div[class*="w-full"] {
+.autoui-chat-bubble > div[class*='w-full'] {
   max-width: 100%;
   width: 100%;
   min-width: 0;

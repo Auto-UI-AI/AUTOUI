@@ -6,4 +6,3 @@ export function markBillAsPaid(id: number) {
   const updated = bills.map((b) => (b.id === id ? { ...b, status: 'paid' as const } : b));
   setBills(updated);
 }
-

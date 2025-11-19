@@ -27,7 +27,7 @@ async function runStep(
   config: AutoUIConfig,
   resolveComponent: ResolveComponent,
   setUI: SetUI,
-  setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>
+  setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
 ) {
   if (step.type === 'function') {
     const f = config.functions[step.name];
@@ -38,23 +38,39 @@ async function runStep(
   }
 
   if (step.type === 'component') {
-    console.log("component step already includes the context of the instructionPlan, so here it is:", JSON.stringify(ctx))
+    console.log(
+      'component step already includes the context of the instructionPlan, so here it is:',
+      JSON.stringify(ctx),
+    );
     const props = resolveProps(step.props ?? {}, ctx, config);
     const node = resolveComponent(step.name, props);
-    
+
     setUI(node);
-    setSerializedMessages((prev)=>{
-      if(props?.children) return [...prev, {id: `${Date.now()}-a`, role: 'assistant', kind: "ui", ui: {t:"fragment", children: props.children}}]
-      else return [...prev, {id: `${Date.now()}-a`, role: 'assistant', kind: "ui", ui: {t:"component", name: step.name, props: props}}]
-    })
+    setSerializedMessages((prev) => {
+      if (props?.children)
+        return [
+          ...prev,
+          { id: `${Date.now()}-a`, role: 'assistant', kind: 'ui', ui: { t: 'fragment', children: props.children } },
+        ];
+      else
+        return [
+          ...prev,
+          {
+            id: `${Date.now()}-a`,
+            role: 'assistant',
+            kind: 'ui',
+            ui: { t: 'component', name: step.name, props: props },
+          },
+        ];
+    });
     return;
   }
 
   if (step.type === 'text') {
     const s = step as unknown as { type: 'text'; text: string };
-    setSerializedMessages((prev)=>{
-      return [...prev, {id: `${Date.now()}-a`, role: 'assistant', kind: "text", text:s.text}]
-    })
+    setSerializedMessages((prev) => {
+      return [...prev, { id: `${Date.now()}-a`, role: 'assistant', kind: 'text', text: s.text }];
+    });
     setUI(s.text ?? '');
     return;
   }

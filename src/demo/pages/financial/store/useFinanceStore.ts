@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import type { Transaction, Rule, Bill } from "../types/finance";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import type { Transaction, Rule, Bill } from '../types/finance';
 
 type FinanceStore = {
   transactions: Transaction[];
@@ -34,6 +34,6 @@ export const useFinanceStore = create<FinanceStore>()(
           transactions: [...state.transactions, tx],
         })),
     }),
-    { name: "autoui:demo-financial" }
-  )
+    { name: 'autoui:demo-financial' },
+  ),
 );

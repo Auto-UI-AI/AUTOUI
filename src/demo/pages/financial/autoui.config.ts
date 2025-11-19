@@ -16,7 +16,8 @@ export const financialAutouiConfig: AutoUIConfig = {
   metadata: {
     appName: 'Financial Demo',
     appVersion: '0.1.0',
-    description: 'A personal finance management app with transactions, bills, spending tracking, and category analysis.',
+    description:
+      'A personal finance management app with transactions, bills, spending tracking, and category analysis.',
     tags: ['demo', 'finance', 'react', 'autoui'],
   },
 
@@ -47,7 +48,7 @@ export const financialAutouiConfig: AutoUIConfig = {
   functions: {
     addTransaction: {
       prompt:
-        'Add a new transaction to the user\'s financial records. Extract amount (with or without $), description, optional date (defaults to today), category, account, and status.',
+        "Add a new transaction to the user's financial records. Extract amount (with or without $), description, optional date (defaults to today), category, account, and status.",
       params: {
         description: 'string — transaction description (e.g., "Starbucks", "Grocery shopping")',
         amount: 'number | string — transaction amount (e.g., 15.50 or "$15.50")',
@@ -69,14 +70,12 @@ export const financialAutouiConfig: AutoUIConfig = {
         period: 'number (optional) — 7, 30, or 90 days. Defaults to 30',
       },
       callFunc: getSpendingByCategory,
-      returns:
-        '{ period: number, total: number, categories: Array<{ category: string, total: number }> }',
+      returns: '{ period: number, total: number, categories: Array<{ category: string, total: number }> }',
       exampleUsage: 'getSpendingByCategory({ period: 30 })',
     },
 
     getUpcomingBills: {
-      prompt:
-        'Get all upcoming bills that are pending and due on or after today. Returns bills sorted by due date.',
+      prompt: 'Get all upcoming bills that are pending and due on or after today. Returns bills sorted by due date.',
       params: {},
       callFunc: getUpcomingBills,
       returns:

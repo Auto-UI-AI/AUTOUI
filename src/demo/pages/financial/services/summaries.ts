@@ -49,4 +49,3 @@ export function mockSummaries({
     .sort((a, b) => b.total - a.total)
     .slice(0, 5);
 }
-
