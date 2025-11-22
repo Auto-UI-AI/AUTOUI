@@ -8,8 +8,8 @@ export const BtnOpenChat: FC<BtnOpenChatProps> = ({ onOpenChange, isOpen, classN
   const iconSrc = safeIsOpen ? 'xmark-svgrepo-com.svg' : 'plus-large-svgrepo-com.svg';
 
   return (
-    <button onClick={onOpenChange} className={clsx('autoui-chat-open-btn', className)}>
-      <img src={iconSrc} alt={safeIsOpen ? 'Open char' : 'Close chat'} width={24} height={24} />
+    <button onClick={onOpenChange} className={clsx('autoui-chat-open-btn text-white', className)}>
+      <img src={iconSrc} className="text-white" alt={safeIsOpen ? 'Open char' : 'Close chat'} width={24} height={24} />
     </button>
   );
 };

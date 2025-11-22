@@ -7,7 +7,7 @@ function App() {
     <>
       <DemoPage />
       <PlayGround />
-      <ModalChat config={autouiConfig}/>
+      <ModalChat config={autouiConfig} />
     </>
   );
 }
