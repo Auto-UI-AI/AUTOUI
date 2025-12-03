@@ -10,6 +10,7 @@ export const BtnOpenChat: FC<BtnOpenChatProps> = ({ onOpenChange, isOpen, classN
   return (
     <button onClick={onOpenChange} className={clsx('autoui-chat-open-btn', className)}>
       <img src={iconSrc} alt={safeIsOpen ? 'Close chat' : 'Open chat'} width={24} height={24} />
+
     </button>
   );
 };
