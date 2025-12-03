@@ -37,7 +37,7 @@ export const autouiConfig: AutoUIConfig = {
     appVersion: '0.1.0',
     author: 'AutoUI Dev Team',
     createdAt: new Date().toISOString(),
-    description: 'Config derived from HomePage: registers demo e-commerce components and mock functions.',
+    description: 'Config derived from DemoStorybook: registers demo e-commerce components and mock functions.',
     tags: ['demo', 'ecommerce', 'react', 'autoui'],
   },
 

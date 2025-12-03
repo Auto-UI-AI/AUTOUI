@@ -17,7 +17,7 @@ export function App() {
         <Route path="/demo/financial" element={<FinancialDemoPage />} />
       </Routes>
       <PlayGround />
-      <ModalChat config={config} />
+      <ModalChat config={autouiConfig} />
     </>
   );
 }

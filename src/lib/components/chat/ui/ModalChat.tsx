@@ -1,5 +1,5 @@
-import { lazy } from 'react';
 import * as React from 'react';
+import { lazy, memo } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalChatProvider, useModalChatContext } from '../context/modalChatContext';
 import { BtnOpenChat } from './btnOpenChat';
@@ -11,13 +11,13 @@ const LazyChat = lazy(() =>
   })),
 );
 
-export const ModalChat = ({ config, portalContainer }: ModalChatProps) => {
+export const ModalChat = memo(({ config, portalContainer }: ModalChatProps) => {
   return (
     <ModalChatProvider config={config}>
       <ModalChatBody config={config} portalContainer={portalContainer} />
     </ModalChatProvider>
   );
-};
+});
 
 const ModalChatBody = ({ config, portalContainer }: ModalChatProps) => {
   const { value, setValue } = useModalChatContext();
