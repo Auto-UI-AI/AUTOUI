@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { lazy, memo } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalChatProvider, useModalChatContext } from '../context/modalChatContext';

@@ -14,7 +14,7 @@
  * ```
  */
 import { type Product } from './fetchProducts';
-import { PLACEHOLDER_IMAGE } from '../constants';
+import { PLACEHOLDER_IMAGE } from '@/demo/constants';
 
 export interface CartItem {
   id: string;

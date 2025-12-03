@@ -14,7 +14,7 @@ export interface ModalChatContextValue {
 export interface ModalChatContext {
   value: ModalChatContextValue;
   setValue: React.Dispatch<React.SetStateAction<ModalChatContextValue>>;
-  config: AutoUIConfig
+  config: AutoUIConfig;
 }
 export interface ChatMessage {
   id: string;
@@ -35,11 +35,11 @@ interface ChatClassNames {
   messageList?: string;
   message?: string;
 }
-export interface ChatProviderPropsType { 
+export interface ChatProviderPropsType {
   children: ReactNode;
   value: ChatContextType;
   config: AutoUIConfig;
- }
+}
 export interface ChatContextType {
   config: AutoUIConfig;
   isOpen?: boolean;
