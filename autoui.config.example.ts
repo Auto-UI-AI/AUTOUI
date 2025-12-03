@@ -1,7 +1,7 @@
 // autoui.config.example.ts
 import type { AutoUIConfig } from './src/lib/types';
 
-// DEMO COMPONENTS (same barrel you used in DemoStorybook)
+// DEMO COMPONENTS (same barrel you used in HomePage)
 import {
   ProductDetailsModal,
   ProductCard,
@@ -13,16 +13,16 @@ import {
   CheckoutForm,
   OrderConfirmation,
   WishlistPanel,
-} from './src/demo/components';
+} from '@/demo/pages/ecommerce/components';
 
-// Optional interactive view shown in DemoStorybook
-import { InteractiveDemo } from './src/demo/DemoInteractive';
+// Optional interactive view shown in HomePage
+import { EcommerceDemoPage } from '@/demo/pages';
 
-// DEMO FUNCTIONS (same as DemoStorybook)
-import { fetchProducts, addToCart } from './src/demo/functions';
+// DEMO FUNCTIONS (same as HomePage)
+import { fetchProducts, addToCart } from '@/demo/pages/ecommerce/functions';
 
 // Optional assets/constants used by some components
-import { PLACEHOLDER_IMAGE } from './src/demo/constants';
+import { PLACEHOLDER_IMAGE } from '@/demo/constants';
 
 // Pull model key from Vite env like in your example
 const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
@@ -100,11 +100,11 @@ export const autouiConfig: AutoUIConfig = {
    *   COMPONENTS
    * ========================= */
   components: {
-    // ---- Interactive view bucket (from DemoStorybook)
+    // ---- Interactive view bucket (from HomePage)
     InteractiveDemo: {
       prompt: 'An interactive end-to-end e-commerce showcase combining gallery, cart and checkout flow.',
       props: {},
-      callComponent: InteractiveDemo,
+      callComponent: EcommerceDemoPage,
       category: 'interactive',
     },
 

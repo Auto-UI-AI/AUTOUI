@@ -21,7 +21,7 @@ export interface Product {
   category?: string;
 }
 
-import { PLACEHOLDER_IMAGE } from '../constants';
+import { PLACEHOLDER_IMAGE } from '@/demo/constants';
 
 export interface FetchProductsParams {
   category?: string;

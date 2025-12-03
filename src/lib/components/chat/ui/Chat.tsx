@@ -12,7 +12,7 @@ export const Chat: React.FC<ChatProps> = memo(
   ({ config, title = 'AutoUI Chat', isOpen = true, classNames, onClose, onError, closeIcon }) => {
     const context = useChat({ config, title, isOpen, classNames, closeIcon, onClose, onError });
 
-    if (!isOpen) return;
+  if (!isOpen) return null;
 
     return (
       <ChatProvider config={config} value={context}>

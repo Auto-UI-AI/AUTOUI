@@ -1,6 +1,7 @@
-'use client';
 import React, { useState } from 'react';
-import { Button, ScrollArea, Separator, Card, CardHeader, CardTitle, CardContent } from './base';
+import { Link } from 'react-router-dom';
+import { Moon, Sun } from 'lucide-react';
+import { Button, ScrollArea, Separator, Card, CardHeader, CardTitle, CardContent } from '@/demo/base';
 import {
   ProductDetailsModal,
   ProductCard,
@@ -12,16 +13,15 @@ import {
   CheckoutForm,
   OrderConfirmation,
   WishlistPanel,
-} from './components';
-import { fetchProducts, addToCart } from './functions';
-import { InteractiveDemo } from './DemoInteractive';
-import { PLACEHOLDER_IMAGE } from './constants';
-import { useDarkMode } from './hooks/useDarkMode';
-import { Moon, Sun } from 'lucide-react';
+} from '@/demo/pages/ecommerce/components';
+import { useDarkMode } from '@/demo/hooks';
+import { fetchProducts, addToCart } from '@/demo/pages/ecommerce/functions';
+import { PLACEHOLDER_IMAGE } from '@/demo/constants';
 
 type ComponentDemo = {
   name: string;
-  component: React.ReactNode;
+  component?: React.ReactNode; // Only needed for preview items (not route-based)
+  route?: string; // If provided, button will be a link instead of showing preview
 };
 
 type ComponentCategory = {
@@ -31,11 +31,15 @@ type ComponentCategory = {
 
 const COMPONENT_CATEGORIES: ComponentCategory[] = [
   {
-    name: 'Interactive Views',
+    name: 'Demos',
     components: [
       {
         name: 'E-commerce Flow',
-        component: <InteractiveDemo />,
+        route: '/demo/ecommerce',
+      },
+      {
+        name: 'Personal Finance Copilot',
+        route: '/demo/financial',
       },
     ],
   },
@@ -166,7 +170,7 @@ const COMPONENT_CATEGORIES: ComponentCategory[] = [
   },
 ];
 
-export default function DemoStorybook() {
+export default function HomePage() {
   const { isDark, toggle } = useDarkMode();
   const [selectedComponent, setSelectedComponent] = useState<{
     category: string;
@@ -193,6 +197,10 @@ export default function DemoStorybook() {
       );
     }
 
+    if (component.route || !component.component) {
+      return null;
+    }
+
     return (
       <Card className="h-full">
         <CardHeader>
@@ -205,44 +213,62 @@ export default function DemoStorybook() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Sidebar */}
-      <aside className="w-64 border-r bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold dark:text-gray-100">Auto UI Demo</h2>
-          <Button variant="ghost" size="icon" onClick={toggle} className="h-8 w-8">
-            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </Button>
-        </div>
-        <ScrollArea className="h-[calc(100vh-5rem)] pr-2">
-          {COMPONENT_CATEGORIES.map((category) => (
-            <div key={category.name} className="mb-4">
-              <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">{category.name}</h3>
-              <div className="space-y-1">
-                {category.components.map((component) => {
-                  const isSelected =
-                    selectedComponent?.name === component.name && selectedComponent?.category === category.name;
+    <>
+      <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+        {/* Sidebar */}
+        <aside className="w-64 border-r bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold dark:text-gray-100">Auto UI Demo</h2>
+            <Button variant="ghost" size="icon" onClick={toggle} className="h-8 w-8">
+              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+          </div>
+          <ScrollArea className="h-[calc(100vh-5rem)] pr-2">
+            {COMPONENT_CATEGORIES.map((category) => (
+              <div key={category.name} className="mb-4">
+                <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">{category.name}</h3>
+                <div className="space-y-1">
+                  {category.components.map((component) => {
+                    const isSelected =
+                      selectedComponent?.name === component.name && selectedComponent?.category === category.name;
 
-                  return (
-                    <Button
-                      key={component.name}
-                      variant={isSelected ? 'default' : 'ghost'}
-                      className="w-full justify-start"
-                      onClick={() => setSelectedComponent({ category: category.name, name: component.name })}
-                    >
-                      {component.name}
-                    </Button>
-                  );
-                })}
+                    // If route is provided, render as Link; otherwise as Button
+                    if (component.route) {
+                      return (
+                        <Button
+                          key={component.name}
+                          variant={isSelected ? 'default' : 'ghost'}
+                          className="w-full justify-start"
+                          asChild
+                        >
+                          <Link to={component.route} target="_blank">
+                            {component.name}
+                          </Link>
+                        </Button>
+                      );
+                    }
+
+                    return (
+                      <Button
+                        key={component.name}
+                        variant={isSelected ? 'default' : 'ghost'}
+                        className="w-full justify-start"
+                        onClick={() => setSelectedComponent({ category: category.name, name: component.name })}
+                      >
+                        {component.name}
+                      </Button>
+                    );
+                  })}
+                </div>
+                <Separator className="my-3" />
               </div>
-              <Separator className="my-3" />
-            </div>
-          ))}
-        </ScrollArea>
-      </aside>
+            ))}
+          </ScrollArea>
+        </aside>
 
-      {/* Preview Pane */}
-      <main className="flex-1 overflow-y-auto p-10">{renderPreview()}</main>
-    </div>
+        {/* Preview Pane */}
+        <main className="flex-1 overflow-y-auto p-10">{renderPreview()}</main>
+      </div>
+    </>
   );
 }

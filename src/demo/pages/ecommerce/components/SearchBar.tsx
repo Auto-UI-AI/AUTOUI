@@ -13,8 +13,8 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Input } from '../base/input';
-import { Button } from '../base/button';
+import { Input } from '@/demo/base/input';
+import { Button } from '@/demo/base/button';
 import { Search } from 'lucide-react';
 
 interface SearchBarProps {

@@ -9,7 +9,7 @@ import {
 } from './functions';
 import { SearchBar, CategoryFilter, ProductGallery, CartSummary } from './components';
 
-export function InteractiveDemo() {
+export function EcommerceDemoPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -74,32 +74,38 @@ export function InteractiveDemo() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-4">
-        <SearchBar onSearch={setSearchQuery} placeholder="Search products..." />
-        <CategoryFilter categories={categories} selected={selectedCategory} onSelect={setSelectedCategory} />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          {loading ? (
-            <div className="text-center py-12 text-muted-foreground">Loading products...</div>
-          ) : (
-            <ProductGallery products={products} onAddToCart={handleAddToCart} />
-          )}
-        </div>
-
-        <div className="lg:col-span-1">
-          <CartSummary items={cart} onCheckout={handleCheckout} />
-        </div>
-      </div>
-
-      {recommendations.length > 0 && (
+    <>
+      <div className="space-y-6 p-6">
+        {/* Search and Filters */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold">Recommended for You</h3>
-          <ProductGallery products={recommendations} onAddToCart={handleAddToCart} />
+          <SearchBar onSearch={setSearchQuery} placeholder="Search products..." />
+          <CategoryFilter categories={categories} selected={selectedCategory} onSelect={setSelectedCategory} />
         </div>
-      )}
-    </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Products */}
+          <div className="lg:col-span-2">
+            {loading ? (
+              <div className="text-center py-12 text-muted-foreground">Loading products...</div>
+            ) : (
+              <ProductGallery products={products} onAddToCart={handleAddToCart} />
+            )}
+          </div>
+
+          {/* Cart */}
+          <div className="lg:col-span-1">
+            <CartSummary items={cart} onCheckout={handleCheckout} />
+          </div>
+        </div>
+
+        {/* Recommendations */}
+        {recommendations.length > 0 && (
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Recommended for You</h3>
+            <ProductGallery products={recommendations} onAddToCart={handleAddToCart} />
+          </div>
+        )}
+      </div>
+    </>
   );
 }
