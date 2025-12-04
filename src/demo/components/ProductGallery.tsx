@@ -33,14 +33,24 @@ interface Product {
   description: string;
   price: number;
   image: string;
+  sizes?: string[];
 }
 
 interface ProductGalleryProps {
   products: Product[];
-  onAddToCart: (productId: string) => void;
+  onAddToCart: (productId: string, size?: string) => void;
+  onViewDetails?: (productId: string) => void;
+  onToggleWishlist?: (productId: string) => void;
+  wishlistIds?: string[];
 }
 
-export default function ProductGallery({ products, onAddToCart }: ProductGalleryProps) {
+export default function ProductGallery({
+  products,
+  onAddToCart,
+  onViewDetails,
+  onToggleWishlist,
+  wishlistIds,
+}: ProductGalleryProps) {
   if (products.length === 0) {
     return (
       <div className="py-12 text-center text-muted-foreground" data-testid="product-gallery-empty">
@@ -49,10 +59,34 @@ export default function ProductGallery({ products, onAddToCart }: ProductGallery
     );
   }
 
+  // For a single product, avoid the grid container to reduce unnecessary padding when rendered in chat.
+  if (products.length === 1) {
+    const product = products[0];
+    return (
+      <div data-testid="product-gallery-single">
+        <ProductCard
+          key={product.id}
+          product={product}
+          onAddToCartOverride={onAddToCart}
+          onViewDetails={onViewDetails}
+          onToggleWishlist={onToggleWishlist}
+          isWishlisted={wishlistIds?.includes(product.id)}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" data-testid="product-gallery">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} />
+        <ProductCard
+          key={product.id}
+          product={product}
+          onAddToCartOverride={onAddToCart}
+          onViewDetails={onViewDetails}
+          onToggleWishlist={onToggleWishlist}
+          isWishlisted={wishlistIds?.includes(product.id)}
+        />
       ))}
     </div>
   );

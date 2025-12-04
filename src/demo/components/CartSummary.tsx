@@ -26,7 +26,7 @@ export default function CartSummary({ onCheckout }: CartSummaryProps) {
   const subtotal = cartItems ? cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0) : 0;
 
   return (
-    <Card className="w-full max-w-md border shadow-sm rounded-xl">
+    <Card className="w-full border shadow-sm rounded-xl">
       <CardHeader>
         <CardTitle>🛍️ Your Cart</CardTitle>
       </CardHeader>

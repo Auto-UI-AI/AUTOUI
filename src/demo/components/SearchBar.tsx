@@ -32,7 +32,7 @@ export default function SearchBar({ onSearch, placeholder = 'Search products...'
   }, [query, debounceMs, onSearch]);
 
   return (
-    <div className="relative w-full max-w-md" data-testid="search-bar">
+    <div className="relative w-full" data-testid="search-bar">
       <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
       <Input
         type="text"

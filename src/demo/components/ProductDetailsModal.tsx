@@ -1,7 +1,7 @@
 /**
  * Modal window showing detailed information about a selected product.
  */
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../base/card';
 import { Button } from '../base/button';
 
@@ -13,39 +13,33 @@ interface ProductDetailsModalProps {
     price: number;
     image: string;
   };
+  open: boolean;
+  onClose: () => void;
+  onAddToCart?: () => void;
 }
 
-const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ product }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleOpen = () => setIsOpen(true);
-  const handleClose = () => setIsOpen(false);
+const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ product, open, onClose, onAddToCart }) => {
+  if (!open) return null;
 
   return (
-    <>
-      <Button onClick={handleOpen}>View Details</Button>
-
-      {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <Card className="w-full max-w-lg">
-            <CardHeader>
-              <CardTitle>{product.name}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <img src={product.image} alt={product.name} className="w-full h-64 object-cover rounded-md mb-4" />
-              <CardDescription>{product.description}</CardDescription>
-              <p className="text-2xl font-bold mt-4">${product.price.toFixed(2)}</p>
-            </CardContent>
-            <CardFooter className="flex justify-end space-x-2">
-              <Button variant="outline" onClick={handleClose}>
-                Close
-              </Button>
-              <Button>Add to Cart</Button>
-            </CardFooter>
-          </Card>
-        </div>
-      )}
-    </>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <Card className="w-full max-w-xl md:max-w-2xl max-h-[85vh] overflow-y-auto">
+        <CardHeader>
+          <CardTitle>{product.name}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <img src={product.image} alt={product.name} className="w-full h-64 object-cover rounded-md mb-4" />
+          <CardDescription>{product.description}</CardDescription>
+          <p className="text-2xl font-bold mt-4">${product.price.toFixed(2)}</p>
+        </CardContent>
+        <CardFooter className="flex flex-wrap justify-end gap-2">
+          <Button variant="outline" onClick={onClose}>
+            Close
+          </Button>
+          {onAddToCart && <Button onClick={onAddToCart}>Add to Cart</Button>}
+        </CardFooter>
+      </Card>
+    </div>
   );
 };
 

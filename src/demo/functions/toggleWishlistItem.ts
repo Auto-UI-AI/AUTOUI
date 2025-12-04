@@ -1,8 +1,13 @@
 /**
- * Add or remove a product from the wishlist.
+ * Add or remove a product from the wishlist and persist it.
  */
-export function toggleWishlistItem(input: { productId: string }): { ok: boolean } {
-  console.log('Toggling wishlist item for product ID:', input.productId);
-  // Mock implementation
-  return { ok: true };
+import type { Product } from './fetchProducts';
+import { getWishlist, setWishlist } from './getWishlist';
+
+export function toggleWishlistItem(input: { product: Product }): { ok: boolean; items: Product[] } {
+  const current = getWishlist();
+  const exists = current.some((item) => item.id === input.product.id);
+  const updated = exists ? current.filter((item) => item.id !== input.product.id) : [...current, input.product];
+  setWishlist(updated);
+  return { ok: true, items: updated };
 }

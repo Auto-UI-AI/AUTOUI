@@ -7,3 +7,5 @@ export { default as CategoryFilter } from './CategoryFilter';
 export { default as CheckoutForm } from './CheckoutForm';
 export { default as OrderConfirmation } from './OrderConfirmation';
 export { default as ProductDetailsModal } from './ProductDetailsModal';
+export { default as SizeFilter } from './SizeFilter';
+export { default as WishlistPanel } from './WishlistPanel';

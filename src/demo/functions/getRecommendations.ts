@@ -14,7 +14,8 @@
  * ```
  */
 import { type Product } from './fetchProducts';
-import { PLACEHOLDER_IMAGE } from '../constants';
+
+const img = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=80`;
 
 export interface CartItem {
   id: string;
@@ -34,28 +35,31 @@ export async function getRecommendations(params: GetRecommendationsParams = {}):
       // Mock recommendations based on cart items
       const mockRecommendations: Product[] = [
         {
-          id: '5',
-          name: 'Scarf',
-          description: 'Cozy scarf perfect for cold weather.',
-          price: 29.99,
-          image: PLACEHOLDER_IMAGE,
-          category: 'Accessories',
-        },
-        {
           id: '6',
-          name: 'Winter Boots',
-          description: 'Warm and comfortable winter boots.',
-          price: 129.99,
-          image: PLACEHOLDER_IMAGE,
-          category: 'Shoes',
+          name: 'Cozy Wool Scarf',
+          description: 'Soft merino scarf for chilly days.',
+          price: 34.0,
+          image: img('photo-1503342217505-b0a15ec3261c'),
+          category: 'Accessories',
+          sizes: ['One Size'],
         },
         {
-          id: '7',
-          name: 'Wool Hat',
-          description: 'Soft wool hat for winter warmth.',
-          price: 39.99,
-          image: PLACEHOLDER_IMAGE,
-          category: 'Accessories',
+          id: '10',
+          name: 'Midnight Chelsea Boots',
+          description: 'Suede boots with rubber sole.',
+          price: 149.0,
+          image: img('photo-1519744792095-2f2205e87b6f'),
+          category: 'Shoes',
+          sizes: ['8', '9', '10', '11', '12'],
+        },
+        {
+          id: '5',
+          name: 'Olive Utility Shirt',
+          description: 'Cotton twill overshirt with pockets.',
+          price: 68.0,
+          image: img('photo-1503341455253-b2e723bb3dbb'),
+          category: 'Tops',
+          sizes: ['S', 'M', 'L'],
         },
       ];
 

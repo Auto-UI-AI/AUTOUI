@@ -53,7 +53,7 @@ export default function CheckoutForm({
   };
 
   return (
-    <Card className={`w-full max-w-md border shadow-sm rounded-xl ${className}`}>
+    <Card className={`w-full border shadow-sm rounded-xl ${className}`}>
       <form onSubmit={handleSubmit} className="flex flex-col">
         <CardHeader>
           <CardTitle>🧾 Checkout</CardTitle>

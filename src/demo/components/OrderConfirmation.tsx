@@ -18,7 +18,7 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ orderId, classNam
   const { items, totalCost } = useCart();
 
   return (
-    <Card className={`w-full max-w-md border shadow-sm rounded-xl ${className}`}>
+    <Card className={`w-full border shadow-sm rounded-xl ${className}`}>
       <CardHeader>
         <CardTitle>✅ Order Confirmed</CardTitle>
       </CardHeader>
