@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
-import type { ChatContextType, ChatProps } from '../types';
-import { useAutoUi } from './useAutoUiChat';
-import type { SerializedMessage } from '../types';
+import type { ChatContextType, ChatProps, SerializedMessage } from '../types';
+import { useAutoUiChat } from './useAutoUiChat';
 import { runInstructionPlan } from '@lib/runtime/runtimeEngine';
 import { useChatState } from './useChatState';
 import { useRendering } from './useRendering';
@@ -17,7 +16,7 @@ export function useChat({
 }: ChatProps): ChatContextType {
   const { messages, setSerializedMessages } = useChatState(storageKey, config);
 
-  const { processMessage } = useAutoUi(config);
+  const { processMessage } = useAutoUiChat(config);
   const { resolveComponent, setUI } = useRendering(config);
 
   const [isLoading, setIsLoading] = useState(false);

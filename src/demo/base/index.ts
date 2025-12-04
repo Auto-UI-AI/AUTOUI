@@ -6,3 +6,6 @@ export { Separator } from './separator';
 export { Toggle, toggleVariants } from './toggle';
 export { ToggleGroup, ToggleGroupItem } from './toggleGroup';
 export { cn } from './utils';
+export { AppSidebar } from './app-sidebar';
+export { SidebarProvider, SidebarInset } from './sidebar';
+export { SiteHeader } from './site-header';

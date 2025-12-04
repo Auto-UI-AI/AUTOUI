@@ -1,15 +1,18 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App.tsx';
+import { initDarkMode } from './demo/hooks';
 import './index.css';
 import './demo/tailwind.css';
-import { initDarkMode } from './demo/hooks/useDarkMode';
-import App from './App.tsx';
 
 initDarkMode();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </StrictMode>,
 );
 

@@ -50,13 +50,11 @@ const config: AutoUIConfig = {
     appVersion: '1.0',
   },
 };
-
 export const Demo = () => {
   return (
     <div>
       <h3>Chat example</h3>
       <Chat config={config} />
-
       <h3>ModalChat example</h3>
       <ModalChat config={config} />
     </div>

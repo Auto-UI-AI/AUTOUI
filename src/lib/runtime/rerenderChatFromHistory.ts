@@ -9,15 +9,10 @@ export const rerenderChatFromHistory = (
   let messagesArray: ChatMessage[] = [];
   for (let message of chatHistory) {
     if (message.kind == 'ui') {
-      let node;
       const { t } = message.ui;
-      if (!t) {
-        setUI('unsuccessful rerender');
-        messagesArray.push({ id: message.id, role: message.role, content: node });
-        return;
-      }
-      node = t == 'component' ? resolveComponent(message.ui.name, message.ui.props) : 'unsuccessful rerender';
-      if (node) setUI(node);
+      let node = t == 'component' ? resolveComponent(message.ui.name, message.ui.props) : 'unsuccessful rerender';
+      node && setUI(node);
+      messagesArray.push({ id: message.id, role: message.role, content: node });
     }
     if (message.kind == 'text') {
       setUI(message.text);

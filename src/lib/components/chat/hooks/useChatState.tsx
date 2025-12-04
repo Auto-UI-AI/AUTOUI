@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { SerializedMessage, ChatMessage } from '../types';
 import { rerenderChatFromHistory } from '@lib/runtime/rerenderChatFromHistory';
 import { useRendering } from './useRendering';
-import type { AutoUIConfig } from '../../../types';
+import type { AutoUIConfig } from '@lib/types';
 
 export function useChatState(storageKey: string, config: AutoUIConfig) {
   const { resolveComponent, setUI } = useRendering(config);

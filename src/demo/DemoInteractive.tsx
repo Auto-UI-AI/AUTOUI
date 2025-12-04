@@ -6,8 +6,8 @@ import {
   getRecommendations,
   type Product,
   type CartItem,
-} from './functions';
-import { SearchBar, CategoryFilter, ProductGallery, CartSummary } from './components';
+} from './pages/ecommerce/functions';
+import { SearchBar, CategoryFilter, ProductGallery, CartSummary } from './pages/ecommerce/components';
 
 export function InteractiveDemo() {
   const [products, setProducts] = useState<Product[]>([]);

@@ -16,8 +16,8 @@
  * />
  * ```
  */
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../base/card';
-import { Button } from '../base/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/demo/base/card';
+import { Button } from '@/demo/base/button';
 
 interface ProductCardProps {
   product: {
@@ -55,7 +55,14 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
         </p>
       </CardContent>
       <CardFooter>
-        <Button onClick={() => {console.log(product.id); onAddToCart(product.id)}} className="w-full" data-testid="product-card-add-to-cart">
+        <Button
+          onClick={() => {
+            console.log(product.id);
+            onAddToCart(product.id);
+          }}
+          className="w-full"
+          data-testid="product-card-add-to-cart"
+        >
           Add to Cart
         </Button>
       </CardFooter>

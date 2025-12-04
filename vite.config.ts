@@ -1,15 +1,25 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
-import svgr from 'vite-plugin-svgr';
+import pkg from './package.json' with { type: 'json' };
+import { visualizer } from "rollup-plugin-visualizer";
+
+const external = [...Object.keys(pkg?.peerDependencies || {})];
 
 export default defineConfig({
-  plugins: [react(), cssInjectedByJsPlugin(), svgr()],
+  plugins: [
+    react(),
+    visualizer({
+      filename: 'dist/stats.html',
+      gzipSize: true,
+      brotliSize: true,
+      open: true,
+    }),
+  ],
   resolve: {
     alias: {
       '@lib': path.resolve(__dirname, 'src/lib'),
-      'src': path.resolve(__dirname, 'src'),
+      '@': path.resolve(__dirname, 'src'),
     },
   },
   build: {
@@ -20,7 +30,7 @@ export default defineConfig({
       fileName: (format) => `index.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: external,
       output: {
         globals: {
           'react': 'React',

@@ -69,7 +69,7 @@ export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
                 <i
                   key={i}
                   className={clsx(
-                    'absolute left-1/2 top-1/2 w-[2px] h-[6px] bg-current origin-center opacity-20 animate-pulse',
+                    'absolute left-1/2 top-1/2 w-0.5 h-1.5 bg-current origin-center opacity-20 animate-pulse',
                     classNames.spinnerBars,
                   )}
                   style={{
