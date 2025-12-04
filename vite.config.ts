@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import pkg from './package.json' with { type: 'json' };
+
+const external = [...Object.keys(pkg?.peerDependencies || {})];
 
 export default defineConfig({
   plugins: [react()],
@@ -18,7 +21,7 @@ export default defineConfig({
       fileName: (format) => `index.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: external,
       output: {
         globals: {
           'react': 'React',

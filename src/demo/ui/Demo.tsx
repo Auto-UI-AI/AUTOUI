@@ -1,4 +1,4 @@
-import { Chat, ModalChat } from '../../lib/ui';
+import { Chat, ModalChat } from '../../lib';
 import { autouiConfig } from '../../../autoui.config.example';
 
 export const Demo = () => {
