@@ -12,13 +12,17 @@ interface ProductDetailsModalProps {
     description: string;
     price: number;
     image: string;
+    sizes?: string[];
   };
   open: boolean;
   onClose: () => void;
-  onAddToCart?: () => void;
+  onAddToCart?: (size?: string) => void;
 }
 
 const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ product, open, onClose, onAddToCart }) => {
+  const [selectedSize, setSelectedSize] = React.useState<string | undefined>(product.sizes?.[0]);
+  const hasSizes = Boolean(product.sizes && product.sizes.length);
+
   if (!open) return null;
 
   return (
@@ -31,12 +35,31 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ product, open
           <img src={product.image} alt={product.name} className="w-full h-64 object-cover rounded-md mb-4" />
           <CardDescription>{product.description}</CardDescription>
           <p className="text-2xl font-bold mt-4">${product.price.toFixed(2)}</p>
+          {hasSizes && (
+            <div className="mt-4 space-y-2" data-testid="product-modal-sizes">
+              <p className="text-sm font-medium text-muted-foreground">Choose size</p>
+              <div className="flex flex-wrap gap-2">
+                {product.sizes?.map((size) => (
+                  <button
+                    key={size}
+                    type="button"
+                    className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                      selectedSize === size ? 'border-primary bg-primary text-primary-foreground' : 'border-muted'
+                    }`}
+                    onClick={() => setSelectedSize(size)}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </CardContent>
         <CardFooter className="flex flex-wrap justify-end gap-2">
           <Button variant="outline" onClick={onClose}>
             Close
           </Button>
-          {onAddToCart && <Button onClick={onAddToCart}>Add to Cart</Button>}
+          {onAddToCart && <Button onClick={() => onAddToCart(hasSizes ? selectedSize : undefined)}>Add to Cart</Button>}
         </CardFooter>
       </Card>
     </div>

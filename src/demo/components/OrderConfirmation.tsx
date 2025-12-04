@@ -35,9 +35,11 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ orderId, classNam
           <ScrollArea className="pr-2 max-h-60">
             <div className="space-y-3">
               {items.map((item) => (
-                <div key={item.id} className="flex justify-between text-sm">
+                <div key={`${item.id}-${item.size || 'nosize'}`} className="flex justify-between text-sm">
                   <span className="truncate">
-                    {item.name} <span className="text-gray-400">× {item.quantity}</span>
+                    {item.name}
+                    {item.size && <span className="ml-1 text-xs text-muted-foreground">• Size {item.size}</span>}{' '}
+                    <span className="text-gray-400">× {item.quantity}</span>
                   </span>
                   <span>${(item.price * item.quantity).toFixed(2)}</span>
                 </div>
