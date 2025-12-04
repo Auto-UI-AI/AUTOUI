@@ -1,0 +1,188 @@
+@import 'tailwindcss';
+
+/* App color tokens (override if you change theme colors) */
+:root {
+  --tm-brand-from: theme(colors.indigo.600);
+  --tm-brand-to:   theme(colors.purple.600);
+  --tm-muted:      theme(colors.slate.600);
+}
+
+/* ---- Components layer: re-usable, readable, consistent ---- */
+@layer components {
+  /* Root wrapper */
+  .rdp {
+    @apply w-full text-sm text-white;
+  }
+
+  /* Header & navigation */
+  .rdp-nav {
+    @apply flex items-center justify-between px-4 py-2;
+  }
+
+  /* ← → buttons (month navigation) */
+  .rdp-nav button {
+    @apply p-5 transition-colors rounded-md;
+    @apply text-white bg-purple-900 hover:text-white hover:bg-purple-700;
+  }
+
+  /* Month title (e.g., November 2025) */
+  .rdp-caption_label {
+    @apply font-semibold tracking-wide text-white;
+  }
+
+  /* Days grid */
+  .rdp-table {
+    @apply w-full border-separate border-spacing-1;
+  }
+
+  /* Each day cell (button) */
+  .rdp-day {
+    @apply text-center transition-all rounded-lg select-none w-9 h-9;
+    @apply text-white hover:bg-indigo-700! focus:outline-1 checked:bg-indigo-700!;
+  }
+
+  /* Selected day */
+  .rdp-day_selected {
+    @apply font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600;
+  }
+
+  /* Today’s day */
+  .rdp-day_today:not(.rdp-day_selected) {
+    @apply font-medium text-indigo-700 border border-indigo-400;
+  }
+
+  /* Disabled / outside month */
+  .rdp-day_disabled,
+  .rdp-day_outside {
+    @apply text-white cursor-not-allowed opacity-60;
+  }
+
+  /* Hover and focus (accessibility) */
+  .rdp-day:focus-visible {
+    @apply ring-2 ring-indigo-400 ring-offset-1;
+  }
+
+  /* Weekdays header row (Mon, Tue, etc.) */
+  .rdp-head_cell {
+    @apply pb-2 text-xs font-semibold tracking-wide uppercase text-slate-500;
+  }
+  
+
+
+  
+  /* Layout */
+  .tm-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm;
+  }
+  .tm-modal {
+    @apply bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto;
+  }
+
+  /* Header */
+  .tm-modal-header {
+    @apply sticky top-0 p-6 rounded-t-3xl;
+    background-image: linear-gradient(to right, var(--tm-brand-from), var(--tm-brand-to));
+  }
+  .tm-header-row {
+    @apply flex items-center justify-between;
+  }
+  .tm-header-left {
+    @apply flex items-center gap-3;
+  }
+  .tm-header-icon {
+    @apply p-2 bg-white/20 rounded-xl backdrop-blur-sm;
+  }
+  .tm-header-title {
+    @apply text-2xl font-bold text-white;
+  }
+  .tm-header-close {
+    @apply text-white hover:bg-indigo-700!;
+  }
+
+  /* Labels */
+  .tm-label {
+    @apply text-sm font-semibold text-slate-700;
+  }
+  .tm-label-asterisk {
+    @apply text-rose-500;
+  }
+
+  /* Fields */
+  .tm-field {
+    @apply space-y-2;
+  }
+  .tm-input {
+    @apply h-12 text-lg text-black border-slate-200 focus:border-indigo-500 rounded-xl;
+  }
+  .tm-textarea {
+    @apply min-h-[120px] text-black border-slate-200 focus:border-indigo-500 rounded-xl resize-none;
+  }
+
+  /* Selects (shadcn) */
+  .tm-select-trigger {
+    @apply text-white h-11 rounded-xl border-slate-200;
+    background-image: linear-gradient(to right, var(--tm-brand-from), var(--tm-brand-to));
+  }
+  .tm-select-content {
+    @apply text-white border-0 bg-gradient-to-r from-indigo-600 to-purple-600;
+  }
+  .tm-select-item {
+    @apply cursor-pointer hover:bg-purple-200! focus:bg-purple-500/60! focus:text-white ;
+
+  }
+
+  /* Popover calendar button */
+  .tm-calendar-trigger {
+    @apply justify-start w-full font-normal text-left bg-purple-600! rounded-xl border-slate-200 h-11;
+  }
+  .tm-calendar-icon {
+    @apply w-4 h-4 mr-2 text-slate-200;
+  }
+  .tm-calendar-placeholder {
+    @apply text-slate-200;
+  }
+
+  /* Footer buttons */
+  .tm-btn-outline {
+    @apply flex-1 h-12 bg-indigo-600! hover:bg-indigo-700! rounded-xl border-slate-300
+  }
+  .tm-btn-primary {
+    @apply flex-1 h-12 font-semibold text-white transition-all rounded-xl hover:shadow-lg;
+  }
+
+  /* Priority gradients for primary button */
+  .tm-btn-low {
+    @apply bg-gradient-to-r from-blue-500 to-cyan-500;
+  }
+  .tm-btn-medium {
+    @apply bg-gradient-to-r from-amber-500 to-orange-500;
+  }
+  .tm-btn-high {
+    @apply bg-gradient-to-r from-rose-500 to-pink-500;
+  }
+}
+
+.autoui-highlight {
+  position: relative;
+  animation: autoui-highlight-pulse 1s ease-out 3;
+  border-radius: 0.5rem;
+}
+
+@keyframes autoui-highlight-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  40% {
+    box-shadow: 0 0 0 12px rgba(255, 255, 255, 0);
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    background-color: transparent;
+  }
+}
