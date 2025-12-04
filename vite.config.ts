@@ -2,11 +2,20 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import pkg from './package.json' with { type: 'json' };
+import { visualizer } from "rollup-plugin-visualizer";
 
 const external = [...Object.keys(pkg?.peerDependencies || {})];
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    visualizer({
+      filename: 'dist/stats.html',
+      gzipSize: true,
+      brotliSize: true,
+      open: true,
+    }),
+  ],
   resolve: {
     alias: {
       '@lib': path.resolve(__dirname, 'src/lib'),

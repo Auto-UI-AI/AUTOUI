@@ -3,8 +3,8 @@
 /* App color tokens (override if you change theme colors) */
 :root {
   --tm-brand-from: theme(colors.indigo.600);
-  --tm-brand-to:   theme(colors.purple.600);
-  --tm-muted:      theme(colors.slate.600);
+  --tm-brand-to: theme(colors.purple.600);
+  --tm-muted: theme(colors.slate.600);
 }
 
 /* ---- Components layer: re-usable, readable, consistent ---- */
@@ -43,7 +43,7 @@
 
   /* Selected day */
   .rdp-day_selected {
-    @apply font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600;
+    @apply font-semibold text-white bg-linear-to-r from-indigo-600 to-purple-600;
   }
 
   /* Today’s day */
@@ -66,10 +66,7 @@
   .rdp-head_cell {
     @apply pb-2 text-xs font-semibold tracking-wide uppercase text-slate-500;
   }
-  
 
-
-  
   /* Layout */
   .tm-overlay {
     @apply fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm;
@@ -124,11 +121,10 @@
     background-image: linear-gradient(to right, var(--tm-brand-from), var(--tm-brand-to));
   }
   .tm-select-content {
-    @apply text-white border-0 bg-gradient-to-r from-indigo-600 to-purple-600;
+    @apply text-white border-0 bg-linear-to-r from-indigo-600 to-purple-600;
   }
   .tm-select-item {
-    @apply cursor-pointer hover:bg-purple-200! focus:bg-purple-500/60! focus:text-white ;
-
+    @apply cursor-pointer hover:bg-purple-200! focus:bg-purple-500/60! focus:text-white;
   }
 
   /* Popover calendar button */
@@ -144,7 +140,7 @@
 
   /* Footer buttons */
   .tm-btn-outline {
-    @apply flex-1 h-12 bg-indigo-600! hover:bg-indigo-700! rounded-xl border-slate-300
+    @apply flex-1 h-12 bg-indigo-600! hover:bg-indigo-700! rounded-xl border-slate-300;
   }
   .tm-btn-primary {
     @apply flex-1 h-12 font-semibold text-white transition-all rounded-xl hover:shadow-lg;
@@ -152,13 +148,13 @@
 
   /* Priority gradients for primary button */
   .tm-btn-low {
-    @apply bg-gradient-to-r from-blue-500 to-cyan-500;
+    @apply bg-linear-to-r from-blue-500 to-cyan-500;
   }
   .tm-btn-medium {
-    @apply bg-gradient-to-r from-amber-500 to-orange-500;
+    @apply bg-linear-to-r from-amber-500 to-orange-500;
   }
   .tm-btn-high {
-    @apply bg-gradient-to-r from-rose-500 to-pink-500;
+    @apply bg-linear-to-r from-rose-500 to-pink-500;
   }
 }
 

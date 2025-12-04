@@ -1,5 +1,5 @@
 // Tasks.tsx
-import React, { useEffect, useState, useCallback, type JSX, useRef } from 'react';
+import { useEffect, useState, type JSX, useRef } from 'react';
 import { Plus, Sparkles } from 'lucide-react';
 import { Button } from '../../base';
 
@@ -53,17 +53,17 @@ export default function Tasks(): JSX.Element {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-indigo-400/90 to-white">
+    <div className="min-h-screen bg-linear-to-br from-white via-indigo-400/90 to-white">
       <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8 transition-all">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <div className="p-3 shadow-lg bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl shadow-indigo-500/30">
+                <div className="p-3 shadow-lg bg-linear-to-br from-indigo-600 to-purple-600 rounded-2xl shadow-indigo-500/30">
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
-                <h1 className="text-4xl font-bold text-transparent bg-gradient-to-r from-slate-900 via-indigo-800 to-purple-800 bg-clip-text">
+                <h1 className="text-4xl font-bold text-transparent bg-linear-to-r from-slate-900 via-indigo-800 to-purple-800 bg-clip-text">
                   Task Manager
                 </h1>
               </div>
@@ -75,7 +75,7 @@ export default function Tasks(): JSX.Element {
                 setShowForm(true);
               }}
               data-guide-id="TaskFormButton"
-              className="h-12 px-6 text-white transition-all shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-xl shadow-indigo-500/30 hover:shadow-xl"
+              className="h-12 px-6 text-white transition-all shadow-lg bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-xl shadow-indigo-500/30 hover:shadow-xl"
             >
               <Plus className="w-5 h-5 mr-2" />
               New Task

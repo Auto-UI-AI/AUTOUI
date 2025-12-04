@@ -2,9 +2,8 @@ import React from 'react';
 import { CheckCircle2, Clock, TrendingUp, AlertCircle } from 'lucide-react';
 import type { Task } from '../../types/tasks';
 
-type Status = 'todo' | 'in_progress' | 'done';
-type Priority = 'low' | 'medium' | 'high';
-
+// type Status = 'todo' | 'in_progress' | 'done';
+// type Priority = 'low' | 'medium' | 'high';
 
 interface TaskStatsProps {
   tasks: Task[];
@@ -26,7 +25,7 @@ export default function TaskStats({ tasks }: TaskStatsProps) {
     value: number;
     icon: React.ComponentType<{ className?: string }>;
     gradient: string;
-    bgGlow: string; 
+    bgGlow: string;
   }> = [
     {
       label: 'Total Tasks',
@@ -60,7 +59,7 @@ export default function TaskStats({ tasks }: TaskStatsProps) {
 
   return (
     <div className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-4">
-      {statCards.map((stat, index) => (
+      {statCards.map((stat, _) => (
         <div key={stat.label} className="relative group">
           <div
             className={`absolute inset-0 ${stat.bgGlow} rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
@@ -69,11 +68,11 @@ export default function TaskStats({ tasks }: TaskStatsProps) {
             <div className="flex items-start justify-between">
               <div>
                 <p className="mb-1 text-sm font-medium text-slate-600">{stat.label}</p>
-                <p className={`text-3xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent`}>
+                <p className={`text-3xl font-bold bg-linear-to-r ${stat.gradient} bg-clip-text text-transparent`}>
                   {stat.value}
                 </p>
               </div>
-              <div className={`p-3 rounded-xl bg-gradient-to-br ${stat.gradient}`}>
+              <div className={`p-3 rounded-xl bg-linear-to-br ${stat.gradient}`}>
                 <stat.icon className="w-5 h-5 text-white" />
               </div>
             </div>
@@ -85,7 +84,7 @@ export default function TaskStats({ tasks }: TaskStatsProps) {
                 </div>
                 <div className="w-full h-2 overflow-hidden rounded-full bg-slate-100">
                   <div
-                    className={`h-full bg-gradient-to-r ${stat.gradient} rounded-full transition-all duration-700`}
+                    className={`h-full bg-linear-to-r ${stat.gradient} rounded-full transition-all duration-700`}
                     style={{ width: `${completionRate}%` }}
                   />
                 </div>

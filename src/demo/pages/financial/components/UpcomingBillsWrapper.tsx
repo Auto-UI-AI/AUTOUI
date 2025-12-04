@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { UpcomingBillsCard } from './UpcomingBillsCard';
 
 export function UpcomingBillsWrapper(props: any) {

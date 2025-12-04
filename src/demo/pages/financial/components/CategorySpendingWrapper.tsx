@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { SpendingByCategoryCard } from './SpendingByCategoryCard';
 
 export function CategorySpendingWrapper({ period, ...props }: { period?: 7 | 30 | 90 }) {

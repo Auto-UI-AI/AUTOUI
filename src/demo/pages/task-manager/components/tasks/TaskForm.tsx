@@ -17,7 +17,7 @@ interface TaskFormProps {
 }
 
 export default function TaskForm({ task }: TaskFormProps) {
-  const { showForm, setShowForm, setEditingTask, editingTask, handleUpdateTask, handleCreateTask } = useTasksContext();
+  const { setShowForm, setEditingTask, editingTask, handleUpdateTask, handleCreateTask } = useTasksContext();
   const [formData, setFormData] = useState<TaskDraft>({
     title: task?.title ?? '',
     description: task?.description ?? '',
