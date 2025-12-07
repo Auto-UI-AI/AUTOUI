@@ -19,7 +19,6 @@ export function App() {
         <Route path="/demo/task-manager" element={<Demo3 />} />
       </Routes>
       <PlayGround />
-      <ModalChat config={config} />
     </>
   );
 }

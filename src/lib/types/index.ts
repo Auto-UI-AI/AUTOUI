@@ -89,7 +89,7 @@ export interface AutoUIComponent {
 
   /** Actual React component reference */
   callComponent: ComponentType<any>;
-
+  
   /** Default prop values for runtime or mock previews */
   defaults?: Record<string, any>;
 
