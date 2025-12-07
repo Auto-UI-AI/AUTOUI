@@ -1,7 +1,7 @@
-import { getInstructionPlan } from '@lib/core/llmClient';
-import type { AutoUIConfig } from '@lib/types';
+import { getInstructionPlan } from '../../../core/llmClient';
 import { useCallback } from 'react';
 import { useRendering } from './useRendering';
+import { AutoUIConfig } from '../../../types';
 
 export function useAutoUi(config: AutoUIConfig) {
   const { resolveComponent, setUI } = useRendering(config);
