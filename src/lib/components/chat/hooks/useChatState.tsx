@@ -15,6 +15,7 @@ export function useChatState(storageKey: string, config: AutoUIConfig) {
     }
   });
 
+  
   const hydratedRef = useRef(false);
   useEffect(() => {
     hydratedRef.current = true;
