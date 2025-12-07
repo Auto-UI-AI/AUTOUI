@@ -21,7 +21,7 @@ export const extraAnalysisWithLLM = async (data: any, config: AutoUIConfig, user
                 content: [
                   {
                     type: 'text',
-                    text: buildDataAnalyzingPrompt(data, userMessage, plan, currentStepName),
+                    text: buildDataAnalyzingPrompt(data, config, userMessage, plan, currentStepName),
                   },
                 ],
               },
