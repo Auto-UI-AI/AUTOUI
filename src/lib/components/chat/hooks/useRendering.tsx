@@ -24,3 +24,4 @@ export function useRendering(config: AutoUIConfig) {
   }, []);
   return { setUIRenderer, resolveComponent, setUI };
 }
+
