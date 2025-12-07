@@ -1,3 +1,10 @@
+## [0.1.1](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.0...v0.1.1) (2025-12-07)
+
+
+### Bug Fixes
+
+* permisions update ([2d46843](https://github.com/Auto-UI-AI/AUTOUI/commit/2d468434c14499f77477fbc522031591148bfd88))
+
 # [0.1.0](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.0.28...v0.1.0) (2025-12-07)
 
 
