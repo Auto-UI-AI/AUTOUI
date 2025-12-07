@@ -4,6 +4,7 @@ import { resolveProps } from '../utils/resolveProps';
 import type { SerializedMessage } from '@lib/components/chat/types';
 import type { Dispatch, SetStateAction } from 'react';
 import type React from 'react';
+import { extraAnalysisWithLLM } from '@lib/core/extraDataAnalyzingWithLLM';
 
 export type ResolveComponent = (name: string, props: any) => React.ReactNode;
 export type SetUI = (ui: React.ReactNode | string) => void;
@@ -14,10 +15,11 @@ export async function executePlanSteps(
   resolveComponent: ResolveComponent,
   setUI: SetUI,
   setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
+  userMessage: string, 
 ) {
   const ctx: Record<string, any> = {};
   for (const step of plan.steps) {
-    await runStep(step, ctx, config, resolveComponent, setUI, setSerializedMessages);
+    await runStep(step, ctx, config, resolveComponent, setUI, setSerializedMessages, userMessage, plan);
   }
   return ctx;
 }
@@ -29,6 +31,8 @@ async function runStep(
   resolveComponent: ResolveComponent,
   setUI: SetUI,
   setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
+  userMessage: string, 
+  plan: InstructionPlan,
 ) {
   const isPlainObject = (v: unknown): v is Record<string, unknown> =>
   !!v && typeof v === 'object' && !Array.isArray(v);
@@ -38,6 +42,7 @@ if (step.type === 'function') {
   const fCfg = config.functions[step.name];
   if (!fCfg) throw new Error(`Unknown function: ${step.name}`);
 
+ 
   const fn = fCfg.callFunc as any;
 
   // The plan may provide either .args (positional) or .params (object).
@@ -68,8 +73,15 @@ if (step.type === 'function') {
   } else {
     out = await fn();
   }
-
-  if ((step as any).assign) ctx[(step as any).assign] = out;
+  
+  if(fCfg.canShareDataWithLLM && step.hasToShareDataWithLLM ){
+    console.log("This function is allowed to share data with LLM and LLM says that this step requires data to be shared with LLM");
+    const dataToShare = await extraAnalysisWithLLM(out, config, userMessage, plan, step.name);
+    if ((step as any).assign) ctx[(step as any).assign] = dataToShare;
+  }
+  else{
+    if ((step as any).assign) ctx[(step as any).assign] = out;
+  }
   return;
 }
   if (step.type === 'component') {
