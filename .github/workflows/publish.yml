@@ -1,4 +1,4 @@
-name: Build, Test & Deploy AUTOUI to GitHub Packages
+name: Release AUTOUI to npm
 
 on:
   push:
@@ -6,12 +6,12 @@ on:
       - main
 
 jobs:
-  deploy:
+  release:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write # для push тегів
-      packages: write # для публікації в GitHub Packages
+      contents: write
+      packages: write
 
     steps:
       - uses: actions/checkout@v4
@@ -21,39 +21,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@auto-ui-ai'
+          registry-url: 'https://registry.npmjs.org/'
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Test
-        run: npm run test
-
-      # - name: Lint
-      #   run: npm run lint
       - name: Build library
         run: npm run build
 
-      - name: Configure git user
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Bump version
-        run: npm version patch --git-tag-version
-
-      - name: Push changes and tags
-        run: |
-          git push origin main
-          git push origin --tags
-
-      - name: Authenticate GitHub Packages
-        run: npm config set //npm.pkg.github.com/:_authToken=${GH_PACKAGES_TOKEN}
+      - name: Release to npm
         env:
-          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
-
-      - name: Publish to GitHub Packages
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
