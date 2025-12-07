@@ -1,6 +1,3 @@
-/**
- * Modal window showing detailed information about a selected product.
- */
 import React from 'react';
 
 interface ProductDetailsModalProps {

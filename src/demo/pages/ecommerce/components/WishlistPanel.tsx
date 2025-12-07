@@ -1,6 +1,3 @@
-/**
- * Panel displaying the list of saved or favorite items.
- */
 import React from 'react';
 
 interface WishlistPanelProps {

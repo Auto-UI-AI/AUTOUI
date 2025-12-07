@@ -1,6 +1,3 @@
-/**
- * Form for collecting user information and handling payment submission.
- */
 import React, { useState } from 'react';
 
 interface UserInfo {

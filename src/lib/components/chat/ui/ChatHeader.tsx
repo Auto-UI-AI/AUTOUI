@@ -1,5 +1,6 @@
-import { clsx } from '@lib/utils/clsx';
+import clsx from 'clsx';
 import { useChatContext } from '../context/chatContext';
+import { xmark } from '../../../../assets';
 
 export const ChatHeader = () => {
   const { title, classNames, onClose, closeIcon } = useChatContext();
@@ -11,7 +12,7 @@ export const ChatHeader = () => {
       </h2>
       {onClose && (
         <button role="closeButton" className={clsx('autoui-chat-closebtn', classNames?.closeButton)} onClick={onClose}>
-          {closeIcon ?? <img src={'xmark-svgrepo-com.svg'} alt={'Open char'} width={24} height={24} />}
+          {closeIcon ?? <img src={xmark} alt={'Open char'} width={24} height={24} />}
         </button>
       )}
     </header>

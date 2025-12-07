@@ -1,30 +1,3 @@
-/**
- * Grid of fashion items displaying products with name, price, image, and "Add to Cart" button.
- * Renders a responsive grid layout reusing ProductCard components from the base component library.
- *
- * @example
- * ```tsx
- * <ProductGallery
- *   products={[
- *     {
- *       id: "1",
- *       name: "Beige Coat",
- *       description: "A stylish beige coat for modern fashion.",
- *       price: 89.99,
- *       image: "https://example.com/coat.jpg"
- *     },
- *     {
- *       id: "2",
- *       name: "Denim Jacket",
- *       description: "Classic denim jacket for everyday wear.",
- *       price: 69.99,
- *       image: "https://example.com/jacket.jpg"
- *     }
- *   ]}
- *   onAddToCart={(productId) => console.log("Added", productId)}
- * />
- * ```
- */
 import ProductCard from './ProductCard';
 
 interface Product {
