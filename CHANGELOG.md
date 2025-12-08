@@ -1,3 +1,10 @@
+## [0.1.5](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.4...v0.1.5) (2025-12-08)
+
+
+### Bug Fixes
+
+* tsconfig.app ([be6674f](https://github.com/Auto-UI-AI/AUTOUI/commit/be6674fcdd51c5f933160076d968d35a3561ce5b))
+
 ## [0.1.3](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.2...v0.1.3) (2025-12-08)
 
 
