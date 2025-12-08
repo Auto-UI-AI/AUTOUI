@@ -14,7 +14,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "preview": "vite preview",
-    "deploy": "npm version patch && git push && git push --tags && vite build && npm publish"
+    "deploy": "npm version patch && git push && git push --tags && npm run build:lib && npm publish"
   },
   "repository": {
     "type": "git",
