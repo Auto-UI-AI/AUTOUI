@@ -32,7 +32,7 @@ export const ChatMessageList: React.FC<ChatMessageListProps> = () => {
         initialTopMostItemIndex={length - 1}
         itemContent={(_, message) => <ChatMessageListItem key={message.id} message={message} />}
       />
-      {isLoading && <Spinner variant="dots" />}
+      {isLoading && <Spinner variant="dots" color="red" />}
     </div>
   );
 };

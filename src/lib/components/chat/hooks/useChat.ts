@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { ChatContextType, ChatProps, SerializedMessage } from '../types';
 import { useAutoUiChat } from './useAutoUiChat';
 import { runInstructionPlan } from '@lib/runtime/runtimeEngine';
@@ -15,6 +15,8 @@ export function useChat({
   isOpen,
 }: ChatProps): ChatContextType {
   const { messages, setSerializedMessages } = useChatState(storageKey, config);
+
+  console.log('CREATE CONTEXT');
 
   const { processMessage } = useAutoUiChat(config);
   const { resolveComponent, setUI } = useRendering(config);
@@ -65,6 +67,7 @@ export function useChat({
 
     localStorage.removeItem(storageKey);
   }, [setSerializedMessages, storageKey]);
+
   const getChatInputProps = useCallback(
     () => ({
       onSend: handleSend,
@@ -88,20 +91,38 @@ export function useChat({
     [messages],
   );
 
-  return {
-    config,
-    isOpen,
-    title,
-    classNames,
-    messages,
-    isLoading,
-    handleSend,
-    onClose,
-    handleClear,
-    getChatInputProps,
-    getChatHeaderProps,
-    getMessageListProps,
-  };
+  const contextValue = useMemo(
+    () => ({
+      config,
+      isOpen,
+      title,
+      classNames,
+      messages,
+      isLoading,
+      handleSend,
+      onClose,
+      handleClear,
+      getChatInputProps,
+      getChatHeaderProps,
+      getMessageListProps,
+    }),
+    [
+      config,
+      isOpen,
+      title,
+      classNames,
+      messages,
+      isLoading,
+      handleSend,
+      onClose,
+      handleClear,
+      getChatInputProps,
+      getChatHeaderProps,
+      getMessageListProps,
+    ],
+  );
+
+  return contextValue;
 }
 
 export type UseChatReturn = ReturnType<typeof useChat>;

@@ -1,4 +1,3 @@
-
 import React, { memo } from 'react';
 import { ChatInput } from './ChatInput';
 import { ChatMessageList } from './ChatMessageList';
@@ -9,12 +8,12 @@ import { ChatHeader } from './ChatHeader';
 import { ChatProvider } from '../context/chatContext';
 import clsx from 'clsx';
 
-
 export const Chat: React.FC<ChatProps> = memo(
   ({ config, title = 'AutoUI Chat', isOpen = true, classNames, onClose, onError, closeIcon }) => {
     const context = useChat({ config, title, isOpen, classNames, closeIcon, onClose, onError });
+    console.log(123, 'RENDER CHAT');
 
-  if (!isOpen) return null;
+    if (!isOpen) return null;
 
     return (
       <ChatProvider config={config} value={context}>

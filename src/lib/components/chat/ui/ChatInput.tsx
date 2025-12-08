@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useChatContext } from '../context/chatContext';
 import { clsx } from '@lib/utils/clsx';
-import { arrowUp } from '../../../../assets';
+import { arrowUp, burgerMenu } from '../../../../assets';
+import { PopoverMenu } from '@lib/components/popover';
 
 export interface ChatInputProps {}
 
@@ -22,6 +23,22 @@ export const ChatInput: React.FC<ChatInputProps> = () => {
       onSubmit={handleSubmit}
       aria-label="Chat input area"
     >
+      <PopoverMenu
+        popoverStyles={{
+          position: 'absolute',
+        }}
+        button={
+          <button type="button" className="autoui-chat-input-start">
+            <img src={burgerMenu} alt="menu" />
+          </button>
+        }
+        items={[
+          { key: 'new', label: 'New Chat' },
+          { key: 'clear', label: 'Clear Messages' },
+          { key: 'settings', label: 'Settings' },
+        ]}
+        onSelectionChange={(key: any) => console.log('Selected:', key)}
+      />
       <input
         role="input"
         className={clsx('autoui-chat-textbox', classNames?.input)}

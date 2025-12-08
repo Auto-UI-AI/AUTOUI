@@ -5,9 +5,11 @@ export const Popover = ({
   onClose,
   triggerRef,
   children,
+  styles,
   position = 'bottom-left',
 }: {
   isOpen: boolean;
+  styles?: React.CSSProperties;
   onClose: () => void;
   triggerRef: React.RefObject<any>;
   children: React.ReactNode;
@@ -52,6 +54,7 @@ export const Popover = ({
         position: 'absolute',
         zIndex: 999,
         ...style,
+        ...styles,
       }}
     >
       {children}
