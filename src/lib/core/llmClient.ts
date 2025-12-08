@@ -10,7 +10,7 @@ export const getInstructionPlan = async (userMessage: string, config: AutoUIConf
       headers: {
         'Authorization': config.llm.apiKey ? `Bearer ${config.llm.apiKey}` : '',
         'HTTP-Referer': config.metadata?.appName || 'autoui library user',
-        'X-Title': (import.meta as any)?.env?.VITE_OPENROUTER_SITE_TITLE ?? 'AutoUI Demo',
+        'X-Title': config.metadata?.appName ?? 'AutoUI Demo',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
