@@ -3,12 +3,19 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import pkg from './package.json' with { type: 'json' };
 import { visualizer } from 'rollup-plugin-visualizer';
+import dts from 'vite-plugin-dts';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 const external = [...Object.keys(pkg?.peerDependencies || {})];
 
 export default defineConfig({
   plugins: [
     react(),
+    cssInjectedByJsPlugin(),
+    dts({
+      tsconfigPath: './tsconfig.build.json',
+      insertTypesEntry: true,
+    }),
     visualizer({
       filename: 'dist/stats.html',
       gzipSize: true,

@@ -1,3 +1,52 @@
+## [0.1.10](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.9...v0.1.10) (2025-12-08)
+
+
+### Bug Fixes
+
+* types reexport ([9c6c144](https://github.com/Auto-UI-AI/AUTOUI/commit/9c6c1447992795258dcd64b82a5f19186ca54b05))
+
+## [0.1.9](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.8...v0.1.9) (2025-12-08)
+
+
+### Bug Fixes
+
+* deploy update ([dda4510](https://github.com/Auto-UI-AI/AUTOUI/commit/dda45103664b3c027f3540ae26e7807f9ec6cb69))
+
+## [0.1.8](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.7...v0.1.8) (2025-12-08)
+
+
+### Bug Fixes
+
+* deploy update ([bb32b46](https://github.com/Auto-UI-AI/AUTOUI/commit/bb32b462a30daa7b07a364af2aa525f1013608f1))
+
+## [0.1.7](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.6...v0.1.7) (2025-12-08)
+
+
+### Bug Fixes
+
+* viteconfig ([61a1692](https://github.com/Auto-UI-AI/AUTOUI/commit/61a1692cdff664a2fdd33de69c773afb1dd28539))
+
+## [0.1.6](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.5...v0.1.6) (2025-12-08)
+
+
+### Bug Fixes
+
+* tsconfig.build added ([bfebebc](https://github.com/Auto-UI-AI/AUTOUI/commit/bfebebc68e3de5589c635e5c15c1a99e020a7f23))
+
+## [0.1.5](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.4...v0.1.5) (2025-12-08)
+
+
+### Bug Fixes
+
+* tsconfig.app ([be6674f](https://github.com/Auto-UI-AI/AUTOUI/commit/be6674fcdd51c5f933160076d968d35a3561ce5b))
+
+## [0.1.3](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.2...v0.1.3) (2025-12-08)
+
+
+### Bug Fixes
+
+* css in js added ([48adbfe](https://github.com/Auto-UI-AI/AUTOUI/commit/48adbfe980c22dc4439aa0023dd9ad4f660ea303))
+
 ## [0.1.2](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.1...v0.1.2) (2025-12-07)
 
 
