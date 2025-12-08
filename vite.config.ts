@@ -5,6 +5,7 @@ import pkg from './package.json' with { type: 'json' };
 import { visualizer } from 'rollup-plugin-visualizer';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
+
 const external = [...Object.keys(pkg?.peerDependencies || {})];
 
 export default defineConfig({
