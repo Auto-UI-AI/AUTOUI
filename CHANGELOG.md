@@ -1,3 +1,10 @@
+## [0.1.3](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.2...v0.1.3) (2025-12-08)
+
+
+### Bug Fixes
+
+* css in js added ([48adbfe](https://github.com/Auto-UI-AI/AUTOUI/commit/48adbfe980c22dc4439aa0023dd9ad4f660ea303))
+
 ## [0.1.2](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.1...v0.1.2) (2025-12-07)
 
 
