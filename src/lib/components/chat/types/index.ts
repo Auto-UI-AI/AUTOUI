@@ -45,7 +45,7 @@ export interface ChatContextType {
   isOpen?: boolean;
   title?: string;
   classNames?: ChatClassNames;
-  messages: ChatMessage[];
+  messages: ChatMessage[] | undefined;
   isLoading: boolean;
   closeIcon?: any;
   handleSend: (text: string) => Promise<void>;
@@ -59,7 +59,7 @@ export interface ChatContextType {
     onClose?: () => void;
   };
   getMessageListProps: () => {
-    messages: ChatMessage[];
+    messages: ChatMessage[] | undefined;
   };
   onClose?: () => void;
 }

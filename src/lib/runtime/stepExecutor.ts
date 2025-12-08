@@ -34,19 +34,18 @@ async function runStep(
   userMessage: string, 
   plan: InstructionPlan,
 ) {
-  const isPlainObject = (v: unknown): v is Record<string, unknown> =>
-  !!v && typeof v === 'object' && !Array.isArray(v);
+  const isPlainObject = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
 
-// --- inside runStep ---
-if (step.type === 'function') {
-  const fCfg = config.functions[step.name];
-  if (!fCfg) throw new Error(`Unknown function: ${step.name}`);
+  // --- inside runStep ---
+  if (step.type === 'function') {
+    const fCfg = config.functions[step.name];
+    if (!fCfg) throw new Error(`Unknown function: ${step.name}`);
 
  
   const fn = fCfg.callFunc as any;
 
-  // The plan may provide either .args (positional) or .params (object).
-  const anyStep = step as any;
+    // The plan may provide either .args (positional) or .params (object).
+    const anyStep = step as any;
   const hasArgs = Array.isArray(anyStep.args);
   const hasParamsObj = !!anyStep.params && typeof anyStep.params === 'object';
 
@@ -122,6 +121,6 @@ if (step.type === 'function') {
     return;
   }
 
-  const _never: never = step;
-  return _never;
+  const result: never = step;
+  return result;
 }

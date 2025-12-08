@@ -1,6 +1,3 @@
-/**
- * Buttons or dropdown for filtering products by size.
- */
 import React from 'react';
 
 interface SizeFilterProps {

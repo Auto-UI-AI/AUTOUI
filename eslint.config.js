@@ -19,7 +19,7 @@ export default [
         ecmaVersion: 2020,
         sourceType: 'module',
         ecmaFeatures: { jsx: true },
-        project: ['./tsconfig.app.json'],
+        project: ['./tsconfig.json'],
         tsconfigRootDir: path.resolve('./'),
       },
       globals: globals.browser,

@@ -1,6 +1,3 @@
-/**
- * Displays the order ID, estimated delivery time (ETA), and total cost.
- */
 import React from 'react';
 
 interface OrderConfirmationProps {

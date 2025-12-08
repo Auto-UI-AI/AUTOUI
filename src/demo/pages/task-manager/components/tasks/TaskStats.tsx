@@ -59,7 +59,7 @@ export default function TaskStats({ tasks }: TaskStatsProps) {
 
   return (
     <div className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-4">
-      {statCards.map((stat, _) => (
+      {statCards.map((stat) => (
         <div key={stat.label} className="relative group">
           <div
             className={`absolute inset-0 ${stat.bgGlow} rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}

@@ -29,7 +29,7 @@ export function useChatState(storageKey: string, config: AutoUIConfig) {
     }
   }, [storageKey]);
 
-  const messages: ChatMessage[] = useMemo(
+  const messages: ChatMessage[] | undefined = useMemo(
     () => rerenderChatFromHistory(serializedMessages, resolveComponent, setUI),
     [serializedMessages, resolveComponent, setUI],
   );

@@ -1,3 +1,4 @@
+
 import React, { memo } from 'react';
 import { ChatInput } from './ChatInput';
 import { ChatMessageList } from './ChatMessageList';
@@ -6,7 +7,8 @@ import type { ChatProps } from '../types';
 import { useChat } from '../hooks/useChat';
 import { ChatHeader } from './ChatHeader';
 import { ChatProvider } from '../context/chatContext';
-import { clsx } from '@lib/utils/clsx';
+import clsx from 'clsx';
+
 
 export const Chat: React.FC<ChatProps> = memo(
   ({ config, title = 'AutoUI Chat', isOpen = true, classNames, onClose, onError, closeIcon }) => {
