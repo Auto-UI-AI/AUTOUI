@@ -1,3 +1,10 @@
+## [0.1.7](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.6...v0.1.7) (2025-12-08)
+
+
+### Bug Fixes
+
+* viteconfig ([61a1692](https://github.com/Auto-UI-AI/AUTOUI/commit/61a1692cdff664a2fdd33de69c773afb1dd28539))
+
 ## [0.1.6](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.5...v0.1.6) (2025-12-08)
 
 
