@@ -1,6 +1,6 @@
 {
   "name": "@autoai-ui/autoui",
-  "version": "0.1.2",
+  "version": "0.1.10",
   "type": "module",
   "private": false,
   "scripts": {
@@ -14,7 +14,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "preview": "vite preview",
-    "deploy": "npm version patch && git push && git push --tags && vite build && npm publish"
+    "deploy": "npm version patch && git push && git push --tags && npm run build:lib && npm publish"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,7 @@
     "vite-plugin-css-injected-by-js": "^3.5.2"
   },
   "devDependencies": {
+    "vite-plugin-css-injected-by-js": "^3.5.2",
     "@changesets/cli": "^2.29.7",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/modifiers": "^9.0.0",
