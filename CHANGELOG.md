@@ -1,3 +1,10 @@
+## [0.1.10](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.9...v0.1.10) (2025-12-08)
+
+
+### Bug Fixes
+
+* types reexport ([9c6c144](https://github.com/Auto-UI-AI/AUTOUI/commit/9c6c1447992795258dcd64b82a5f19186ca54b05))
+
 ## [0.1.9](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.8...v0.1.9) (2025-12-08)
 
 
