@@ -1,0 +1,56 @@
+.hero-menu {
+  list-style: none;
+  padding: 6px;
+  margin: 0;
+  width: 240px;
+  background: white;
+  border-radius: 10px;
+}
+
+.hero-menu-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  gap: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  user-select: none;
+  transition: background 0.15s ease;
+}
+
+.hero-menu-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.hero-menu-item.selected {
+  background: rgba(0, 0, 0, 0.07);
+  font-weight: 500;
+}
+
+.hero-menu-item.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.hero-menu-item .content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-menu-item .description {
+  opacity: 0.6;
+  font-size: 12px;
+  margin-top: -2px;
+}
+
+.hero-menu-item .shortcut {
+  opacity: 0.6;
+  font-size: 12px;
+}
+
+.selected-icon svg {
+  width: 16px;
+  height: 16px;
+  color: #007aff;
+}
