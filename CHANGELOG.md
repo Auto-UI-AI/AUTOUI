@@ -1,3 +1,10 @@
+## [0.1.8](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.7...v0.1.8) (2025-12-08)
+
+
+### Bug Fixes
+
+* deploy update ([bb32b46](https://github.com/Auto-UI-AI/AUTOUI/commit/bb32b462a30daa7b07a364af2aa525f1013608f1))
+
 ## [0.1.7](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.6...v0.1.7) (2025-12-08)
 
 
