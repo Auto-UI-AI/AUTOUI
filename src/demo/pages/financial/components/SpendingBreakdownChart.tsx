@@ -12,7 +12,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/demo/base/toggleGroup';
 
 const chartConfig = {
   cumulative: {
-    label: 'Cumulative Spending',
+    label: 'Cumulative Monitoring Sources',
     color: 'hsl(var(--chart-1))',
   },
 } satisfies ChartConfig;
@@ -28,33 +28,23 @@ export function SpendingBreakdownChart() {
     }
   }, [isMobile]);
 
-  // Process transactions to calculate daily spending totals
+  // Process transactions to calculate daily monitoring sources added
   const allChartData = React.useMemo(() => {
     if (transactions.length === 0) {
       return [];
     }
 
-    // Filter out income transactions - only include expenses for spending breakdown
-    const expenseTransactions = transactions.filter((transaction) => transaction.category !== 'Income');
+    // Group transactions by date and count monitoring sources added per day
+    const dailyCounts = new Map<string, number>();
 
-    if (expenseTransactions.length === 0) {
-      return [];
-    }
-
-    // Group transactions by date and sum amounts
-    const dailyTotals = new Map<string, number>();
-
-    expenseTransactions.forEach((transaction) => {
+    transactions.forEach((transaction) => {
       const date = transaction.date;
-      const amountStr = transaction.amount.replace(/[$,\s]/g, '');
-      const amount = parseFloat(amountStr) || 0;
-
-      dailyTotals.set(date, (dailyTotals.get(date) || 0) + amount);
+      dailyCounts.set(date, (dailyCounts.get(date) || 0) + 1);
     });
 
     // Convert to array and sort by date
-    return Array.from(dailyTotals.entries())
-      .map(([date, amount]) => ({ date, amount }))
+    return Array.from(dailyCounts.entries())
+      .map(([date, count]) => ({ date, count }))
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }, [transactions]);
 
@@ -76,7 +66,7 @@ export function SpendingBreakdownChart() {
     startDate.setDate(startDate.getDate() - daysToSubtract);
     startDate.setHours(0, 0, 0, 0);
 
-    // Create map of all dates in range with amounts
+    // Create map of all dates in range with counts
     const dateMap = new Map<string, number>();
     const allDates: string[] = [];
     const currentDate = new Date(startDate);
@@ -88,46 +78,41 @@ export function SpendingBreakdownChart() {
       currentDate.setDate(currentDate.getDate() + 1);
     }
 
-    // Fill in actual transaction amounts
+    // Fill in actual monitoring source counts
     allChartData.forEach((item) => {
       const date = new Date(item.date);
       date.setHours(0, 0, 0, 0);
       if (date >= startDate && date <= referenceDate) {
-        dateMap.set(item.date, (dateMap.get(item.date) || 0) + item.amount);
+        dateMap.set(item.date, (dateMap.get(item.date) || 0) + item.count);
       }
     });
 
-    // Calculate cumulative amounts
+    // Calculate cumulative count
     let cumulative = 0;
     return allDates.map((dateStr) => {
       cumulative += dateMap.get(dateStr) || 0;
       return {
         date: dateStr,
-        cumulative: Math.round(cumulative * 100) / 100,
+        cumulative: cumulative,
       };
     });
   }, [allChartData, timeRange]);
 
-  // Format currency for display
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(value);
+  // Format count for display
+  const formatCount = (value: number) => {
+    return Math.round(value).toLocaleString('en-US');
   };
 
   if (allChartData.length === 0) {
     return (
       <Card className="@container/card">
         <CardHeader>
-          <CardTitle>Spending Breakdown Over Time</CardTitle>
-          <CardDescription>No transaction data available</CardDescription>
+          <CardTitle>Monitoring Sources Added Over Time</CardTitle>
+          <CardDescription>No monitoring sources added yet</CardDescription>
         </CardHeader>
         <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
           <div className="flex h-[250px] items-center justify-center text-muted-foreground">
-            Add transactions to see spending breakdown
+            Add monitoring sources to see monitoring sources added over time
           </div>
         </CardContent>
       </Card>
@@ -137,10 +122,10 @@ export function SpendingBreakdownChart() {
   return (
     <Card className="@container/card">
       <CardHeader className="relative">
-        <CardTitle>Spending Breakdown Over Time</CardTitle>
+        <CardTitle>Monitoring Sources Added Over Time</CardTitle>
         <CardDescription>
-          <span className="@[540px]/card:block hidden">Cumulative spending by transaction date</span>
-          <span className="@[540px]/card:hidden">Cumulative spending</span>
+          <span className="@[540px]/card:block hidden">Cumulative number of monitoring sources connected by date.</span>
+          <span className="@[540px]/card:hidden">Cumulative number of monitoring sources connected by date.</span>
         </CardDescription>
         <div className="absolute right-4 top-4">
           <ToggleGroup
@@ -207,7 +192,7 @@ export function SpendingBreakdownChart() {
               axisLine={false}
               tickMargin={8}
               tickFormatter={(value) => {
-                return formatCurrency(value);
+                return formatCount(value);
               }}
             />
             <ChartTooltip
@@ -220,7 +205,19 @@ export function SpendingBreakdownChart() {
                       day: 'numeric',
                     });
                   }}
-                  formatter={(value) => formatCurrency(Number(value))}
+                  formatter={(value, name, item) => (
+                    <div className="flex w-full flex-wrap items-center gap-2">
+                      <div className="h-2.5 w-2.5 shrink-0 rounded-0.5 border bg-[var(--color-cumulative)]" />
+                      <div className="flex flex-1 justify-between leading-none items-center">
+                        <div className="grid gap-1.5">
+                          <span className="text-muted-foreground">Cumulative</span>
+                        </div>
+                        <span className="text-foreground font-mono font-medium ml-1 tabular-nums">
+                          {formatCount(Number(value))} sources
+                        </span>
+                      </div>
+                    </div>
+                  )}
                   indicator="dot"
                 />
               }
