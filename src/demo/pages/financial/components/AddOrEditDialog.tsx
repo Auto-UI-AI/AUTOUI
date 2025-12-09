@@ -19,21 +19,19 @@ import { SidebarMenuButton } from '@/demo/base/sidebar';
 import { PlusCircleIcon } from 'lucide-react';
 
 const CATEGORIES = [
-  'Groceries',
-  'Food & Drink',
-  'Transport',
-  'Bills',
-  'Subscriptions',
-  'Income',
-  'Health',
-  'Shopping',
-  'Entertainment',
-  'Personal Care',
+  'Infrastructure',
+  'Service / API',
+  'Logs',
+  'Traces',
+  'Database',
+  'Cloud Resource',
+  'Synthetic',
+  'Custom Metric Source',
 ] as const;
 
-const ACCOUNTS = ['Personal', 'Business', 'Cash', 'Bank'] as const;
+const ACCOUNTS = ['Production', 'Staging', 'Dev', 'EU-Cluster', 'US-West-Cluster'] as const;
 
-const STATUSES = ['paid', 'pending'] as const;
+const STATUSES = ['Active', 'Pending Setup', 'Disabled', 'Maintenance Mode'] as const;
 
 type TransactionFormData = {
   description: string;
@@ -64,19 +62,19 @@ export function AddOrEditDialog() {
 
     // Validation
     if (!formData.description.trim()) {
-      toast.error('Description is required');
+      toast.error('Monitoring Target Name is required');
       return;
     }
     if (!formData.amount.trim()) {
-      toast.error('Amount is required');
+      toast.error('Endpoint / Port is required');
       return;
     }
     if (!formData.date) {
-      toast.error('Date is required');
+      toast.error('Connection Start Date is required');
       return;
     }
     if (!formData.category) {
-      toast.error('Category is required');
+      toast.error('Monitoring Category is required');
       return;
     }
 
@@ -129,30 +127,30 @@ export function AddOrEditDialog() {
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <SidebarMenuButton
-          tooltip="Add Transaction"
+          tooltip="Connect Monitoring"
           className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground"
         >
           <PlusCircleIcon />
-          <span>Add Transaction</span>
+          <span>Connect Monitoring</span>
         </SidebarMenuButton>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Add New Transaction</DialogTitle>
+          <DialogTitle>Connect Monitoring Source</DialogTitle>
           <DialogDescription>
-            Enter the details for your new transaction. All fields marked with * are required.
+           Configure a new monitoring connection to collect metrics, logs, and traces. All fields marked * are required.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
             <div className="grid gap-3">
               <Label htmlFor="description">
-                Description <span className="text-destructive">*</span>
+                Monitoring Target Name <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="description"
                 name="description"
-                placeholder="e.g., Groceries at Lidl"
+                placeholder="e.g., api-service-prod"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 required
@@ -161,13 +159,13 @@ export function AddOrEditDialog() {
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-3">
                 <Label htmlFor="amount">
-                  Amount <span className="text-destructive">*</span>
+                  Endpoint / Port <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="amount"
                   name="amount"
                   type="text"
-                  placeholder="23.40"
+                  placeholder="8080"
                   value={formData.amount}
                   onChange={(e) => {
                     // Allow only numbers and decimal point
@@ -179,7 +177,7 @@ export function AddOrEditDialog() {
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="date">
-                  Date <span className="text-destructive">*</span>
+                  Connection Start Date <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="date"
@@ -194,7 +192,7 @@ export function AddOrEditDialog() {
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-3">
                 <Label htmlFor="category">
-                  Category <span className="text-destructive">*</span>
+                  Monitoring Category <span className="text-destructive">*</span>
                 </Label>
                 <Select
                   value={formData.category}
@@ -213,7 +211,7 @@ export function AddOrEditDialog() {
                 </Select>
               </div>
               <div className="grid gap-3">
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status">Connection Status</Label>
                 <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
                   <SelectTrigger id="status">
                     <SelectValue placeholder="Select status" />
@@ -229,7 +227,7 @@ export function AddOrEditDialog() {
               </div>
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="account">Account</Label>
+              <Label htmlFor="account">Environment / Cluster</Label>
               <Select
                 value={formData.account || '__none__'}
                 onValueChange={(value) => setFormData({ ...formData, account: value })}

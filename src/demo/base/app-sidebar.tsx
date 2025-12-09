@@ -8,14 +8,14 @@ import {
   LayoutDashboardIcon,
   SearchIcon,
   SettingsIcon,
-  BanknoteArrowDownIcon,
-  ChartPieIcon,
+  MonitorCloudIcon,
+  PlugIcon,
   ChartLineIcon,
-  CreditCardIcon,
+  BoxesIcon,
   GoalIcon,
-  ArrowLeftRightIcon,
+  SirenIcon,
   ChartSplineIcon,
-  TagsIcon,
+  TriangleAlertIcon,
   ZapIcon,
 } from 'lucide-react';
 
@@ -41,27 +41,27 @@ const data = {
   },
   navMain: [
     {
-      title: 'Dashboard',
+      title: 'Overview',
       url: '#',
       icon: LayoutDashboardIcon,
     },
     {
-      title: 'Spendings',
+      title: 'Infrastructure',
       url: '#',
-      icon: BanknoteArrowDownIcon,
+      icon: MonitorCloudIcon,
     },
     {
-      title: 'Budgets',
+      title: 'Services & APIs',
       url: '#',
-      icon: ChartPieIcon,
+      icon: PlugIcon,
     },
     {
-      title: 'Accounts',
+      title: 'Applications',
       url: '#',
-      icon: CreditCardIcon,
+      icon: BoxesIcon,
     },
     {
-      title: 'Goals',
+      title: 'SLOs & SLIs',
       url: '#',
       icon: GoalIcon,
     },
@@ -138,19 +138,19 @@ const data = {
   ],
   documents: [
     {
-      name: 'Transactions',
+      name: 'Alerts & Incidents',
       url: '#',
-      icon: ArrowLeftRightIcon,
+      icon: SirenIcon,
     },
     {
-      name: 'Reports',
+      name: 'Dashboards',
       url: '#',
       icon: ChartSplineIcon,
     },
     {
-      name: 'Rules',
+      name: 'Alert Policies',
       url: '#',
-      icon: TagsIcon,
+      icon: TriangleAlertIcon,
     },
     {
       name: 'Automations',
