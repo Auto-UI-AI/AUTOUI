@@ -137,7 +137,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: 'description',
-    header: 'Description',
+    header: 'Source Name',
     cell: ({ row }) => {
       return <TableCellViewer item={row.original} />;
     },
@@ -145,7 +145,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: 'amount',
-    header: () => <div className="w-full text-right">Amount</div>,
+    header: () => <div className="w-full text-right">Endpoint / Port</div>,
     cell: ({ row }) => (
       <form
         onSubmit={(e) => {
@@ -158,7 +158,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
         }}
       >
         <Label htmlFor={`${row.original.id}-amount`} className="sr-only">
-          Amount
+          Endpoint / Port
         </Label>
         <Input
           className="h-8 min-w-16 border-transparent bg-transparent justify-end text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background"
@@ -170,7 +170,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: 'date',
-    header: () => <div className="w-full text-right">Date</div>,
+    header: () => <div className="w-full text-right">Connected On</div>,
     cell: ({ row }) => (
       <form
         onSubmit={(e) => {
@@ -183,7 +183,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
         }}
       >
         <Label htmlFor={`${row.original.id}-date`} className="sr-only">
-          Date
+          Connected On
         </Label>
         <Input
           className="h-8 min-w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background"
@@ -195,24 +195,29 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: 'account',
-    header: 'Account',
+    header: 'Environment / Cluster',
     cell: ({ row }) => {
-      const accountValue = row.original.account || undefined;
+      const accountValue = row.original.account.toLowerCase() || undefined;
 
       return (
         <>
           <Label htmlFor={`${row.original.id}-account`} className="sr-only">
-            Account
+            Environment / Cluster
           </Label>
           <Select defaultValue={accountValue}>
             <SelectTrigger className="h-8 w-40" id={`${row.original.id}-account`}>
-              <SelectValue placeholder="Assign account" />
+              <SelectValue placeholder="Assign environment / cluster" />
             </SelectTrigger>
             <SelectContent align="end">
-              <SelectItem value="Personal">Personal</SelectItem>
-              <SelectItem value="Business">Business</SelectItem>
-              <SelectItem value="Cash">Cash</SelectItem>
-              <SelectItem value="Bank">Bank</SelectItem>
+              {accountValue}
+              <SelectItem value="production">Production</SelectItem>
+              <SelectItem value="staging">Staging</SelectItem>
+              <SelectItem value="dev">Dev</SelectItem>
+              <SelectItem value="eu-cluster">EU-Cluster</SelectItem>
+              <SelectItem value="us-west-cluster">US-West-Cluster</SelectItem>
+              <SelectItem value="business">Staging</SelectItem>
+              <SelectItem value="personal">US-West-Cluster</SelectItem>
+              <SelectItem value="cash">EU-Cluster</SelectItem>
             </SelectContent>
           </Select>
         </>
@@ -221,7 +226,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: 'category',
-    header: 'Category',
+    header: 'Monitoring Category',
     cell: ({ row }) => (
       <div className="w-32">
         <Badge variant="outline" className="px-1.5 text-muted-foreground">
@@ -232,15 +237,15 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: 'status',
-    header: 'Status',
+    header: 'Connection Status',
     cell: ({ row }) => (
       <Badge variant="outline" className="flex gap-1 px-1.5 text-muted-foreground [&_svg]:size-3">
-        {row.original.status === 'paid' ? (
+        {row.original.status === 'active' ? (
           <CheckCircle2Icon className="text-green-500 dark:text-green-400" />
         ) : (
           <LoaderIcon />
         )}
-        {row.original.status === 'paid' ? 'Paid' : 'Pending'}
+        {row.original.status === 'active' ? 'Active' : 'Pending Setup'}
       </Badge>
     ),
   },
@@ -356,19 +361,19 @@ export function DataTable({ data: initialData }: { data: z.infer<typeof schema>[
             <SelectValue placeholder="Select a view" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="outline">Expenses</SelectItem>
-            <SelectItem value="past-performance">Incomes</SelectItem>
-            <SelectItem value="key-personnel">Bills</SelectItem>
-            <SelectItem value="focus-documents">Subscriptions</SelectItem>
+            <SelectItem value="outline">Infrastructure</SelectItem>
+            <SelectItem value="past-performance">Services</SelectItem>
+            <SelectItem value="key-personnel">Logs</SelectItem>
+            <SelectItem value="focus-documents">Traces</SelectItem>
           </SelectContent>
         </Select>
         <TabsList className="@4xl/main:flex hidden">
-          <TabsTrigger value="outline">Expenses</TabsTrigger>
+          <TabsTrigger value="outline">Infrastructure</TabsTrigger>
           <TabsTrigger value="past-performance" className="gap-1">
-            Incomes{' '}
+            Services{' '}
           </TabsTrigger>
           <TabsTrigger value="key-personnel" className="gap-1">
-            Bills{' '}
+            Logs{' '}
             <Badge
               variant="secondary"
               className="flex h-5 w-5 items-center justify-center rounded-full bg-muted-foreground/30"
@@ -376,7 +381,7 @@ export function DataTable({ data: initialData }: { data: z.infer<typeof schema>[
               3
             </Badge>
           </TabsTrigger>
-          <TabsTrigger value="focus-documents">Subscriptions</TabsTrigger>
+          <TabsTrigger value="focus-documents">Traces</TabsTrigger>
         </TabsList>
         <div className="flex items-center gap-2">
           <DropdownMenu>
@@ -633,12 +638,12 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
           )}
           <form className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">Source Name</Label>
               <Input id="description" defaultValue={item.description} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="category">Category</Label>
+                <Label htmlFor="category">Monitoring Category</Label>
                 <Select defaultValue={item.category}>
                   <SelectTrigger id="category" className="w-full">
                     <SelectValue placeholder="Select a category" />
@@ -656,7 +661,7 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                 </Select>
               </div>
               <div className="flex flex-col gap-3">
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status">Connection Status</Label>
                 <Select defaultValue={item.status}>
                   <SelectTrigger id="status" className="w-full">
                     <SelectValue placeholder="Select a status" />
@@ -671,11 +676,11 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="target">Amount</Label>
+                <Label htmlFor="target">Endpoint / Port</Label>
                 <Input id="amount" defaultValue={item.amount} />
               </div>
               <div className="flex flex-col gap-3">
-                <Label htmlFor="date">Date</Label>
+                <Label htmlFor="date">Connected On</Label>
                 <Input id="date" defaultValue={item.date} />
               </div>
             </div>
@@ -686,10 +691,11 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                   <SelectValue placeholder="Select an account" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Personal">Personal</SelectItem>
-                  <SelectItem value="Business">Business</SelectItem>
-                  <SelectItem value="Cash">Cash</SelectItem>
-                  <SelectItem value="Bank">Bank</SelectItem>
+                  <SelectItem value="production">Production</SelectItem>
+                  <SelectItem value="staging">Staging</SelectItem>
+                  <SelectItem value="dev">Dev</SelectItem>
+                  <SelectItem value="eu-cluster">EU-Cluster</SelectItem>
+                  <SelectItem value="us-west-cluster">US-West-Cluster</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -1,209 +1,209 @@
 [
   {
     "id": 1,
-    "description": "Groceries at Lidl",
-    "amount": "$23.40",
+    "description": "Kubernetes Cluster - Prod",
+    "amount": "10255",
     "date": "2025-11-15",
-    "category": "Groceries",
-    "account": "Personal",
-    "status": "paid"
+    "category": "Infrastructure",
+    "account": "Production",
+    "status": "active"
   },
   {
     "id": 2,
-    "description": "Flat white coffee",
-    "amount": "$4.20",
+    "description": "API Gateway Metrics",
+    "amount": "9090",
     "date": "2025-11-09",
-    "category": "Food & Drink",
-    "account": "Cash",
-    "status": "paid"
+    "category": "Services",
+    "account": "Staging",
+    "status": "active"
   },
   {
     "id": 3,
-    "description": "Uber ride to office",
-    "amount": "$12.90",
+    "description": "Checkout Service Metrics",
+    "amount": "8080",
     "date": "2025-10-29",
-    "category": "Transport",
+    "category": "Services",
     "account": "",
     "status": "pending"
   },
   {
     "id": 4,
-    "description": "Electricity bill",
-    "amount": "$68.00",
+    "description": "Node Exporter - VM32",
+    "amount": "9100",
     "date": "2025-10-15",
-    "category": "Bills",
-    "account": "Personal",
-    "status": "paid"
+    "category": "Infrastructure",
+    "account": "Production",
+    "status": "active"
   },
   {
     "id": 5,
-    "description": "Spotify subscription",
-    "amount": "$9.99",
+    "description": "OpenTelemetry Trace Collector",
+    "amount": "4317",
     "date": "2025-11-02",
-    "category": "Subscriptions",
+    "category": "Traces",
     "account": "",
     "status": "pending"
   },
   {
     "id": 6,
-    "description": "Dinner out",
-    "amount": "$32.50",
+    "description": "User Authentication Service",
+    "amount": "7001",
     "date": "2025-10-22",
-    "category": "Food & Drink",
-    "account": "Business",
-    "status": "paid"
+    "category": "Services",
+    "account": "EU-Cluster",
+    "status": "active"
   },
   {
     "id": 7,
-    "description": "Salary",
-    "amount": "$2500.00",
+    "description": "Database Metrics - PostgreSQL",
+    "amount": "5432",
     "date": "2025-11-01",
-    "category": "Income",
-    "account": "Personal",
-    "status": "paid"
+    "category": "Database",
+    "account": "Production",
+    "status": "active"
   },
   {
     "id": 8,
-    "description": "Taxi airport return",
-    "amount": "$21.00",
+    "description": "Load Balancer Health Checks",
+    "amount": "8081",
     "date": "2025-09-27",
-    "category": "Transport",
+    "category": "Infrastructure",
     "account": "",
     "status": "pending"
   },
   {
     "id": 9,
-    "description": "Pharmacy / vitamins",
-    "amount": "$14.80",
+    "description": "Syslog Collector - EU Region",
+    "amount": "514",
     "date": "2025-09-18",
-    "category": "Health",
-    "account": "Personal",
-    "status": "paid"
+    "category": "Logs",
+    "account": "Production",
+    "status": "active"
   },
   {
     "id": 10,
-    "description": "Gym membership",
-    "amount": "$45.00",
+    "description": "Prometheus Scraper - Internal",
+    "amount": "9091",
     "date": "2025-10-01",
-    "category": "Health",
-    "account": "Personal",
-    "status": "paid"
+    "category": "Infrastructure",
+    "account": "Production",
+    "status": "active"
   },
   {
     "id": 11,
-    "description": "Amazon office supplies",
-    "amount": "$18.75",
+    "description": "Network Device Metrics - Switch 12",
+    "amount": "9162",
     "date": "2025-08-30",
-    "category": "Shopping",
-    "account": "Business",
-    "status": "paid"
+    "category": "Network",
+    "account": "EU-Cluster",
+    "status": "active"
   },
   {
     "id": 12,
-    "description": "Water bill",
-    "amount": "$11.30",
+    "description": "Billing Service Logs",
+    "amount": "9200",
     "date": "2025-09-10",
-    "category": "Bills",
-    "account": "Personal",
-    "status": "paid"
+    "category": "Logs",
+    "account": "Production",
+    "status": "active"
   },
   {
     "id": 13,
-    "description": "Taxi late night",
-    "amount": "$15.60",
+    "description": "Payment Gateway Latency Monitor",
+    "amount": "8082",
     "date": "2025-11-05",
-    "category": "Transport",
+    "category": "Services",
     "account": "",
     "status": "pending"
   },
   {
     "id": 14,
-    "description": "Cinema tickets",
-    "amount": "$22.00",
+    "description": "Frontend Web Metrics",
+    "amount": "3000",
     "date": "2025-10-20",
-    "category": "Entertainment",
-    "account": "Personal",
-    "status": "paid"
+    "category": "Services",
+    "account": "Production",
+    "status": "active"
   },
   {
     "id": 15,
-    "description": "Laptop sleeve",
-    "amount": "$29.99",
+    "description": "E-Commerce Service (Dev)",
+    "amount": "8083",
     "date": "2025-09-12",
-    "category": "Shopping",
-    "account": "Business",
-    "status": "paid"
+    "category": "Services",
+    "account": "EU-Cluster",
+    "status": "active"
   },
   {
     "id": 16,
-    "description": "Car fuel",
-    "amount": "$54.10",
+    "description": "Node Exporter - Prod Node 18",
+    "amount": "9102",
     "date": "2025-09-26",
-    "category": "Transport",
-    "account": "Personal",
-    "status": "paid"
+    "category": "Infrastructure",
+    "account": "Production",
+    "status": "active"
   },
   {
     "id": 17,
-    "description": "Lunch at workplace cafe",
-    "amount": "$8.50",
+    "description": "Internal API Metrics",
+    "amount": "8123",
     "date": "2025-10-11",
-    "category": "Food & Drink",
-    "account": "Cash",
-    "status": "paid"
+    "category": "Services",
+    "account": "Staging",
+    "status": "active"
   },
   {
     "id": 18,
-    "description": "Phone bill",
-    "amount": "$24.99",
+    "description": "Cloud Storage Metrics - S3",
+    "amount": "443",
     "date": "2025-09-02",
-    "category": "Bills",
-    "account": "Personal",
-    "status": "paid"
+    "category": "Cloud",
+    "account": "Production",
+    "status": "active"
   },
   {
     "id": 19,
-    "description": "Haircut",
-    "amount": "$17.00",
+    "description": "Authentication Logs Collector",
+    "amount": "5141",
     "date": "2025-10-03",
-    "category": "Personal Care",
+    "category": "Logs",
     "account": "Personal",
-    "status": "paid"
+    "status": "active"
   },
   {
     "id": 20,
-    "description": "YouTube Premium",
-    "amount": "$11.99",
+    "description": "Streaming Metrics - Video CDN",
+    "amount": "9201",
     "date": "2025-09-21",
-    "category": "Subscriptions",
+    "category": "Services",
     "account": "",
     "status": "pending"
   },
   {
     "id": 21,
-    "description": "Public transit pass",
-    "amount": "$49.00",
+    "description": "Public Transit API Monitor",
+    "amount": "8090",
     "date": "2025-10-08",
-    "category": "Transport",
+    "category": "Services",
     "account": "Personal",
-    "status": "paid"
+    "status": "active"
   },
   {
     "id": 22,
-    "description": "Client invoicing income",
-    "amount": "$875.00",
+    "description": "Customer Analytics Pipeline",
+    "amount": "9095",
     "date": "2025-09-15",
-    "category": "Income",
-    "account": "Business",
-    "status": "paid"
+    "category": "Infrastructure",
+    "account": "EU-Cluster",
+    "status": "active"
   },
   {
     "id": 23,
-    "description": "Medication refill",
-    "amount": "$9.70",
+    "description": "Health Check - Email Service",
+    "amount": "8085",
     "date": "2025-08-25",
-    "category": "Health",
+    "category": "Services",
     "account": "Personal",
-    "status": "paid"
+    "status": "active"
   }
 ]
