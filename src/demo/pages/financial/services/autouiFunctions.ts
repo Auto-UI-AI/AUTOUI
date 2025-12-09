@@ -41,7 +41,7 @@ export async function addTransaction(params: {
 }
 
 /**
- * Get spending breakdown by category for a specific period
+ * Get monitoring sources breakdown by category for a specific period
  */
 export async function getSpendingByCategory(params: { period?: 7 | 30 | 90 }) {
   const transactions = useFinanceStore.getState().transactions;

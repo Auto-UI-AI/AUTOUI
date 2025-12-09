@@ -65,7 +65,7 @@ export const financialAutouiConfig: AutoUIConfig = {
 
     getSpendingByCategory: {
       prompt:
-        'Get spending breakdown by category for a specific time period. Returns total spending and category summaries.',
+        'Get monitoring sources breakdown by category for a specific time period. Returns total monitoring sources count and category summaries.',
       params: {
         period: 'number (optional) — 7, 30, or 90 days. Defaults to 30',
       },
@@ -99,7 +99,7 @@ export const financialAutouiConfig: AutoUIConfig = {
   components: {
     CategorySpending: {
       prompt:
-        'Display spending breakdown by category widget showing total spending and top categories for a selected time period (7, 30, or 90 days).',
+        'Display monitoring sources breakdown by category widget showing total monitoring sources and top categories for a selected time period (7, 30, or 90 days).',
       props: {
         period: 'number (optional) — 7, 30, or 90 days. Defaults to 30',
       },

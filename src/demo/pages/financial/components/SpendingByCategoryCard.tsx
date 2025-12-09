@@ -18,25 +18,20 @@ export function SpendingByCategoryCard({ period: initialPeriod }: { period?: 7 |
     return mockSummaries({ transactions, period });
   }, [transactions, period]);
 
-  const totalSpending = React.useMemo(() => {
+  const totalSources = React.useMemo(() => {
     return summaries.reduce((sum, item) => sum + item.total, 0);
   }, [summaries]);
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(value);
+  const formatCount = (value: number) => {
+    return Math.round(value).toLocaleString('en-US');
   };
 
   return (
     <Card className="@container/card @xl/main:col-span-2 @5xl/main:col-span-2">
       <CardHeader className="relative">
-        <CardDescription>Spending by Category</CardDescription>
+        <CardDescription>Monitoring Sources by Category</CardDescription>
         <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-          {formatCurrency(totalSpending)}
+          {formatCount(totalSources)} sources
         </CardTitle>
         <div className="absolute right-4 top-4">
           <Select value={period.toString()} onValueChange={(value) => setPeriod(Number(value) as 7 | 30 | 90)}>
@@ -59,7 +54,7 @@ export function SpendingByCategoryCard({ period: initialPeriod }: { period?: 7 |
             {summaries.map((item) => (
               <div key={item.category} className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">{item.category}</span>
-                <span className="font-medium tabular-nums">{formatCurrency(item.total)}</span>
+                <span className="font-medium tabular-nums">{formatCount(item.total)} sources</span>
               </div>
             ))}
           </div>
@@ -69,7 +64,7 @@ export function SpendingByCategoryCard({ period: initialPeriod }: { period?: 7 |
         <div className="line-clamp-1 flex gap-2 font-medium">
           Top {summaries.length} categories <TrendingUpIcon className="size-4" />
         </div>
-        <div className="text-muted-foreground">Spending for the last {period} days</div>
+        <div className="text-muted-foreground">Monitoring sources for the last {period} days</div>
       </CardFooter>
     </Card>
   );
