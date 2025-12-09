@@ -74,6 +74,10 @@ export interface AutoUIFunction {
 
   /** Optional tags for organization */
   tags?: string[];
+
+  /* This field defines whether the function can share the data with the LLM, so that this data could be analyzed by LLM*/
+  canShareDataWithLLM?: boolean;
+  /** Then remember that we have to make sure that this is not a void function, and it actually returns something */
 }
 
 // ===============================================
@@ -89,7 +93,7 @@ export interface AutoUIComponent {
 
   /** Actual React component reference */
   callComponent: ComponentType<any>;
-
+  
   /** Default prop values for runtime or mock previews */
   defaults?: Record<string, any>;
 

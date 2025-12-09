@@ -42,7 +42,7 @@ export function useChat({
 
         const plan = await processMessage(text);
 
-        await runInstructionPlan(plan, config, resolveComponent, setUI, setSerializedMessages, { validate: true });
+        await runInstructionPlan(plan, config, resolveComponent, setUI, setSerializedMessages, text, { validate: true });
       } catch (err) {
         setSerializedMessages((prev) => [
           ...prev,

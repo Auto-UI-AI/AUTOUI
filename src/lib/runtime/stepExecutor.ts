@@ -4,6 +4,7 @@ import { resolveProps } from '../utils/resolveProps';
 import type { SerializedMessage } from '@lib/components/chat/types';
 import type { Dispatch, SetStateAction } from 'react';
 import type React from 'react';
+import { extraAnalysisWithLLM } from '@lib/core/extraDataAnalyzingWithLLM';
 
 export type ResolveComponent = (name: string, props: any) => React.ReactNode;
 export type SetUI = (ui: React.ReactNode | string) => void;
@@ -14,10 +15,11 @@ export async function executePlanSteps(
   resolveComponent: ResolveComponent,
   setUI: SetUI,
   setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
+  userMessage: string, 
 ) {
   const ctx: Record<string, any> = {};
   for (const step of plan.steps) {
-    await runStep(step, ctx, config, resolveComponent, setUI, setSerializedMessages);
+    await runStep(step, ctx, config, resolveComponent, setUI, setSerializedMessages, userMessage, plan);
   }
   return ctx;
 }
@@ -29,6 +31,8 @@ async function runStep(
   resolveComponent: ResolveComponent,
   setUI: SetUI,
   setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
+  userMessage: string, 
+  plan: InstructionPlan,
 ) {
   const isPlainObject = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
 
@@ -37,35 +41,48 @@ async function runStep(
     const fCfg = config.functions[step.name];
     if (!fCfg) throw new Error(`Unknown function: ${step.name}`);
 
-    const fn = fCfg.callFunc as any;
+ 
+  const fn = fCfg.callFunc as any;
 
     // The plan may provide either .args (positional) or .params (object).
     const anyStep = step as any;
-    const hasArgs = Array.isArray(anyStep.args);
-    const hasParamsObj = !!anyStep.params && typeof anyStep.params === 'object';
+  const hasArgs = Array.isArray(anyStep.args);
+  const hasParamsObj = !!anyStep.params && typeof anyStep.params === 'object';
 
-    let out: any;
+  let out: any;
 
-    if (hasArgs) {
-      let args = anyStep.args as unknown[];
-      if (args.length === 1 && isPlainObject(args[0]) && Array.isArray(fCfg.params) && fCfg.params.length > 0) {
-        const obj = args[0] as Record<string, unknown>;
-        args = (fCfg.params as string[]).map((k) => obj[k]);
-      }
-      try {
-        out = await (fn as (...a: unknown[]) => any)(...args);
-      } catch {
-        out = await (fn as (a?: unknown[]) => any)(args);
-      }
-    } else if (hasParamsObj) {
-      out = await (fn as (p?: any) => any)(anyStep.params);
-    } else {
-      out = await fn();
+  if (hasArgs) {
+    let args = anyStep.args as unknown[];
+    if (
+      args.length === 1 &&
+      isPlainObject(args[0]) &&
+      Array.isArray(fCfg.params) &&
+      fCfg.params.length > 0
+    ) {
+      const obj = args[0] as Record<string, unknown>;
+      args = (fCfg.params as string[]).map((k) => obj[k]);
     }
-
-    if ((step as any).assign) ctx[(step as any).assign] = out;
-    return;
+    try {
+      out = await (fn as (...a: unknown[]) => any)(...args);
+    } catch {
+      out = await (fn as (a?: unknown[]) => any)(args);
+    }
+  } else if (hasParamsObj) {
+    out = await (fn as (p?: any) => any)(anyStep.params);
+  } else {
+    out = await fn();
   }
+  
+  if(fCfg.canShareDataWithLLM && step.hasToShareDataWithLLM ){
+    console.log("This function is allowed to share data with LLM and LLM says that this step requires data to be shared with LLM");
+    const dataToShare = await extraAnalysisWithLLM(out, config, userMessage, plan, step.name);
+    if ((step as any).assign) ctx[(step as any).assign] = dataToShare;
+  }
+  else{
+    if ((step as any).assign) ctx[(step as any).assign] = out;
+  }
+  return;
+}
   if (step.type === 'component') {
     console.log(
       'component step already includes the context of the instructionPlan, so here it is:',
