@@ -4,6 +4,7 @@ export type FunctionStep = {
   name: string;
   params?: Record<string, any>;
   assign?: string;
+  hasToShareDataWithLLM?: boolean;
 };
 
 export type ComponentStep = {

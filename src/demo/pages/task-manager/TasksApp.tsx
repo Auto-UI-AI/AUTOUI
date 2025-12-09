@@ -131,6 +131,7 @@ const TasksApp = () => {
         callFunc: () => {
           return tasks;
         },
+        canShareDataWithLLM: true,
       },
       showHowManyTasks: {
         prompt: 'function which returns the length of current state of tasks list',
