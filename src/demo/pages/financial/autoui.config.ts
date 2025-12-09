@@ -4,6 +4,7 @@ import {
   getSpendingByCategory,
   getUpcomingBills,
   markBillAsPaidByName,
+  markSourceAsActive,
 } from './services/autouiFunctions';
 import { CategorySpendingWrapper } from './components/CategorySpendingWrapper';
 import { UpcomingBillsWrapper } from './components/UpcomingBillsWrapper';
@@ -75,11 +76,11 @@ export const financialAutouiConfig: AutoUIConfig = {
     },
 
     getUpcomingBills: {
-      prompt: 'Get all upcoming bills that are pending and due on or after today. Returns bills sorted by due date.',
+      prompt: 'Get all pending monitoring sources (transactions with status "pending"). Returns sources sorted by connection date.',
       params: {},
       callFunc: getUpcomingBills,
       returns:
-        '{ bills: Bill[], totalPending: number, count: number } — bills array with id, name, amount, due date, status',
+        '{ sources: Transaction[], count: number } — sources array with id, description, amount, date, category, account, status',
       exampleUsage: 'getUpcomingBills()',
     },
 
@@ -93,6 +94,18 @@ export const financialAutouiConfig: AutoUIConfig = {
       callFunc: markBillAsPaidByName,
       returns: '{ success: boolean, bill?: Bill, error?: string }',
       exampleUsage: 'markBillAsPaid({ billName: "Spotify" })',
+    },
+
+    markSourceAsActive: {
+      prompt:
+        'Mark a monitoring source as active by searching for it by description (e.g., "Kubernetes Cluster") or by ID. The source status will be updated to "active".',
+      params: {
+        description: 'string (optional) — description of the monitoring source to mark as active (case-insensitive partial match)',
+        sourceId: 'number | string (optional) — ID of the monitoring source to mark as active',
+      },
+      callFunc: markSourceAsActive,
+      returns: '{ success: boolean, source?: Transaction, error?: string }',
+      exampleUsage: 'markSourceAsActive({ description: "Kubernetes Cluster" })',
     },
   },
 
@@ -110,10 +123,10 @@ export const financialAutouiConfig: AutoUIConfig = {
 
     UpcomingBills: {
       prompt:
-        'Display upcoming bills widget showing pending bills due on or after today, sorted by due date. Shows total pending amount and allows marking bills as paid.',
+        'Display pending monitoring sources widget showing monitoring sources with status "pending", sorted by connection date. Shows total count and allows marking sources as active.',
       props: {},
       callComponent: UpcomingBillsWrapper,
-      category: 'bills',
+      category: 'monitoring',
       exampleUsage: '<UpcomingBills />',
     },
   },
