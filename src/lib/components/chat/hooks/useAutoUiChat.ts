@@ -6,7 +6,7 @@ export function useAutoUiChat(config: AutoUIConfig) {
   const processMessage = useCallback(
     async (text: string) => {
       let plan = await getInstructionPlan(text, config);
-
+      console.log('📝 Received instruction plan:', plan);
       if (typeof plan === 'string') {
         try {
           plan = JSON.parse(plan);

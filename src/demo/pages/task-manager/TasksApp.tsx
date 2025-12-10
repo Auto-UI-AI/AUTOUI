@@ -8,6 +8,7 @@ import TasksList from './componentsForChat.tsx/TasksList';
 import { useTasksContext } from './hooks/useAppFunctions';
 import { useCallback } from 'react';
 import { PointerHintButton } from './componentsForChat.tsx/PointerHintButton';
+import TaskForm from './components/tasks/TaskForm';
 const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
 const aiModel = import.meta.env.VITE_AIMODEL_NAME;
 const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -39,7 +40,7 @@ const TasksApp = () => {
       author: 'AutoUI Dev Team',
       createdAt: new Date().toISOString(),
       description:
-        "Task management demo app with tasks list, filters, stats, and task editor modal. Always try to answer really politely and if you didn't understand the intent of the user's message, then try to give him an interface which could help him as much as possible. In the messages after functions which open some components outside the chat widget, you better say to user that he should probably close the chatwidget",
+        "Task management demo app with tasks list, filters, stats, and task editor modal. Always try to answer really politely and if you didn't understand the intent of the user's message, then try to give him an interface which could help him as much as possible. In the messages after functions which open some components outside the chat widget, you better say to user that he should probably close the chatwidget. Always return a plan. Plan can never be empty...",
       tags: ['demo', 'tasks', 'productivity', 'react', 'autoui'],
     },
 
@@ -161,24 +162,24 @@ const TasksApp = () => {
       },
 
       // // ---- Task form modal
-      // TaskForm: {
-      //   prompt:
-      //     "Task editor form used to create or update a task. It accepts an optional existing task.",
-      //   props: {
-      //     task: "Task (optional) — if provided, the form edits this task; if omitted, it creates a new one.",
-      //     onSubmit:
-      //       "function(draft: TaskDraft) — called when the user submits the form.",
-      //     onCancel:
-      //       "function() — called when the user cancels/close the form.",
-      //   },
-      //   defaults: {
-      //     task: undefined,
-      //   },
-      //   callComponent: TaskForm,
-      //   category: "editor",
-      //   exampleUsage:
-      //     "<TaskForm task={existingTask} onSubmit={handleSubmit} onCancel={handleCancel} />",
-      // },
+      TaskForm: {
+        prompt:
+          "Task editor form used to create or update a task. It accepts an optional existing task.",
+        props: {
+          task: "Task (optional) — if provided, the form edits this task; if omitted, it creates a new one.",
+          onSubmit:
+            "function(draft: TaskDraft) — called when the user submits the form.",
+          onCancel:
+            "function() — called when the user cancels/close the form.",
+        },
+        defaults: {
+          task: undefined,
+        },
+        callComponent: TaskForm,
+        category: "editor",
+        exampleUsage:
+          "<TaskForm task={existingTask} onSubmit={handleSubmit} onCancel={handleCancel} />",
+      },
 
       // ---- Single task item
       TaskItem: {

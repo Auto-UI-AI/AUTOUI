@@ -14,7 +14,7 @@ export const getInstructionPlan = async (userMessage: string, config: AutoUIConf
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: config.llm.model ? config.llm.model : 'openai/gpt-5-chat',
+        model: config.llm.model,
         messages: [
           {
             role: 'user',

@@ -42,6 +42,7 @@ export function useChat({
 
         await runInstructionPlan(plan, config, resolveComponent, setUI, setSerializedMessages, text, { validate: true });
       } catch (err) {
+        console.log('❌ Error processing message:', err);
         setSerializedMessages((prev) => [
           ...prev,
           {
