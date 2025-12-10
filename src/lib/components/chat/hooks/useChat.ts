@@ -9,11 +9,11 @@ export function useChat({
   config,
   onError,
   onClose,
-  storageKey = 'autoui_chat_history',
   title,
   classNames,
   isOpen,
 }: ChatProps): ChatContextType {
+  const storageKey = `autoui_${config.runtime?.localStorageKey || 'autoui_chat_history'}`;
   const { messages, setSerializedMessages } = useChatState(storageKey, config);
 
   const { processMessage } = useAutoUiChat(config);

@@ -64,7 +64,7 @@ export const autouiConfig: AutoUIConfig = {
   runtime: {
     validateLLMOutput: true,
     storeChatToLocalStorage: true,
-    localStorageKey: 'autoui_demo_chat',
+    localStorageKey: 'demo_chat',
     enableDebugLogs: true,
     maxSteps: 20,
     errorHandling: { showToUser: true, retryOnFail: false },

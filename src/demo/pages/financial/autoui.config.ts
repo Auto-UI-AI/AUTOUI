@@ -39,7 +39,7 @@ export const financialAutouiConfig: AutoUIConfig = {
   runtime: {
     validateLLMOutput: true,
     storeChatToLocalStorage: true,
-    localStorageKey: 'autoui_financial_chat',
+    localStorageKey: 'financial_chat',
     enableDebugLogs: true,
     maxSteps: 20,
     errorHandling: { showToUser: true, retryOnFail: false },

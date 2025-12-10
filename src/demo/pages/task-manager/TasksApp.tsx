@@ -67,7 +67,7 @@ const TasksApp = () => {
     runtime: {
       validateLLMOutput: true,
       storeChatToLocalStorage: true,
-      localStorageKey: 'autoui_tasks_demo_chat',
+      localStorageKey: 'tasks_demo_chat',
       enableDebugLogs: true,
       maxSteps: 20,
       errorHandling: { showToUser: true, retryOnFail: false },

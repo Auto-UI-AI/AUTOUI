@@ -14,7 +14,7 @@ const config: AutoUIConfig = {
   runtime: {
     validateLLMOutput: true,
     storeChatToLocalStorage: true,
-    localStorageKey: 'demo-chat-history',
+    localStorageKey: 'ecommerce_demo_chat',
     enableDebugLogs: true,
     maxSteps: 4,
     errorHandling: {
