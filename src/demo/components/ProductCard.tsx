@@ -69,14 +69,19 @@ export default function ProductCard({
 
   return (
     <Card className="flex h-full w-full max-w-sm flex-col overflow-hidden" data-testid="product-card">
-      <div className="relative w-full overflow-hidden aspect-square">
+      <button
+        type="button"
+        className="relative w-full overflow-hidden aspect-square"
+        onClick={() => onViewDetails?.(product.id)}
+        aria-label={`View ${product.name} details`}
+      >
         <img
           src={product.image}
           alt={product.name}
           className="object-cover w-full h-full transition-transform hover:scale-105"
           data-testid="product-card-image"
         />
-      </div>
+      </button>
       <CardHeader className="space-y-2">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1">

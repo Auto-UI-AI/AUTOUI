@@ -26,8 +26,13 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({ product, open
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <Card className="w-full max-w-xl md:max-w-2xl max-h-[85vh] overflow-y-auto">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      onClick={onClose}
+      aria-modal="true"
+      role="dialog"
+    >
+      <Card className="w-full max-w-xl md:max-w-2xl max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
         <CardHeader>
           <CardTitle>{product.name}</CardTitle>
         </CardHeader>
