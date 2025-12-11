@@ -33,6 +33,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
 }
 
 .autoui-chat-title {
@@ -58,6 +60,7 @@
 }
 
 .autoui-chat-messages {
+  position: relative;
   flex: 1;
   overflow-y: auto;
   padding: 0 0.5rem;
@@ -96,8 +99,12 @@
 
 .autoui-chat-message {
   display: flex;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.2rem;
 }
+
+/* .autoui-chat-message:first-child {
+  margin-top: 0.5rem;
+} */
 
 .autoui-chat-message.user {
   justify-content: flex-end;

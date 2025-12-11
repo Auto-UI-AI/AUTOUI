@@ -29,7 +29,7 @@ export const ChatInput: React.FC<ChatInputProps> = () => {
         }}
         button={
           <button type="button" className="autoui-chat-input-start">
-            <img src={plus} alt="menu" />
+            <img src={plus} alt="menu" width={20} height={20} />
           </button>
         }
         items={[
@@ -58,7 +58,7 @@ export const ChatInput: React.FC<ChatInputProps> = () => {
         className={clsx('autoui-chat-send', classNames?.inputButton)}
         aria-label="Send message"
       >
-        <img src={arrowUp} alt="arrow up" />
+        <img src={arrowUp} alt="arrow up" width={24} height={24} />
       </button>
     </form>
   );
