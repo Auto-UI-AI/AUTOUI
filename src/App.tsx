@@ -13,14 +13,16 @@ function App() {
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     `rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-      isActive ? 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900' : 'text-gray-700 dark:text-gray-200'
+      isActive
+        ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900'
+        : 'text-neutral-700 dark:text-neutral-200'
     }`;
 
   return (
     <CartProvider>
       <BrowserRouter>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-50">
-          <header className="border-b bg-white/80 dark:bg-gray-900/80 backdrop-blur">
+        <div className="min-h-screen bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-50">
+          <header className="border-b bg-white dark:bg-neutral-900/85 backdrop-blur">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
               <div className="flex items-center gap-3">
                 <span className="text-lg font-semibold">Auto UI Demo</span>

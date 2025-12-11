@@ -178,11 +178,11 @@ function DemoStorybook() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-gray-50 via-white to-gray-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+    <div className="min-h-screen bg-linear-to-b from-neutral-50 via-white to-neutral-100 dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950">
       <header className="border-b bg-white/80 dark:bg-gray-900/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div className="space-y-1">
-            <p className="text-xs uppercase tracking-[0.2em] text-blue-500">Component Gallery</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Component Gallery</p>
             <h1 className="text-2xl font-semibold">Auto UI Demo</h1>
             <p className="text-sm text-muted-foreground max-w-2xl">
               Explore interactive e-commerce building blocks—cards, galleries, checkout, wishlist, and more. All
@@ -196,7 +196,7 @@ function DemoStorybook() {
       </header>
 
       <div className="mx-auto max-w-6xl px-6 py-8 grid gap-6 lg:grid-cols-[260px,1fr]">
-        <aside className="rounded-2xl border bg-white/80 p-4 shadow-sm dark:bg-gray-900/70 dark:border-gray-800">
+        <aside className="rounded-2xl border bg-white/80 p-4 shadow-sm dark:bg-neutral-900/70 dark:border-neutral-800">
           <ScrollArea className="h-[70vh] pr-2">
             {COMPONENT_CATEGORIES.map((category) => (
               <div key={category.name} className="mb-5 last:mb-0">
@@ -225,7 +225,7 @@ function DemoStorybook() {
         </aside>
 
         <main className="space-y-6">
-          <div className="rounded-2xl border bg-white/90 p-6 shadow-sm dark:bg-gray-900/80 dark:border-gray-800">
+          <div className="rounded-2xl border bg-white/90 p-6 shadow-sm dark:bg-neutral-900/80 dark:border-neutral-800">
             {renderPreview()}
           </div>
         </main>

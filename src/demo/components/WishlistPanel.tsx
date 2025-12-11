@@ -62,7 +62,7 @@ export default function WishlistPanel({ onSelect, onAddToCart, items: controlled
         {items.length === 0 ? (
           <p className="text-sm text-muted-foreground">No favorites yet.</p>
         ) : (
-          <ScrollArea className="max-h-60 pr-2">
+          <ScrollArea className="max-h-[70vh] h-[360px] pr-2">
             <div className="space-y-3">
               {items.map((item) => (
                 <div key={item.id} className="flex items-start justify-between gap-3">
