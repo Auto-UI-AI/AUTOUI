@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { cloneElement, useRef, useState } from 'react';
 import { Popover } from './Popover';
 import { Menu } from '../../menu';
 import { burgerMenu } from '@/assets';
+import type { MenuItemType } from '@lib/components/menu/ui/MenuItem';
 
 export const PopoverMenu = ({
   items,
@@ -11,17 +12,27 @@ export const PopoverMenu = ({
   onSelectionChange,
 }: {
   popoverStyles?: React.CSSProperties;
-  items: any[];
-  button: React.ReactNode;
+  items: MenuItemType[];
+  button: React.ReactElement<any>;
   defaultSelectedKey?: string;
   onSelectionChange?: (key: string) => void;
 }) => {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setOpen] = useState(false);
 
+  const triggerProps = {
+    ref: triggerRef,
+    onClick: () => {
+      setOpen((prev) => !prev);
+    },
+    style: { cursor: 'pointer' },
+  };
+
   return (
     <>
-      {button ?? (
+      {button ? (
+        cloneElement(button, triggerProps)
+      ) : (
         <button ref={triggerRef} onClick={() => setOpen((prev) => !prev)} style={{ cursor: 'pointer' }}>
           <img src={burgerMenu} alt="menu" />
         </button>

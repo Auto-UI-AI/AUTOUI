@@ -1,19 +1,8 @@
-import { useMemo } from 'react';
+import { useMemo, type FC } from 'react';
 import { MenuSelectedIcon } from './MenuSelectedIcon';
 
-export const MenuItem = ({
-  label,
-  description,
-  shortcut,
-  startContent,
-  endContent,
-  isSelected,
-  isDisabled,
-  onSelect,
-  disableAnimation,
-  hideSelectedIcon,
-  selectedIcon,
-}: {
+export interface MenuItemType {
+  key: string;
   label: string;
   description?: string;
   shortcut?: string;
@@ -25,6 +14,20 @@ export const MenuItem = ({
   disableAnimation?: boolean;
   hideSelectedIcon?: boolean;
   selectedIcon?: React.ReactNode | ((args: any) => React.ReactNode);
+}
+
+export const MenuItem: FC<MenuItemType> = ({
+  label,
+  description,
+  shortcut,
+  startContent,
+  endContent,
+  isSelected,
+  isDisabled,
+  onSelect,
+  disableAnimation,
+  hideSelectedIcon,
+  selectedIcon,
 }) => {
   const icon = useMemo(() => {
     const defaultIcon = <MenuSelectedIcon disableAnimation={disableAnimation} isSelected={!!isSelected} />;
@@ -43,7 +46,10 @@ export const MenuItem = ({
   return (
     <li
       className={`hero-menu-item ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
-      onClick={() => !isDisabled && onSelect?.()}
+      onClick={() => {
+        console.log(1);
+        !isDisabled && onSelect?.();
+      }}
     >
       {startContent && <span className="start">{startContent}</span>}
 

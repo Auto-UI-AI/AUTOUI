@@ -11,8 +11,7 @@ import clsx from 'clsx';
 export const Chat: React.FC<ChatProps> = memo(
   ({ config, title = 'AutoUI Chat', isOpen = true, classNames, onClose, onError, closeIcon }) => {
     const context = useChat({ config, title, isOpen, classNames, closeIcon, onClose, onError });
-    console.log(123, 'RENDER CHAT');
-
+   
     if (!isOpen) return null;
 
     return (

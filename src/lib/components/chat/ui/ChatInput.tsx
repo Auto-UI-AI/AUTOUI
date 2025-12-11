@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useChatContext } from '../context/chatContext';
 import { clsx } from '@lib/utils/clsx';
-import { arrowUp, burgerMenu } from '../../../../assets';
+import { arrowUp, deleteIcon, plus, settings } from '../../../../assets';
 import { PopoverMenu } from '@lib/components/popover';
 
 export interface ChatInputProps {}
 
 export const ChatInput: React.FC<ChatInputProps> = () => {
-  const { classNames, handleSend } = useChatContext();
+  const { classNames, handleClear, handleSend } = useChatContext();
   const [value, setValue] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -29,13 +29,17 @@ export const ChatInput: React.FC<ChatInputProps> = () => {
         }}
         button={
           <button type="button" className="autoui-chat-input-start">
-            <img src={burgerMenu} alt="menu" />
+            <img src={plus} alt="menu" />
           </button>
         }
         items={[
-          { key: 'new', label: 'New Chat' },
-          { key: 'clear', label: 'Clear Messages' },
-          { key: 'settings', label: 'Settings' },
+          {
+            startContent: <img src={deleteIcon} width={16} height={16} />,
+            key: 'clear',
+            label: 'Clear Messages',
+            onSelect: handleClear,
+          },
+          { startContent: <img src={settings} width={16} height={16} />, key: 'settings', label: 'Settings' },
         ]}
         onSelectionChange={(key: any) => console.log('Selected:', key)}
       />

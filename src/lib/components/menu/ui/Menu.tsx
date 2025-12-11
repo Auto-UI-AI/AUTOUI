@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MenuItem } from './MenuItem';
+import { MenuItem, type MenuItemType } from './MenuItem';
 import '../styles/index.css';
 
 export const Menu = ({
@@ -7,15 +7,7 @@ export const Menu = ({
   defaultSelectedKey,
   onSelectionChange,
 }: {
-  items: {
-    key: string;
-    label: string;
-    description?: string;
-    shortcut?: string;
-    startContent?: React.ReactNode;
-    endContent?: React.ReactNode;
-    disabled?: boolean;
-  }[];
+  items: MenuItemType[];
   defaultSelectedKey?: string;
   onSelectionChange?: (key: string) => void;
 }) => {
@@ -37,8 +29,11 @@ export const Menu = ({
           startContent={item.startContent}
           endContent={item.endContent}
           isSelected={item.key === selectedKey}
-          isDisabled={item.disabled}
-          onSelect={() => handleSelect(item.key)}
+          isDisabled={item.isDisabled}
+          onSelect={() => {
+            item?.onSelect?.();
+            handleSelect(item.key);
+          }}
         />
       ))}
     </ul>

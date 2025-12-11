@@ -1,19 +1,21 @@
 import { useEffect, useRef } from 'react';
 
+type PopoverPosition = 'top-center' | 'bottom-left' | 'bottom-right';
+
 export const Popover = ({
   isOpen,
   onClose,
   triggerRef,
   children,
   styles,
-  position = 'bottom-left',
+  position = 'top-center',
 }: {
   isOpen: boolean;
   styles?: React.CSSProperties;
   onClose: () => void;
-  triggerRef: React.RefObject<any>;
+  triggerRef: React.RefObject<HTMLElement | null>;
   children: React.ReactNode;
-  position?: 'bottom-left' | 'bottom-right';
+  position?: PopoverPosition;
 }) => {
   const popoverRef = useRef<HTMLDivElement>(null);
 
@@ -28,32 +30,52 @@ export const Popover = ({
       }
     };
 
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, []);
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClick);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+    };
+  }, [isOpen, onClose, triggerRef]);
 
   if (!isOpen || !triggerRef.current) return null;
 
   const rect = triggerRef.current.getBoundingClientRect();
 
-  const style: React.CSSProperties =
-    position === 'bottom-left'
-      ? {
-          top: rect.bottom + 6,
-          left: rect.left,
-        }
-      : {
-          top: rect.bottom + 6,
-          right: window.innerWidth - rect.right,
-        };
+  let baseStyle: React.CSSProperties = {};
+
+  switch (position) {
+    case 'top-center':
+      baseStyle = {
+        width: '50%',
+        transform: 'translate(-2.5%, -110%)',
+      };
+      break;
+
+    case 'bottom-left':
+      baseStyle = {
+        top: rect.bottom + 6 + window.scrollY,
+        left: rect.left + window.scrollX,
+      };
+      break;
+
+    case 'bottom-right':
+      baseStyle = {
+        top: rect.bottom + 6 + window.scrollY,
+        left: rect.right + window.scrollX,
+        transform: 'translateX(-100%)',
+      };
+      break;
+  }
 
   return (
     <div
       ref={popoverRef}
       style={{
         position: 'absolute',
-        zIndex: 999,
-        ...style,
+        zIndex: 9999,
+        ...baseStyle,
         ...styles,
       }}
     >

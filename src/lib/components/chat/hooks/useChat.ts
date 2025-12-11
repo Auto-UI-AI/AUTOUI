@@ -16,8 +16,6 @@ export function useChat({
 }: ChatProps): ChatContextType {
   const { messages, setSerializedMessages } = useChatState(storageKey, config);
 
-  console.log('CREATE CONTEXT');
-
   const { processMessage } = useAutoUiChat(config);
   const { resolveComponent, setUI } = useRendering(config);
 
@@ -42,7 +40,9 @@ export function useChat({
 
         const plan = await processMessage(text);
 
-        await runInstructionPlan(plan, config, resolveComponent, setUI, setSerializedMessages, text, { validate: true });
+        await runInstructionPlan(plan, config, resolveComponent, setUI, setSerializedMessages, text, {
+          validate: true,
+        });
       } catch (err) {
         setSerializedMessages((prev) => [
           ...prev,
@@ -63,6 +63,7 @@ export function useChat({
   );
 
   const handleClear = useCallback(() => {
+    console.log(storageKey);
     setSerializedMessages([]);
 
     localStorage.removeItem(storageKey);
