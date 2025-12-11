@@ -141,7 +141,7 @@ export function InteractiveDemo() {
         <SizeFilter sizes={availableSizes} selected={selectedSizes} onChange={setSelectedSizes} />
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[repeat(3,minmax(0,1fr))_minmax(320px,1.4fr)]">
         <div className="xl:col-span-3 space-y-6">
           {loading ? (
             <div className="text-center py-12 text-muted-foreground">Loading products...</div>

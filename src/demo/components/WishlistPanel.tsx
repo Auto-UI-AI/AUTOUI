@@ -55,14 +55,14 @@ export default function WishlistPanel({ onSelect, onAddToCart, items: controlled
     <Card className="w-full border shadow-sm rounded-xl" data-testid="wishlist-panel">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="flex items-center gap-2">
-          <Heart className="h-4 w-4" /> Wishlist
+          <Heart className="h-4 w-4 text-red-500 fill-current" /> Wishlist
         </CardTitle>
       </CardHeader>
       <CardContent>
         {items.length === 0 ? (
           <p className="text-sm text-muted-foreground">No favorites yet.</p>
         ) : (
-          <ScrollArea className="max-h-[70vh] h-[360px] pr-2">
+          <ScrollArea className="max-h-[70vh] h-[30vh] pr-2">
             <div className="space-y-3">
               {items.map((item) => (
                 <div key={item.id} className="flex items-start justify-between gap-3">
@@ -71,7 +71,7 @@ export default function WishlistPanel({ onSelect, onAddToCart, items: controlled
                     <p className="text-xs text-muted-foreground line-clamp-2">{item.description}</p>
                     <p className="text-sm font-semibold">${item.price.toFixed(2)}</p>
                     {item.sizes && item.sizes.length > 0 && (
-                      <div className="space-y-1" data-testid="wishlist-item-sizes">
+                      <div className="space-y-1 mb-4" data-testid="wishlist-item-sizes">
                         <p className="text-xs text-muted-foreground">Choose size</p>
                         <div className="flex flex-wrap gap-2">
                           {item.sizes.map((size) => (
@@ -114,7 +114,7 @@ export default function WishlistPanel({ onSelect, onAddToCart, items: controlled
                     aria-label="Remove from wishlist"
                     onClick={() => handleToggle(item)}
                   >
-                    <Heart className="h-4 w-4" />
+                    <Heart className="h-4 w-4 text-red-500 fill-current" />
                   </Button>
                 </div>
               ))}
