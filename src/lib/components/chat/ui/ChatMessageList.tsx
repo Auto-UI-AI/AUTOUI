@@ -40,6 +40,14 @@ export const ChatMessageList: React.FC<ChatMessageListProps> = () => {
         data={messages}
         overscan={100}
         followOutput="smooth"
+        components={{
+          EmptyPlaceholder: () => (
+            <div className="empty__palceholder">
+              <span className="empty__palceholder--main">Nothing here yet</span>
+              <span className="empty__palceholder--secondary">Start the conversation!</span>
+            </div>
+          ),
+        }}
         initialTopMostItemIndex={length - 1}
         itemContent={(_, message) => <ChatMessageListItem key={message.id} message={message} />}
       />

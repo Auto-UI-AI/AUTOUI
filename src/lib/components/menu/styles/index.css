@@ -1,9 +1,28 @@
+:root {
+  --hero-bg: #ffffff;
+  --hero-text: #111111;
+  --hero-hover: rgba(0, 0, 0, 0.05);
+  --hero-selected: rgba(0, 0, 0, 0.07);
+  --hero-muted: rgba(0, 0, 0, 0.6);
+  --hero-accent: #007aff;
+}
+
+[data-theme='dark'] {
+  --hero-bg: #2c2c2e;
+  --hero-text: #f2f2f7;
+  --hero-hover: rgba(255, 255, 255, 0.06);
+  --hero-selected: rgba(255, 255, 255, 0.1);
+  --hero-muted: rgba(255, 255, 255, 0.6);
+  --hero-accent: #0a84ff;
+}
+
 .hero-menu {
   list-style: none;
   padding: 6px;
   margin: 0;
   width: 240px;
-  background: white;
+  background: var(--hero-bg);
+  color: var(--hero-text);
   border-radius: 10px;
 }
 
@@ -19,11 +38,11 @@
 }
 
 .hero-menu-item:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--hero-hover);
 }
 
 .hero-menu-item.selected {
-  background: rgba(0, 0, 0, 0.07);
+  background: var(--hero-selected);
   font-weight: 500;
 }
 
@@ -39,18 +58,18 @@
 }
 
 .hero-menu-item .description {
-  opacity: 0.6;
   font-size: 12px;
   margin-top: -2px;
+  color: var(--hero-muted);
 }
 
 .hero-menu-item .shortcut {
-  opacity: 0.6;
   font-size: 12px;
+  color: var(--hero-muted);
 }
 
 .selected-icon svg {
   width: 16px;
   height: 16px;
-  color: #007aff;
+  color: var(--hero-accent);
 }

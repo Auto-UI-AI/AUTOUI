@@ -7,6 +7,9 @@ import { useRendering } from './useRendering';
 
 export function useChat({
   config,
+  theme,
+  mode,
+  setTheme,
   onError,
   onClose,
   storageKey = 'autoui_chat_history',
@@ -97,9 +100,12 @@ export function useChat({
       config,
       isOpen,
       title,
+      theme,
+      mode,
       classNames,
       messages,
       isLoading,
+      setTheme,
       handleSend,
       onClose,
       handleClear,

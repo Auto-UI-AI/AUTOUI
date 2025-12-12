@@ -1,6 +1,7 @@
 import type { AutoUIConfig } from '@lib/types';
 import type { ComponentType, ReactNode } from 'react';
 import type React from 'react';
+import type { ThemeMode } from '../hooks/useTheme';
 
 export type BtnOpenChatProps = {
   isOpen?: boolean;
@@ -48,6 +49,9 @@ export interface ChatContextType {
   messages: ChatMessage[] | undefined;
   isLoading: boolean;
   closeIcon?: any;
+  mode: ThemeMode;
+  theme: 'light' | 'dark';
+  setTheme: (newMode: ThemeMode) => void;
   handleSend: (text: string) => Promise<void>;
   handleClear: () => void;
   getChatInputProps: () => {
@@ -67,6 +71,9 @@ export interface ChatContextType {
 export interface ChatMessageListProps {}
 
 export interface ChatProps {
+  mode: ThemeMode;
+  theme: 'light' | 'dark';
+  setTheme: (newMode: ThemeMode) => void;
   config: AutoUIConfig;
   title?: string;
   isOpen?: boolean;

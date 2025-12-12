@@ -3,7 +3,7 @@ import { MenuSelectedIcon } from './MenuSelectedIcon';
 
 export interface MenuItemType {
   key: string;
-  label: string;
+  label: any;
   description?: string;
   shortcut?: string;
   startContent?: React.ReactNode;
