@@ -1,21 +1,23 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ChatMessageListItem } from './ChatMessageListItem';
 import type { ChatMessageListProps } from '../types';
 import { useChatContext } from '../context/chatContext';
 import { Virtuoso, type VirtuosoHandle } from 'react-virtuoso';
 import { clsx } from '@lib/utils/clsx';
 import { Spinner } from '@lib/components/spinner';
+import { ScrollToBottomButton } from './ScrollToBottomButton';
 
 export const ChatMessageList: React.FC<ChatMessageListProps> = () => {
   const { messages = [], classNames, isOpen, isLoading } = useChatContext();
-  const chatRef = useRef<HTMLDivElement>(null);
+  const [showScrollBtn, setShowScrollBtn] = useState(false);
 
   const virtuosoRef = useRef<VirtuosoHandle>(null);
 
   const scrollToBottom = () => {
-    const el = chatRef.current;
-    if (!el) return;
-    el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+    virtuosoRef.current?.scrollToIndex({
+      index: messages.length - 1,
+      behavior: 'smooth',
+    });
   };
 
   const length = messages?.length ?? 1;
@@ -27,10 +29,7 @@ export const ChatMessageList: React.FC<ChatMessageListProps> = () => {
   }, [isOpen]);
 
   useEffect(() => {
-    virtuosoRef.current?.scrollToIndex({
-      index: messages?.length - 1,
-      behavior: 'smooth',
-    });
+    scrollToBottom();
   }, [messages?.length]);
 
   return (
@@ -40,6 +39,7 @@ export const ChatMessageList: React.FC<ChatMessageListProps> = () => {
         data={messages}
         overscan={100}
         followOutput="smooth"
+        atBottomStateChange={(atBottom) => setShowScrollBtn(!atBottom)}
         components={{
           EmptyPlaceholder: () => (
             <div className="empty__palceholder">
@@ -51,6 +51,7 @@ export const ChatMessageList: React.FC<ChatMessageListProps> = () => {
         initialTopMostItemIndex={length - 1}
         itemContent={(_, message) => <ChatMessageListItem key={message.id} message={message} />}
       />
+      <ScrollToBottomButton visible={showScrollBtn} onClick={scrollToBottom} />
       {isLoading && <Spinner variant="dots" color="#0a84ff" />}
     </div>
   );

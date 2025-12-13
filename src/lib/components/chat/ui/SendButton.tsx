@@ -11,7 +11,15 @@ export const SendButton = () => {
       className={clsx('autoui-chat-send', classNames?.inputButton)}
       aria-label="Send message"
     >
-      <img src={arrowUp} alt="arrow up" width={24} height={24} />
+      <img
+        src={arrowUp}
+        alt="arrow up"
+        width={24}
+        height={24}
+        style={{
+          filter: 'var(--icon-filter-text)',
+        }}
+      />
     </button>
   );
 };

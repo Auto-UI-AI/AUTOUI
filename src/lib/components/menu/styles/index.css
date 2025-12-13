@@ -37,6 +37,11 @@
   transition: background 0.15s ease;
 }
 
+.content .label {
+  display: flex;
+  align-items: center;
+}
+
 .hero-menu-item:hover {
   background: var(--hero-hover);
 }

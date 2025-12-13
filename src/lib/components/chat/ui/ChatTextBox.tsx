@@ -16,6 +16,7 @@ export const ChatTextBox = ({
       className={clsx('autoui-chat-textbox', classNames?.input)}
       type="text"
       value={value}
+      autoFocus
       onChange={(e) => setValue(e.target.value)}
       placeholder="Type a message..."
       aria-label="Message input"

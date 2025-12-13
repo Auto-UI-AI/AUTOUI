@@ -13,7 +13,17 @@ export const ChatHeader = () => {
 
       {onClose && (
         <button role="closeButton" className={clsx('autoui-chat-closebtn', classNames?.closeButton)} onClick={onClose}>
-          {closeIcon ?? <img src={xmark} alt={'Open char'} width={20} height={20} />}
+          {closeIcon ?? (
+            <img
+              src={xmark}
+              alt={'Open char'}
+              width={20}
+              height={20}
+              style={{
+                filter: 'var(--icon-filter-text)',
+              }}
+            />
+          )}
         </button>
       )}
     </header>

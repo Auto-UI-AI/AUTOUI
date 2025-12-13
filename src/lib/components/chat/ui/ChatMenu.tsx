@@ -1,10 +1,12 @@
-import { deleteIcon, plus, settings } from '@/assets';
+import { deleteIcon, moon, plus, sun } from '@/assets';
 import { PopoverMenu } from '@lib/components/popover';
 import { useChatContext } from '../context/chatContext';
 import { Switch } from '@lib/components/switch';
 
 export const ChatMenu = () => {
-  const { handleClear } = useChatContext();
+  const { handleClear, setTheme, theme, mode } = useChatContext();
+
+  console.log(mode);
   return (
     <PopoverMenu
       popoverStyles={{
@@ -12,36 +14,75 @@ export const ChatMenu = () => {
       }}
       button={
         <button type="button" className="autoui-chat-input-start">
-          <img src={plus} alt="menu" width={20} height={20} />
+          <img
+            src={plus}
+            alt="menu"
+            width={20}
+            height={20}
+            style={{
+              filter: 'var(--icon-filter-text)',
+            }}
+          />
         </button>
       }
       items={[
         {
-          startContent: <img src={deleteIcon} width={16} height={16} />,
+          startContent: (
+            <img
+              src={deleteIcon}
+              width={16}
+              height={16}
+              style={{
+                filter: 'var(--icon-filter-text)',
+              }}
+            />
+          ),
           key: 'clear',
           label: 'Clear Messages',
           onSelect: handleClear,
         },
 
         {
-          startContent: <img src={settings} width={16} height={16} />,
-          key: 'switchtheme',
+          key: 'switchTheme',
           label: (
             <Switch
+              defaultChecked={theme === 'light'}
+              onCheckedChange={(checked: boolean) => {
+                if (checked) {
+                  setTheme?.('light');
+                } else {
+                  setTheme?.('dark');
+                }
+              }}
+              label="Theme mode"
               thumb={({ checked }) => (
-                <span
-                  style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: 999,
-                    background: checked ? '#22c55e' : '#a1a1aa',
-                  }}
-                />
+                <>
+                  {checked ? (
+                    <img
+                      src={sun}
+                      width={14}
+                      height={14}
+                      style={{
+                        filter: 'var(--icon-filter-accent)',
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={moon}
+                      width={14}
+                      height={14}
+                      style={{
+                        filter: 'var(--icon-filter-text)',
+                      }}
+                    />
+                  )}
+                </>
               )}
             />
           ),
         },
       ]}
+      closeAfterSelect={(key) => key !== 'switchTheme'}
       onSelectionChange={(key: any) => console.log('Selected:', key)}
     />
   );

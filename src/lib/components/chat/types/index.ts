@@ -49,9 +49,9 @@ export interface ChatContextType {
   messages: ChatMessage[] | undefined;
   isLoading: boolean;
   closeIcon?: any;
-  mode: ThemeMode;
-  theme: 'light' | 'dark';
-  setTheme: (newMode: ThemeMode) => void;
+  mode?: ThemeMode;
+  theme?: 'light' | 'dark';
+  setTheme?: (newMode: ThemeMode) => void;
   handleSend: (text: string) => Promise<void>;
   handleClear: () => void;
   getChatInputProps: () => {
@@ -71,15 +71,15 @@ export interface ChatContextType {
 export interface ChatMessageListProps {}
 
 export interface ChatProps {
-  mode: ThemeMode;
-  theme: 'light' | 'dark';
-  setTheme: (newMode: ThemeMode) => void;
+  mode?: ThemeMode;
+  theme?: 'light' | 'dark';
   config: AutoUIConfig;
   title?: string;
   isOpen?: boolean;
   storageKey?: string;
   closeIcon?: any;
   classNames?: ChatClassNames;
+  setTheme?: (newMode: ThemeMode) => void;
   onError?: (err: Error) => void;
   onClose?: () => void;
 }

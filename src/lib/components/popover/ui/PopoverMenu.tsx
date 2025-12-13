@@ -9,10 +9,12 @@ export const PopoverMenu = ({
   button,
   popoverStyles,
   defaultSelectedKey,
+  closeAfterSelect,
   onSelectionChange,
 }: {
   popoverStyles?: React.CSSProperties;
   items: MenuItemType[];
+  closeAfterSelect?: (key: string) => boolean;
   button: React.ReactElement<any>;
   defaultSelectedKey?: string;
   onSelectionChange?: (key: string) => void;
@@ -39,13 +41,15 @@ export const PopoverMenu = ({
       )}
 
       <Popover styles={popoverStyles} isOpen={isOpen} onClose={() => setOpen(false)} triggerRef={triggerRef}>
-        <div style={{ background: 'white', borderRadius: 10, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }}>
+        <div style={{ borderRadius: 10, zIndex: 9999, boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }}>
           <Menu
             items={items}
             defaultSelectedKey={defaultSelectedKey}
             onSelectionChange={(key) => {
               onSelectionChange?.(key);
-              setOpen(false);
+              if (closeAfterSelect?.(key)) {
+                setOpen(false);
+              }
             }}
           />
         </div>
