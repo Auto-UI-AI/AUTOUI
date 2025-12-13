@@ -8,5 +8,6 @@ import settings from './settings-gear-svgrepo-com.svg';
 import history from './history-svgrepo-com.svg';
 import sun from './sun-solid-full.svg';
 import moon from './moon-solid-full.svg';
+import mic from './microphone-solid-full.svg';
 
-export { plus, sun, moon, history, xmark, burgerMenu, arrowUp, deleteIcon, settings, newIcon };
+export { plus, sun, mic, moon, history, xmark, burgerMenu, arrowUp, deleteIcon, settings, newIcon };

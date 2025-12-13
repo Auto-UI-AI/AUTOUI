@@ -4,12 +4,20 @@ import { clsx } from '@lib/utils/clsx';
 import { ChatMenu } from './ChatMenu';
 import { ChatTextBox } from './ChatTextBox';
 import { SendButton } from './SendButton';
+import { useSpeechToText } from '../hooks/useSpeechToText';
+import { MicButton } from './MicButton';
 
 export interface ChatInputProps {}
-
 export const ChatInput: React.FC<ChatInputProps> = () => {
   const { classNames, handleSend } = useChatContext();
   const [value, setValue] = useState('');
+
+  const speech = useSpeechToText({ lang: 'en-us' });
+
+  React.useEffect(() => {
+    if (!speech.text) return;
+    setValue((prev) => (prev ? `${prev} ${speech.text}` : speech.text));
+  }, [speech.text]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,14 +26,19 @@ export const ChatInput: React.FC<ChatInputProps> = () => {
   };
 
   return (
-    <form
-      role="inputWrapper"
-      className={clsx('autoui-chat-input', classNames?.inputWrapper)}
-      onSubmit={handleSubmit}
-      aria-label="Chat input area"
-    >
+    <form className={clsx('autoui-chat-input', classNames?.inputWrapper)} onSubmit={handleSubmit}>
       <ChatMenu />
       <ChatTextBox value={value} setValue={setValue} />
+
+      {speech.isSupported && (
+        <MicButton
+          active={speech.listening}
+          onClick={() => {
+            speech.listening ? speech.stop() : speech.start();
+          }}
+        />
+      )}
+
       <SendButton />
     </form>
   );
