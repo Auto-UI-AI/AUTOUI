@@ -1,6 +1,7 @@
 import type { AutoUIConfig } from "@lib/types"
 import { buildDataAnalyzingPrompt } from "./buildDataAnalyzingPrompt";
 import type { InstructionPlan } from "@lib/types/llmTypes";
+import parseJsonFromLLM from "@lib/utils/parseJSONFromLLM";
 
 export const extraAnalysisWithLLM = async (data: any, config: AutoUIConfig, userMessage:string, plan: InstructionPlan, currentStepName: string): Promise<any> => {
     let response = await fetch(
@@ -32,5 +33,5 @@ export const extraAnalysisWithLLM = async (data: any, config: AutoUIConfig, user
     const res = await response.json();
     console.log("LLM response for extra data analysis: ", res.choices?.[0]?.message?.content);
     // console.log(typeof res.choices?.[0]?.message?.content);
-    return JSON.parse(res.choices?.[0]?.message?.content);
+    return parseJsonFromLLM(res.choices?.[0]?.message?.content);
 }

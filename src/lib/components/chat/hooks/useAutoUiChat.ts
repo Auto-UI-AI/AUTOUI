@@ -1,5 +1,6 @@
 import { getInstructionPlan } from '@lib/core/llmClient';
 import type { AutoUIConfig } from '@lib/types';
+import { parseInstructionPlan } from '@lib/utils/parseInstructionPlan';
 import { useCallback } from 'react';
 
 export function useAutoUiChat(config: AutoUIConfig) {
@@ -7,21 +8,15 @@ export function useAutoUiChat(config: AutoUIConfig) {
     async (text: string) => {
       let plan = await getInstructionPlan(text, config);
       console.log('📝 Received instruction plan:', plan);
-      if (typeof plan === 'string') {
-        try {
-          plan = JSON.parse(plan);
-        } catch {
-          console.error('❌ Failed to parse plan JSON:', plan);
-          throw new Error('Invalid plan format: could not parse JSON');
-        }
-      }
+      // NEW: robust parsing
+      const parsed = parseInstructionPlan(plan);
+      console.log('✅ Parsed plan object:', parsed);
 
-      if (!plan || typeof plan !== 'object' || !plan.type || !plan.steps) {
-        console.error('❌ Invalid plan structure:', plan);
+      if (!parsed || typeof parsed !== 'object' || !parsed.type || !parsed.steps) {
+        console.error('❌ Invalid plan structure:', parsed);
         throw new Error("Plan must be an object with 'type' and 'steps'.");
       }
-
-      return plan;
+      return parsed;
     },
     [config],
   );
