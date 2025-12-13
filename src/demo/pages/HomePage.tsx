@@ -269,7 +269,6 @@ export default function HomePage() {
             ))}
           </ScrollArea>
         </aside>
-
         {/* Preview Pane */}
         <main className="flex-1 overflow-y-auto p-10">{renderPreview()}</main>
       </div>
