@@ -19,7 +19,6 @@ export function useRendering(config: AutoUIConfig) {
   );
 
   const setUI = useCallback((ui: React.ReactNode | string) => {
-    console.log('setUI called with:', ui);
     uiRendererRef.current?.(ui);
   }, []);
   return { setUIRenderer, resolveComponent, setUI };

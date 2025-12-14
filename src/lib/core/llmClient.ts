@@ -4,6 +4,8 @@ import { parseInstructionPlanFromSSE } from './sseParser';
 import { buildIntentPrompt } from './buildIntentPrompt';
 
 export async function getInstructionPlan(userMessage: string, config: AutoUIConfig): Promise<InstructionPlan> {
+  console.log('RAW PLAN FROM LLM:');
+
   const res = await fetch(`${config.llm.proxyUrl}/v1/chat`, {
     method: 'POST',
     headers: {
@@ -20,7 +22,6 @@ export async function getInstructionPlan(userMessage: string, config: AutoUIConf
           content: buildIntentPrompt(userMessage, config),
         },
       ],
-      tools: config.runtime?.toolsSchema,
       temperature: config.llm.temperature,
     }),
   });
@@ -29,5 +30,5 @@ export async function getInstructionPlan(userMessage: string, config: AutoUIConf
     throw new Error(`LLM proxy error: ${res.status}`);
   }
 
-  return await parseInstructionPlanFromSSE(res.body);
+  return parseInstructionPlanFromSSE(res.body);
 }

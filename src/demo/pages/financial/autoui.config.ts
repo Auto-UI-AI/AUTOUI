@@ -8,11 +8,18 @@ import {
 import { CategorySpendingWrapper } from './components/CategorySpendingWrapper';
 import { UpcomingBillsWrapper } from './components/UpcomingBillsWrapper';
 
-const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-const aiModel = import.meta.env.VITE_AIMODEL_NAME;
-const baseUrl = import.meta.env.VITE_BASE_URL;
+const proxyUrl = import.meta.env.VITE_BASE_URL;
+const sharedSecret = import.meta.env.VITE_AUTOUI_SHARED_SECRET;
 
 export const financialAutouiConfig: AutoUIConfig = {
+  /* =========================
+   *   APP ID
+   * ========================= */
+  appId: 'tasks-demo',
+
+  /* =========================
+   *   METADATA
+   * ========================= */
   metadata: {
     appName: 'Financial Demo',
     appVersion: '0.1.0',
@@ -21,100 +28,99 @@ export const financialAutouiConfig: AutoUIConfig = {
     tags: ['demo', 'finance', 'react', 'autoui'],
   },
 
+  /* =========================
+   *   LLM (PROXY ONLY)
+   * ========================= */
   llm: {
-    provider: 'openrouter',
-    baseUrl: baseUrl,
-    apiKey,
-    model: aiModel,
-    temperature: 0.2,
+    proxyUrl,
+    sharedSecret,
+
     appDescriptionPrompt:
-      'A personal finance management application where users can track transactions, manage bills, view spending by category, and analyze their financial data. Users can add transactions, view spending breakdowns, manage upcoming bills, and set budgets.',
+      'A personal finance management application where users can track transactions, manage bills, view spending by category, and analyze financial data.',
+
+    temperature: 0.2,
     maxTokens: 2048,
-    requestHeaders: {
-      'HTTP-Referer': 'https://autoui.dev',
-      'X-Title': 'AutoUI Financial Demo',
-    },
   },
 
+  /* =========================
+   *   RUNTIME
+   * ========================= */
   runtime: {
     validateLLMOutput: true,
     storeChatToLocalStorage: true,
     localStorageKey: 'autoui_financial_chat',
     enableDebugLogs: true,
     maxSteps: 20,
-    errorHandling: { showToUser: true, retryOnFail: false },
+    errorHandling: {
+      showToUser: true,
+      retryOnFail: false,
+    },
   },
 
+  /* =========================
+   *   FUNCTIONS
+   * ========================= */
   functions: {
     addTransaction: {
       prompt:
-        "Add a new transaction to the user's financial records. Extract amount (with or without $), description, optional date (defaults to today), category, account, and status.",
+        'Add a new transaction to the user’s financial records. Extract amount, description, optional date, category, account, and status.',
       params: {
-        description: 'string — transaction description (e.g., "Starbucks", "Grocery shopping")',
-        amount: 'number | string — transaction amount (e.g., 15.50 or "$15.50")',
-        date: 'string (optional) — date in YYYY-MM-DD format, defaults to today',
-        category:
-          'string (optional) — one of: Groceries, Food & Drink, Transport, Bills, Subscriptions, Income, Health, Shopping, Entertainment, Personal Care. Defaults to "Other"',
-        account: 'string (optional) — account name (e.g., "Personal", "Business", "Cash", "Bank")',
-        status: 'string (optional) — "paid" or "pending", defaults to "pending"',
+        description: 'string — transaction description',
+        amount: 'number | string — transaction amount',
+        date: 'string (optional) — YYYY-MM-DD',
+        category: 'string (optional) — transaction category',
+        account: 'string (optional) — account name',
+        status: 'string (optional) — paid | pending',
       },
       callFunc: addTransaction,
       returns: '{ success: boolean, transaction: Transaction }',
-      exampleUsage: 'addTransaction({ description: "Starbucks", amount: 15.50, category: "Food & Drink" })',
     },
 
     getSpendingByCategory: {
-      prompt:
-        'Get spending breakdown by category for a specific time period. Returns total spending and category summaries.',
+      prompt: 'Get spending breakdown by category for a given period.',
       params: {
-        period: 'number (optional) — 7, 30, or 90 days. Defaults to 30',
+        period: 'number (optional) — 7, 30, or 90 days',
       },
       callFunc: getSpendingByCategory,
       returns: '{ period: number, total: number, categories: Array<{ category: string, total: number }> }',
-      exampleUsage: 'getSpendingByCategory({ period: 30 })',
     },
 
     getUpcomingBills: {
-      prompt: 'Get all upcoming bills that are pending and due on or after today. Returns bills sorted by due date.',
+      prompt: 'Get all upcoming unpaid bills sorted by due date.',
       params: {},
       callFunc: getUpcomingBills,
-      returns:
-        '{ bills: Bill[], totalPending: number, count: number } — bills array with id, name, amount, due date, status',
-      exampleUsage: 'getUpcomingBills()',
+      returns: '{ bills: Bill[], totalPending: number, count: number }',
     },
 
     markBillAsPaid: {
-      prompt:
-        'Mark a bill as paid by searching for it by name (e.g., "Spotify") or by ID. The bill status will be updated to "paid".',
+      prompt: 'Mark a bill as paid by name or ID.',
       params: {
-        billName: 'string (optional) — name of the bill to mark as paid (case-insensitive partial match)',
-        billId: 'number (optional) — ID of the bill to mark as paid',
+        billName: 'string (optional)',
+        billId: 'number (optional)',
       },
       callFunc: markBillAsPaidByName,
       returns: '{ success: boolean, bill?: Bill, error?: string }',
-      exampleUsage: 'markBillAsPaid({ billName: "Spotify" })',
     },
   },
 
+  /* =========================
+   *   COMPONENTS
+   * ========================= */
   components: {
     CategorySpending: {
-      prompt:
-        'Display spending breakdown by category widget showing total spending and top categories for a selected time period (7, 30, or 90 days).',
+      prompt: 'Widget showing spending breakdown by category for a selected time period.',
       props: {
-        period: 'number (optional) — 7, 30, or 90 days. Defaults to 30',
+        period: 'number (optional) — 7, 30, or 90 days',
       },
       callComponent: CategorySpendingWrapper,
       category: 'analytics',
-      exampleUsage: '<CategorySpending period={30} />',
     },
 
     UpcomingBills: {
-      prompt:
-        'Display upcoming bills widget showing pending bills due on or after today, sorted by due date. Shows total pending amount and allows marking bills as paid.',
+      prompt: 'Widget showing upcoming bills and allowing marking them as paid.',
       props: {},
       callComponent: UpcomingBillsWrapper,
       category: 'bills',
-      exampleUsage: '<UpcomingBills />',
     },
   },
 };

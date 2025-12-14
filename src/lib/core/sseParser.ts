@@ -3,7 +3,7 @@ export async function parseInstructionPlanFromSSE(stream: ReadableStream<Uint8Ar
   const decoder = new TextDecoder();
 
   let buffer = '';
-  let finalText = '';
+  let text = '';
 
   while (true) {
     const { value, done } = await reader.read();
@@ -11,29 +11,36 @@ export async function parseInstructionPlanFromSSE(stream: ReadableStream<Uint8Ar
 
     buffer += decoder.decode(value, { stream: true });
 
-    const lines = buffer.split('\n');
-    buffer = lines.pop() ?? '';
+    const events = buffer.split('\n\n');
+    buffer = events.pop() ?? '';
 
-    for (const line of lines) {
-      if (!line.startsWith('data:')) continue;
+    for (const event of events) {
+      if (!event.startsWith('data:')) continue;
 
-      const payload = line.replace('data:', '').trim();
-      if (payload === '[DONE]') break;
+      const payload = event.slice(5).trim();
+
+      if (payload === '[DONE]') {
+        reader.cancel();
+        break;
+      }
 
       try {
         const json = JSON.parse(payload);
-        const delta = json.choices?.[0]?.delta;
-
-        if (delta?.content) {
-          finalText += delta.content;
+        const delta = json.choices?.[0]?.delta?.content;
+        if (delta) {
+          text += delta;
         }
-      } catch {}
+      } catch {
+        // ignore malformed chunks
+      }
     }
   }
 
-  try {
-    return JSON.parse(finalText);
-  } catch {
-    throw new Error('Invalid InstructionPlan JSON from LLM');
+  // 🔥 Витягуємо JSON навіть якщо є текст навколо
+  const jsonMatch = text.match(/\{[\s\S]*\}$/);
+  if (!jsonMatch) {
+    throw new Error('LLM did not return valid JSON InstructionPlan');
   }
+
+  return JSON.parse(jsonMatch[0]);
 }
