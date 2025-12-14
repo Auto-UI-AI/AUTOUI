@@ -16,7 +16,7 @@ export interface LLMConfig {
   baseUrl?: string;
   /** Backend proxy endpoint (safer for production) */
   apiProxyUrl?: string;
-
+  apiProxyClientKey: string;
   /** Model identifier (e.g., openai/gpt-5-chat) */
   model: string;
 

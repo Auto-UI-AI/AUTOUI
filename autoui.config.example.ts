@@ -33,7 +33,7 @@ export const autouiConfig: AutoUIConfig = {
    *   METADATA
    * ========================= */
   metadata: {
-    appName: 'AutoUI Demo',
+    appName: 'autoui_demo',
     appVersion: '0.1.0',
     author: 'AutoUI Dev Team',
     createdAt: new Date().toISOString(),
@@ -46,6 +46,8 @@ export const autouiConfig: AutoUIConfig = {
    * ========================= */
   llm: {
     provider: 'openrouter',
+    apiProxyUrl: 'http://localhost:8787',
+    apiProxyClientKey: 'OURSECRET',
     baseUrl: baseUrl,
     apiKey,
     model: aiModel,

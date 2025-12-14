@@ -36,6 +36,7 @@ const TasksApp = () => {
     metadata: {
       appName: 'AutoUI Task Manager',
       appVersion: '0.1.0',
+      
       author: 'AutoUI Dev Team',
       createdAt: new Date().toISOString(),
       description:
@@ -48,6 +49,8 @@ const TasksApp = () => {
      * ========================= */
     llm: {
       provider: 'openrouter',
+      apiProxyClientKey: 'OURSECRET',
+      apiProxyUrl: 'http://localhost:8787',
       baseUrl,
       apiKey,
       model: aiModel,
@@ -181,29 +184,29 @@ const TasksApp = () => {
       // },
 
       // ---- Single task item
-      TaskItem: {
-        prompt:
-          'Single task card displaying title, description, status, priority and actions (edit, delete, change status). ',
-        props: {
-          task: 'Task — task data to show.',
-          onEdit: 'function(task: Task) — open editor for this task.',
-          onDelete: 'function(task: Task) — delete this task from the list or ask for confirmation.',
-          onStatusChange: 'function(task: Task, nextStatus: Status) — change status of this task.',
-        },
-        defaults: {
-          task: {
-            id: 'example-id',
-            title: 'Example Task',
-            description: 'This is an example task item.',
-            status: 'todo',
-            priority: 'medium',
-            created_at: new Date().toISOString(),
-          } as Task,
-        },
-        callComponent: TaskItem,
-        category: 'tasks',
-        exampleUsage: '<TaskItem task={t} onEdit={editTask} onDelete={deleteTask} onStatusChange={changeStatus} />',
-      },
+      // TaskItem: {
+      //   prompt:
+      //     'Single task card displaying title, description, status, priority and actions (edit, delete, change status). ',
+      //   props: {
+      //     task: 'Task — task data to show.',
+      //     onEdit: 'function(task: Task) — open editor for this task.',
+      //     onDelete: 'function(task: Task) — delete this task from the list or ask for confirmation.',
+      //     onStatusChange: 'function(task: Task, nextStatus: Status) — change status of this task.',
+      //   },
+      //   defaults: {
+      //     task: {
+      //       id: 'example-id',
+      //       title: 'Example Task',
+      //       description: 'This is an example task item.',
+      //       status: 'todo',
+      //       priority: 'medium',
+      //       created_at: new Date().toISOString(),
+      //     } as Task,
+      //   },
+      //   callComponent: TaskItem,
+      //   category: 'tasks',
+      //   exampleUsage: '<TaskItem task={t} onEdit={editTask} onDelete={deleteTask} onStatusChange={changeStatus} />',
+      // },
 
       // ---- Filters
       //   TaskFilters: {
@@ -222,35 +225,35 @@ const TasksApp = () => {
       //   },
 
       // ---- Stats
-      TaskStats: {
-        prompt: 'Statistics bar showing counts of tasks by status and possibly other metrics.',
-        props: {
-          tasks: 'Task[] — list of tasks to compute and display statistics for.',
-        },
-        defaults: {
-          tasks: [
-            {
-              id: '1',
-              title: 'Finish UI prototype',
-              description: 'Complete the task management UI.',
-              status: 'in_progress',
-              priority: 'high',
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              title: 'Write documentation',
-              description: 'Describe how to use the task manager.',
-              status: 'todo',
-              priority: 'medium',
-              created_at: new Date().toISOString(),
-            },
-          ] as Task[],
-        },
-        callComponent: TaskStats,
-        category: 'stats',
-        exampleUsage: '<TaskStats tasks={tasks} />',
-      },
+      // TaskStats: {
+      //   prompt: 'Statistics bar showing counts of tasks by status and possibly other metrics.',
+      //   props: {
+      //     tasks: 'Task[] — list of tasks to compute and display statistics for.',
+      //   },
+      //   defaults: {
+      //     tasks: [
+      //       {
+      //         id: '1',
+      //         title: 'Finish UI prototype',
+      //         description: 'Complete the task management UI.',
+      //         status: 'in_progress',
+      //         priority: 'high',
+      //         created_at: new Date().toISOString(),
+      //       },
+      //       {
+      //         id: '2',
+      //         title: 'Write documentation',
+      //         description: 'Describe how to use the task manager.',
+      //         status: 'todo',
+      //         priority: 'medium',
+      //         created_at: new Date().toISOString(),
+      //       },
+      //     ] as Task[],
+      //   },
+      //   callComponent: TaskStats,
+      //   category: 'stats',
+      //   exampleUsage: '<TaskStats tasks={tasks} />',
+      // },
       PointerHintButton: {
         prompt: "button which triggers the custom cursor showing specified components",
         props:{
