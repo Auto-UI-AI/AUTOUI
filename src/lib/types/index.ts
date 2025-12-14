@@ -1,6 +1,8 @@
 import type { ComponentType } from 'react';
 
 export interface AutoUIConfig {
+  appId: string;
+
   llm: LLMConfig;
   runtime: RuntimeConfig;
   functions: Record<string, AutoUIFunction>;
@@ -8,30 +10,43 @@ export interface AutoUIConfig {
   metadata?: AutoUIMetadata;
 }
 export interface LLMConfig {
-  /** Provider name (e.g., openai, openrouter, anthropic, azure) */
-  provider: string;
+  /** LLM provider (informational, used by proxy) */
+  provider?: string;
 
-  /** Direct API key (client-side) */
-  apiKey?: string;
-  baseUrl?: string;
-  /** Backend proxy endpoint (safer for production) */
-  apiProxyUrl?: string;
+  /** 🔐 Backend proxy URL (REQUIRED in prod) */
+  proxyUrl: string;
 
-  /** Model identifier (e.g., openai/gpt-5-chat) */
-  model: string;
+  /** Optional shared secret for proxy auth */
+  sharedSecret?: string;
+
+  /** Model hint (actual model enforced by proxy) */
+  model?: string;
 
   /** Sampling temperature */
   temperature?: number;
 
-  /** Max tokens per request */
+  /** Max tokens hint */
   maxTokens?: number;
 
-  /** App description for context (“this app is about…”) */
+  /** App description context */
   appDescriptionPrompt?: string;
 
-  /** Optional request headers (forwarded to provider) */
+  /** Optional headers forwarded to proxy */
   requestHeaders?: Record<string, string>;
 }
+
+export type OpenAIToolSchema = {
+  type: 'function';
+  function: {
+    name: string;
+    description: string;
+    parameters?: {
+      type: 'object';
+      properties: Record<string, any>;
+      required?: string[];
+    };
+  };
+};
 
 export interface RuntimeConfig {
   /** Whether to validate LLM JSON output */
@@ -45,6 +60,8 @@ export interface RuntimeConfig {
 
   /** Enable internal debug logging */
   enableDebugLogs?: boolean;
+
+  toolsSchema?: OpenAIToolSchema[];
 
   /** Maximum instruction steps allowed */
   maxSteps?: number;
@@ -67,7 +84,7 @@ export interface AutoUIFunction {
   returns?: string;
 
   /** The actual callable implementation (may be mocked) */
-  callFunc: Function
+  callFunc: Function;
 
   /** Optional example usage or notes for LLM context */
   exampleUsage?: string;
@@ -93,7 +110,7 @@ export interface AutoUIComponent {
 
   /** Actual React component reference */
   callComponent: ComponentType<any>;
-  
+
   /** Default prop values for runtime or mock previews */
   defaults?: Record<string, any>;
 

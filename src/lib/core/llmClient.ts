@@ -1,35 +1,33 @@
 import type { AutoUIConfig } from '../types';
 import type { InstructionPlan } from '../types/llmTypes';
+import { parseInstructionPlanFromSSE } from './sseParser';
 import { buildIntentPrompt } from './buildIntentPrompt';
 
-export const getInstructionPlan = async (userMessage: string, config: AutoUIConfig): Promise<InstructionPlan> => {
-  let response = await fetch(
-    config.llm.baseUrl ? config.llm.baseUrl : 'https://openrouter.ai/api/v1/chat/completions',
-    {
-      method: 'POST',
-      headers: {
-        'Authorization': config.llm.apiKey ? `Bearer ${config.llm.apiKey}` : '',
-        'HTTP-Referer': config.metadata?.appName || 'autoui library user',
-        'X-Title': config.metadata?.appName ?? 'AutoUI Demo',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: config.llm.model ? config.llm.model : 'openai/gpt-5-chat',
-        messages: [
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: buildIntentPrompt(userMessage, config),
-              },
-            ],
-          },
-        ],
+export async function getInstructionPlan(userMessage: string, config: AutoUIConfig): Promise<InstructionPlan> {
+  const res = await fetch(`${config.llm.proxyUrl}/v1/chat`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(config.llm.sharedSecret && {
+        'x-autoui-secret': config.llm.sharedSecret,
       }),
     },
-  );
-  const data = await response.json();
+    body: JSON.stringify({
+      appId: config.appId,
+      messages: [
+        {
+          role: 'user',
+          content: buildIntentPrompt(userMessage, config),
+        },
+      ],
+      tools: config.runtime?.toolsSchema,
+      temperature: config.llm.temperature,
+    }),
+  });
 
-  return data.choices?.[0]?.message?.content;
-};
+  if (!res.ok || !res.body) {
+    throw new Error(`LLM proxy error: ${res.status}`);
+  }
+
+  return await parseInstructionPlanFromSSE(res.body);
+}
