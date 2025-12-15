@@ -10,9 +10,7 @@ export async function getInstructionPlan(userMessage: string, config: AutoUIConf
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      ...(config.llm.sharedSecret && {
-        'x-autoui-secret': config.llm.sharedSecret,
-      }),
+      "Authorization": `Bearer ${config.llm.sharedSecret}`,
     },
     body: JSON.stringify({
       appId: config.appId,

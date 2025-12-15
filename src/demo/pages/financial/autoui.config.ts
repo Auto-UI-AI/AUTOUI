@@ -15,7 +15,7 @@ export const financialAutouiConfig: AutoUIConfig = {
   /* =========================
    *   APP ID
    * ========================= */
-  appId: 'tasks-demo',
+  appId: 'financial-demo',
 
   /* =========================
    *   METADATA

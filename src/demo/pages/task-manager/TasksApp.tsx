@@ -8,7 +8,6 @@ import TasksList from './componentsForChat.tsx/TasksList';
 import { useTasksContext } from './hooks/useAppFunctions';
 import { useCallback } from 'react';
 import { PointerHintButton } from './componentsForChat.tsx/PointerHintButton';
-
 const TasksApp = () => {
   const { tasks, setShowForm } = useTasksContext();
 
