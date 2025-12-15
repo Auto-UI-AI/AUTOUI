@@ -11,6 +11,7 @@ export async function getInstructionPlan(userMessage: string, config: AutoUIConf
     headers: {
       'Content-Type': 'application/json',
       "Authorization": `Bearer ${config.llm.sharedSecret}`,
+      'x-autoui-secret': `${config.llm.sharedSecret}`,
     },
     body: JSON.stringify({
       appId: config.appId,

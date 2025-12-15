@@ -76,6 +76,7 @@ async function runStep(
   if(fCfg.canShareDataWithLLM && step.hasToShareDataWithLLM ){
     console.log("This function is allowed to share data with LLM and LLM says that this step requires data to be shared with LLM");
     const dataToShare = await extraAnalysisWithLLM(out, config, userMessage, plan, step.name);
+    console.log("Data received back from LLM after extra analysis: ", dataToShare);
     if ((step as any).assign) ctx[(step as any).assign] = dataToShare;
   }
   else{

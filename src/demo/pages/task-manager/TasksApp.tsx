@@ -136,7 +136,7 @@ const TasksApp = () => {
       fetchCurrentTasksState: {
         prompt: 'Return the current list of tasks from application state.',
         callFunc: () => tasks,
-        canShareDataWithLLM: true,
+        // canShareDataWithLLM: true,
       },
 
       showHowManyTasks: {
