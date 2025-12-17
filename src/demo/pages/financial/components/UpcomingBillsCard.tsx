@@ -42,7 +42,7 @@ export function UpcomingBillsCard() {
   };
 
   return (
-    <Card className="@container/card">
+    <Card className="@container/card h-full">
       <CardHeader className="relative">
         <CardDescription>Pending Monitoring Sources</CardDescription>
         <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">

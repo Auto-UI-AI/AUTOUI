@@ -5,11 +5,12 @@ import { MessageSquareIcon } from 'lucide-react';
 
 export function SuggestedPromptsCard() {
   const prompts = [
-    'Add a $15.50 transaction for Starbucks today in Food & Drink category',
-    'Show my total spending by category for the last 30 days',
-    'Show me all my upcoming bills',
-    'Mark the Spotify bill as paid',
-    'How much did I spend on Groceries in the last 90 days?',
+    'Add a new monitoring source: Kubernetes Cluster on port 10255 in Production environment',
+    'Show monitoring sources by category for the last 30 days',
+    'Show me all pending monitoring sources',
+    'Mark the Kubernetes Cluster source as active',
+    'How many monitoring sources are in the Infrastructure category?',
+    'Show me all monitoring sources in Production environment',
   ];
 
   const sendMessageToChat = React.useCallback((message: string) => {
@@ -103,18 +104,18 @@ export function SuggestedPromptsCard() {
   );
 
   return (
-    <Card className="@container/card">
+    <Card className="@container/card h-full">
       <CardHeader className="relative">
         <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold">Try asking…</CardTitle>
       </CardHeader>
       <CardContent className="px-6 pt-0">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
           {prompts.map((prompt, index) => (
             <Button
               key={index}
               variant="outline"
               size="sm"
-              className="h-auto gap-0 py-1 justify-start whitespace-normal text-left font-normal hover:bg-accent"
+              className="h-auto gap-0 py-2 justify-start whitespace-normal text-left font-normal hover:bg-accent"
               onClick={() => handlePromptClick(prompt)}
             >
               <MessageSquareIcon className="mr-2 size-4 shrink-0 text-muted-foreground" />

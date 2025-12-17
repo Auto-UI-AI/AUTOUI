@@ -27,7 +27,7 @@ export function SpendingByCategoryCard({ period: initialPeriod }: { period?: 7 |
   };
 
   return (
-    <Card className="@container/card @xl/main:col-span-2 @5xl/main:col-span-2">
+    <Card className="@container/card h-full">
       <CardHeader className="relative">
         <CardDescription>Monitoring Sources by Category</CardDescription>
         <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">

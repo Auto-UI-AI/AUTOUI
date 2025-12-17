@@ -75,6 +75,33 @@ export async function getUpcomingBills() {
 }
 
 /**
+ * Get monitoring sources by environment/cluster
+ */
+export async function getSourcesByEnvironment(params: { environment?: string }) {
+  const transactions = useFinanceStore.getState().transactions;
+  const environment = params.environment || '';
+
+  if (!environment) {
+    return {
+      sources: transactions,
+      count: transactions.length,
+      environment: 'all',
+    };
+  }
+
+  // Case-insensitive partial match for environment
+  const filtered = transactions.filter((transaction) =>
+    transaction.account.toLowerCase().includes(environment.toLowerCase())
+  );
+
+  return {
+    sources: filtered,
+    count: filtered.length,
+    environment: environment,
+  };
+}
+
+/**
  * Mark a bill as paid by name or ID
  */
 export async function markBillAsPaidByName(params: { billName?: string; billId?: number }) {
