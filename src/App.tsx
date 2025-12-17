@@ -9,7 +9,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/demo/ecommerce" element={<EcommerceDemoPage />} />
-        <Route path="/demo/financial" element={<FinancialDemoPage />} />
+        <Route path="/demo/observability" element={<FinancialDemoPage />} />
         <Route path="/demo/task-manager" element={<Demo3 />} />
       </Routes>
       <PlayGround />

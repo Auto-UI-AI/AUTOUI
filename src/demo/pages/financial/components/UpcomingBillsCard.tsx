@@ -38,7 +38,7 @@ export function UpcomingBillsCard() {
   }, []);
 
   const handleViewAll = () => {
-    navigate('/demo/financial');
+    navigate('/demo/observability');
   };
 
   return (
