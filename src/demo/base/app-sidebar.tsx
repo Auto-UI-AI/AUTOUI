@@ -169,7 +169,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <a href="#">
                 <ArrowUpCircleIcon className="h-5 w-5 text-[#00E5FF]" />
-                <span className="text-base font-semibold text-[#F5F7FA]">Observability</span>
+                <span className="text-base font-semibold text-[#F5F7FA]">Observability Copilot</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
