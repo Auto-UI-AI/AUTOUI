@@ -67,7 +67,7 @@ export interface AutoUIFunction {
   returns?: string;
 
   /** The actual callable implementation (may be mocked) */
-  callFunc: Function;
+  callFunc: Function
 
   /** Optional example usage or notes for LLM context */
   exampleUsage?: string;
@@ -93,7 +93,7 @@ export interface AutoUIComponent {
 
   /** Actual React component reference */
   callComponent: ComponentType<any>;
-
+  
   /** Default prop values for runtime or mock previews */
   defaults?: Record<string, any>;
 
