@@ -1,9 +1,11 @@
-import clsx from 'clsx';
 import React, { forwardRef, useMemo } from 'react';
+import clsx from 'clsx';
+import '../styles/index.css';
 
 export interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'simple' | 'wave' | 'dots' | 'spinner';
   label?: string;
+  color?: string;
   classNames?: {
     base?: string;
     wrapper?: string;
@@ -16,21 +18,20 @@ export interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
-  ({ variant = 'default', label, className, classNames = {}, ...props }, ref) => {
-    const baseClass = clsx('inline-flex flex-col items-center justify-center', className);
-
+  ({ variant = 'default', label, className, classNames = {}, color = 'currentColor', ...props }, ref) => {
     const content = useMemo(() => {
       switch (variant) {
         case 'wave':
         case 'dots':
           return (
-            <div className={clsx('flex gap-1', classNames.wrapper)}>
-              {[...Array(3)].map((_, i) => (
+            <div className={clsx('spinner-dots-wrapper', classNames.wrapper)}>
+              {[0, 1, 2].map((i) => (
                 <i
                   key={i}
-                  className={clsx('block w-2 h-2 bg-current rounded-full animate-bounce', classNames.dots)}
+                  className={clsx('spinner-dot', classNames.dots)}
                   style={{
                     animationDelay: `${i * 0.2}s`,
+                    backgroundColor: color,
                   }}
                 />
               ))}
@@ -40,14 +41,15 @@ export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
         case 'simple':
           return (
             <svg
-              className={clsx('animate-spin text-current', classNames.wrapper)}
+              className={clsx('spinner-simple', classNames.wrapper)}
               width="24"
               height="24"
               fill="none"
               viewBox="0 0 24 24"
+              style={{ color }}
             >
               <circle
-                className={clsx('opacity-25', classNames.circle1)}
+                className={clsx('spinner-simple-circle1', classNames.circle1)}
                 cx="12"
                 cy="12"
                 r="10"
@@ -55,7 +57,7 @@ export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
                 strokeWidth="4"
               />
               <path
-                className={clsx('opacity-75', classNames.circle2)}
+                className={clsx('spinner-simple-circle2', classNames.circle2)}
                 fill="currentColor"
                 d="M4 12a8 8 0 018-8V0C5.37 0 0 5.37 0 12h4z"
               />
@@ -64,17 +66,15 @@ export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
 
         case 'spinner':
           return (
-            <div className={clsx('relative w-6 h-6', classNames.wrapper)}>
+            <div className={clsx('spinner-bars-wrapper', classNames.wrapper)}>
               {[...Array(12)].map((_, i) => (
                 <i
                   key={i}
-                  className={clsx(
-                    'absolute left-1/2 top-1/2 w-0.5 h-1.5 bg-current origin-center opacity-20 animate-pulse',
-                    classNames.spinnerBars,
-                  )}
+                  className={clsx('spinner-bar', classNames.spinnerBars)}
                   style={{
                     transform: `rotate(${i * 30}deg) translateY(-8px)`,
                     animationDelay: `${i * 0.1}s`,
+                    backgroundColor: color,
                   }}
                 />
               ))}
@@ -83,28 +83,18 @@ export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
 
         default:
           return (
-            <div className={clsx('relative w-8 h-8', classNames.wrapper)}>
-              <i
-                className={clsx(
-                  'absolute inset-0 rounded-full border-4 border-current border-opacity-25',
-                  classNames.circle1,
-                )}
-              />
-              <i
-                className={clsx(
-                  'absolute inset-0 rounded-full border-4 border-t-transparent animate-spin',
-                  classNames.circle2,
-                )}
-              />
+            <div className={clsx('spinner-default', classNames.wrapper)}>
+              <i className={clsx('spinner-default-circle1', classNames.circle1)} style={{ borderColor: color }} />
+              <i className={clsx('spinner-default-circle2', classNames.circle2)} style={{ borderColor: color }} />
             </div>
           );
       }
-    }, [variant, classNames]);
+    }, [variant, classNames, color]);
 
     return (
-      <div ref={ref} className={baseClass} aria-label={label || 'Loading'} {...props}>
+      <div ref={ref} className={clsx('spinner-base', className)} aria-label={label || 'Loading'} {...props}>
         {content}
-        {label && <span className={clsx('mt-2 text-sm text-gray-600', classNames.label)}>{label}</span>}
+        {label && <span className={clsx('spinner-label', classNames.label)}>{label}</span>}
       </div>
     );
   },

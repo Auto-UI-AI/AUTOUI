@@ -6,6 +6,8 @@ import { DataTable, SpendingBreakdownChart } from './components';
 import { useFinanceStore } from './store/useFinanceStore';
 import { InsightCards } from './components/InsightCards';
 import type { Bill } from './types/finance';
+import { ModalChat } from '@lib';
+import financialAutouiConfig from './autoui.config';
 
 export function FinancialDemoPage() {
   const transactions = useFinanceStore((state) => state.transactions);
@@ -70,6 +72,7 @@ export function FinancialDemoPage() {
           </div>
         </SidebarInset>
       </SidebarProvider>
+      <ModalChat config={financialAutouiConfig} />
     </div>
   );
 }

@@ -22,10 +22,8 @@ const ModalChatBody = ({ config, portalContainer }: ModalChatProps) => {
   const { value, setValue } = useModalChatContext();
   const { isOpen } = value;
 
-  // const onOpen = () => setValue((prev) => ({ ...prev, isOpen: true }));
   const onClose = () => setValue((prev) => ({ ...prev, isOpen: false }));
   const onOpenChange = () => setValue((prev) => ({ ...prev, isOpen: !prev.isOpen }));
-
   const container = portalContainer ?? document.body;
 
   return (

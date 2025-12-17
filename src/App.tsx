@@ -1,14 +1,9 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { ModalChat } from '@lib';
+import { Routes, Route } from 'react-router-dom';
 import { EcommerceDemoPage, FinancialDemoPage, HomePage } from '@/demo/pages';
-import { autouiConfig } from '../autoui.config.example.ts';
-import { financialAutouiConfig } from '@/demo/pages/financial';
 import PlayGround from './playground/PlayGround';
 import Demo3 from './demo/pages/task-manager/Demo3.tsx';
 
 export function App() {
-  const { pathname } = useLocation();
-  const config = pathname.startsWith('/demo/financial') ? financialAutouiConfig : autouiConfig;
 
   return (
     <>
@@ -19,7 +14,6 @@ export function App() {
         <Route path="/demo/task-manager" element={<Demo3 />} />
       </Routes>
       <PlayGround />
-      <ModalChat config={config} />
     </>
   );
 }
