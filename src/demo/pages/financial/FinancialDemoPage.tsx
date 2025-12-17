@@ -24,6 +24,14 @@ export function FinancialDemoPage() {
     }
   }, [transactions.length, setTransactions, bills.length, setBills]);
 
+  // Add class to body for financial app-specific styling
+  useEffect(() => {
+    document.body.classList.add('financial-app');
+    return () => {
+      document.body.classList.remove('financial-app');
+    };
+  }, []);
+
   // Use store transactions if available, otherwise fall back to mock data
   const rawData = transactions.length > 0 ? transactions : transactionsData;
 
@@ -37,7 +45,7 @@ export function FinancialDemoPage() {
   }, [rawData]);
 
   return (
-    <>
+    <div className="dark min-h-screen bg-[#0E0F13]">
       <SidebarProvider
         style={
           {
@@ -49,7 +57,7 @@ export function FinancialDemoPage() {
         <AppSidebar variant="inset" />
         <SidebarInset>
           <SiteHeader />
-          <div className="flex flex-1 flex-col">
+          <div className="flex flex-1 flex-col bg-[#0E0F13]">
             <div className="@container/main flex flex-1 flex-col gap-2">
               <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
                 <InsightCards />
@@ -62,6 +70,6 @@ export function FinancialDemoPage() {
           </div>
         </SidebarInset>
       </SidebarProvider>
-    </>
+    </div>
   );
 }

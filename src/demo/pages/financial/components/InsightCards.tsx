@@ -4,14 +4,14 @@ import { UpcomingBillsCard } from './UpcomingBillsCard';
 
 export function InsightCards() {
   return (
-    <div className="*:data-[slot=card]:shadow-xs grid grid-cols-1 md:grid-cols-4 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card lg:px-6">
-      <div className="md:col-span-2">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-4 px-4 lg:px-6">
+      <div className="md:col-span-5">
         <SuggestedPromptsCard />
       </div>
-      <div className="md:col-span-1">
+      <div className="md:col-span-4">
         <SpendingByCategoryCard />
       </div>
-      <div className="md:col-span-1">
+      <div className="md:col-span-3">
         <UpcomingBillsCard />
       </div>
     </div>

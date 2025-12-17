@@ -5,13 +5,13 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', 'Roboto', system-ui, -apple-system, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: dark;
+  color: #F5F7FA;
+  background-color: #0E0F13;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -90,37 +90,37 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: #0E0F13;
+  --foreground: #F5F7FA;
+  --card: #1A1D23;
+  --card-foreground: #F5F7FA;
+  --popover: #1A1D23;
+  --popover-foreground: #F5F7FA;
+  --primary: #00E5FF;
+  --primary-foreground: #0E0F13;
+  --secondary: #2A2F37;
+  --secondary-foreground: #F5F7FA;
+  --muted: #2A2F37;
+  --muted-foreground: #A9B2C1;
+  --accent: #00B8D4;
+  --accent-foreground: #F5F7FA;
+  --destructive: #FF5C81;
+  --border: #2A2F37;
+  --input: #2A2F37;
+  --ring: #00E5FF;
+  --chart-1: #00E5FF;
+  --chart-2: #00B8D4;
+  --chart-3: #2AD39B;
+  --chart-4: #FFC043;
+  --chart-5: #FF5C81;
+  --sidebar: #1A1D23;
+  --sidebar-foreground: #F5F7FA;
+  --sidebar-primary: #00E5FF;
+  --sidebar-primary-foreground: #0E0F13;
+  --sidebar-accent: #2A2F37;
+  --sidebar-accent-foreground: #F5F7FA;
+  --sidebar-border: #2A2F37;
+  --sidebar-ring: #00E5FF;
 }
 
 @layer base {
@@ -129,5 +129,8 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  body.financial-app {
+    @apply bg-[#0E0F13];
   }
 }

@@ -168,8 +168,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <a href="#">
-                <ArrowUpCircleIcon className="h-5 w-5" />
-                <span className="text-base font-semibold">Acme Finance.</span>
+                <ArrowUpCircleIcon className="h-5 w-5 text-[#00E5FF]" />
+                <span className="text-base font-semibold text-[#F5F7FA]">Observability</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

@@ -104,21 +104,21 @@ export function SuggestedPromptsCard() {
   );
 
   return (
-    <Card className="@container/card h-full">
-      <CardHeader className="relative">
-        <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold">Try asking…</CardTitle>
+    <Card className="@container/card h-full bg-[#1A1D23] border-[#2A2F37] shadow-lg">
+      <CardHeader className="relative border-b border-[#2A2F37]">
+        <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold text-[#F5F7FA]">Try asking…</CardTitle>
       </CardHeader>
-      <CardContent className="px-6 pt-0">
+      <CardContent className="px-6 pt-4">
         <div className="flex flex-col gap-3">
           {prompts.map((prompt, index) => (
             <Button
               key={index}
               variant="outline"
               size="sm"
-              className="h-auto gap-0 py-2 justify-start whitespace-normal text-left font-normal hover:bg-accent"
+              className="h-auto gap-0 py-2.5 justify-start whitespace-normal text-left font-normal border-[#2A2F37] bg-[#1A1D23] text-[#A9B2C1] hover:bg-[#2A2F37] hover:text-[#00E5FF] hover:border-[#00E5FF]/30 transition-all duration-200"
               onClick={() => handlePromptClick(prompt)}
             >
-              <MessageSquareIcon className="mr-2 size-4 shrink-0 text-muted-foreground" />
+              <MessageSquareIcon className="mr-2 size-4 shrink-0 text-[#00B8D4]" />
               <span className="text-xs">{prompt}</span>
             </Button>
           ))}

@@ -42,20 +42,20 @@ export function UpcomingBillsCard() {
   };
 
   return (
-    <Card className="@container/card h-full">
-      <CardHeader className="relative">
-        <CardDescription>Pending Monitoring Sources</CardDescription>
-        <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
+    <Card className="@container/card h-full bg-[#1A1D23] border-[#2A2F37] shadow-lg">
+      <CardHeader className="relative border-b border-[#2A2F37]">
+        <CardDescription className="text-[#A9B2C1] text-xs uppercase tracking-wider">Pending Monitoring Sources</CardDescription>
+        <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums text-[#FFC043] mt-2">
           {totalPending} {totalPending === 1 ? 'source' : 'sources'}
         </CardTitle>
       </CardHeader>
-      <CardContent className="px-6 pt-0">
+      <CardContent className="px-6 pt-4">
         {pendingSources.length === 0 ? (
-          <div className="py-4 text-sm text-muted-foreground">✅ All monitoring sources are active.</div>
+          <div className="py-4 text-sm text-[#2AD39B]">✓ All monitoring sources are active.</div>
         ) : (
           <>
             {totalPending > 0 && (
-              <div className="mb-3 text-xs font-medium text-muted-foreground">
+              <div className="mb-3 text-xs font-medium text-[#A9B2C1]">
                 {totalPending} {totalPending === 1 ? 'source' : 'sources'} pending setup
               </div>
             )}
@@ -72,8 +72,8 @@ export function UpcomingBillsCard() {
           </>
         )}
       </CardContent>
-      <CardFooter className="flex-col items-start gap-1 text-sm">
-        <Button variant="ghost" size="sm" className="h-auto p-0 font-medium" onClick={handleViewAll}>
+      <CardFooter className="flex-col items-start gap-1 text-sm border-t border-[#2A2F37] pt-4">
+        <Button variant="ghost" size="sm" className="h-auto p-0 font-medium text-[#00E5FF] hover:text-[#00B8D4] hover:bg-transparent" onClick={handleViewAll}>
           View all sources
           <ArrowRight className="ml-2 size-4" />
         </Button>
@@ -104,19 +104,19 @@ function SourceRow({
 
   return (
     <div
-      className={`flex items-center justify-between rounded-md border p-2 text-sm transition-all ${
+      className={`flex items-center justify-between rounded-lg border border-[#2A2F37] bg-[#0E0F13] p-3 text-sm transition-all ${
         isRemoving ? 'opacity-0 -translate-x-4' : 'opacity-100 translate-x-0'
-      }`}
+      } hover:border-[#00E5FF]/30 hover:bg-[#1A1D23]`}
     >
       <div className="flex-1">
-        <div className="font-medium">{transaction.description}</div>
-        <div className="text-xs text-muted-foreground">
+        <div className="font-medium text-[#F5F7FA]">{transaction.description}</div>
+        <div className="text-xs text-[#A9B2C1] mt-0.5">
           connected {formatDate(transaction.date)} — {transaction.amount}
         </div>
       </div>
       <button
         onClick={handleClick}
-        className="ml-2 rounded-full p-1 text-muted-foreground transition-colors hover:text-primary hover:bg-accent"
+        className="ml-2 rounded-full p-1.5 text-[#A9B2C1] transition-all hover:text-[#2AD39B] hover:bg-[#2AD39B]/10 hover:shadow-[0_0_8px_rgba(42,211,155,0.3)]"
         aria-label={`Mark ${transaction.description} as active`}
       >
         <CheckCircle2 className="size-5" />

@@ -13,7 +13,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/demo/base/toggleGroup';
 const chartConfig = {
   cumulative: {
     label: 'Cumulative Monitoring Sources',
-    color: 'hsl(var(--chart-1))',
+    color: '#00E5FF',
   },
 } satisfies ChartConfig;
 
@@ -105,13 +105,13 @@ export function SpendingBreakdownChart() {
 
   if (allChartData.length === 0) {
     return (
-      <Card className="@container/card">
-        <CardHeader>
-          <CardTitle>Monitoring Sources Added Over Time</CardTitle>
-          <CardDescription>No monitoring sources added yet</CardDescription>
+      <Card className="@container/card bg-[#1A1D23] border-[#2A2F37] shadow-lg">
+        <CardHeader className="border-b border-[#2A2F37]">
+          <CardTitle className="text-[#F5F7FA]">Monitoring Sources Added Over Time</CardTitle>
+          <CardDescription className="text-[#A9B2C1]">No monitoring sources added yet</CardDescription>
         </CardHeader>
         <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-          <div className="flex h-[250px] items-center justify-center text-muted-foreground">
+          <div className="flex h-[250px] items-center justify-center text-[#A9B2C1]">
             Add monitoring sources to see monitoring sources added over time
           </div>
         </CardContent>
@@ -120,10 +120,10 @@ export function SpendingBreakdownChart() {
   }
 
   return (
-    <Card className="@container/card">
-      <CardHeader className="relative">
-        <CardTitle>Monitoring Sources Added Over Time</CardTitle>
-        <CardDescription>
+    <Card className="@container/card bg-[#1A1D23] border-[#2A2F37] shadow-lg">
+      <CardHeader className="relative border-b border-[#2A2F37]">
+        <CardTitle className="text-[#F5F7FA]">Monitoring Sources Added Over Time</CardTitle>
+        <CardDescription className="text-[#A9B2C1]">
           <span className="@[540px]/card:block hidden">Cumulative number of monitoring sources connected by date.</span>
           <span className="@[540px]/card:hidden">Cumulative number of monitoring sources connected by date.</span>
         </CardDescription>
@@ -133,30 +133,30 @@ export function SpendingBreakdownChart() {
             value={timeRange}
             onValueChange={setTimeRange}
             variant="outline"
-            className="@[767px]/card:flex hidden"
+            className="@[767px]/card:flex hidden border-[#2A2F37] bg-[#0E0F13]"
           >
-            <ToggleGroupItem value="90d" className="h-8 px-2.5">
+            <ToggleGroupItem value="90d" className="h-8 px-2.5 text-[#A9B2C1] data-[state=on]:bg-[#00E5FF]/20 data-[state=on]:text-[#00E5FF] data-[state=on]:border-[#00E5FF]/50 hover:text-[#00E5FF]">
               Last 3 months
             </ToggleGroupItem>
-            <ToggleGroupItem value="30d" className="h-8 px-2.5">
+            <ToggleGroupItem value="30d" className="h-8 px-2.5 text-[#A9B2C1] data-[state=on]:bg-[#00E5FF]/20 data-[state=on]:text-[#00E5FF] data-[state=on]:border-[#00E5FF]/50 hover:text-[#00E5FF]">
               Last 30 days
             </ToggleGroupItem>
-            <ToggleGroupItem value="7d" className="h-8 px-2.5">
+            <ToggleGroupItem value="7d" className="h-8 px-2.5 text-[#A9B2C1] data-[state=on]:bg-[#00E5FF]/20 data-[state=on]:text-[#00E5FF] data-[state=on]:border-[#00E5FF]/50 hover:text-[#00E5FF]">
               Last 7 days
             </ToggleGroupItem>
           </ToggleGroup>
           <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="@[767px]/card:hidden flex w-40" aria-label="Select a value">
+            <SelectTrigger className="@[767px]/card:hidden flex w-40 bg-[#0E0F13] border-[#2A2F37] text-[#A9B2C1] hover:border-[#00E5FF]/50" aria-label="Select a value">
               <SelectValue placeholder="Last 3 months" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl">
-              <SelectItem value="90d" className="rounded-lg">
+            <SelectContent className="rounded-xl bg-[#1A1D23] border-[#2A2F37]">
+              <SelectItem value="90d" className="rounded-lg text-[#F5F7FA] hover:bg-[#2A2F37]">
                 Last 3 months
               </SelectItem>
-              <SelectItem value="30d" className="rounded-lg">
+              <SelectItem value="30d" className="rounded-lg text-[#F5F7FA] hover:bg-[#2A2F37]">
                 Last 30 days
               </SelectItem>
-              <SelectItem value="7d" className="rounded-lg">
+              <SelectItem value="7d" className="rounded-lg text-[#F5F7FA] hover:bg-[#2A2F37]">
                 Last 7 days
               </SelectItem>
             </SelectContent>
@@ -168,17 +168,18 @@ export function SpendingBreakdownChart() {
           <AreaChart data={filteredData}>
             <defs>
               <linearGradient id="fillCumulative" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-cumulative)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-cumulative)" stopOpacity={0.1} />
+                <stop offset="5%" stopColor="#00E5FF" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="#00E5FF" stopOpacity={0.05} />
               </linearGradient>
             </defs>
-            <CartesianGrid vertical={false} />
+            <CartesianGrid vertical={false} stroke="#2A2F37" strokeDasharray="3 3" />
             <XAxis
               dataKey="date"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               minTickGap={32}
+              tick={{ fill: '#A9B2C1', fontSize: 12 }}
               tickFormatter={(value) => {
                 const date = new Date(value);
                 return date.toLocaleDateString('en-US', {
@@ -191,6 +192,7 @@ export function SpendingBreakdownChart() {
               tickLine={false}
               axisLine={false}
               tickMargin={8}
+              tick={{ fill: '#A9B2C1', fontSize: 12 }}
               tickFormatter={(value) => {
                 return formatCount(value);
               }}
@@ -207,12 +209,12 @@ export function SpendingBreakdownChart() {
                   }}
                   formatter={(value, name, item) => (
                     <div className="flex w-full flex-wrap items-center gap-2">
-                      <div className="h-2.5 w-2.5 shrink-0 rounded-0.5 border bg-[var(--color-cumulative)]" />
+                      <div className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#00E5FF] shadow-[0_0_8px_rgba(0,229,255,0.5)]" />
                       <div className="flex flex-1 justify-between leading-none items-center">
                         <div className="grid gap-1.5">
-                          <span className="text-muted-foreground">Cumulative</span>
+                          <span className="text-[#A9B2C1]">Cumulative</span>
                         </div>
-                        <span className="text-foreground font-mono font-medium ml-1 tabular-nums">
+                        <span className="text-[#00E5FF] font-mono font-medium ml-1 tabular-nums">
                           {formatCount(Number(value))} sources
                         </span>
                       </div>
@@ -226,8 +228,9 @@ export function SpendingBreakdownChart() {
               dataKey="cumulative"
               type="natural"
               fill="url(#fillCumulative)"
-              stroke="var(--color-cumulative)"
+              stroke="#00E5FF"
               strokeWidth={2}
+              style={{ filter: 'drop-shadow(0 0 4px rgba(0, 229, 255, 0.3))' }}
             />
           </AreaChart>
         </ChartContainer>

@@ -128,24 +128,25 @@ export function AddOrEditDialog() {
       <DialogTrigger asChild>
         <SidebarMenuButton
           tooltip="Connect Monitoring"
-          className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground"
+          className="min-w-8 bg-[#00E5FF] text-[#0E0F13] duration-200 ease-linear hover:bg-[#00B8D4] hover:text-[#0E0F13] active:bg-[#00B8D4] active:text-[#0E0F13] shadow-[0_0_12px_rgba(0,229,255,0.4)]"
         >
           <PlusCircleIcon />
           <span>Connect Monitoring</span>
         </SidebarMenuButton>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] bg-[#1A1D23] border-[#2A2F37] text-[#F5F7FA]">
         <DialogHeader>
-          <DialogTitle>Connect Monitoring Source</DialogTitle>
-          <DialogDescription>
-           Configure a new monitoring connection to collect metrics, logs, and traces. All fields marked * are required.
+          <DialogTitle className="text-[#F5F7FA]">Connect Monitoring Source</DialogTitle>
+          <DialogDescription className="text-[#A9B2C1]">
+            Configure a new monitoring connection to collect metrics, logs, and traces. All fields marked * are
+            required.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
             <div className="grid gap-3">
-              <Label htmlFor="description">
-                Monitoring Target Name <span className="text-destructive">*</span>
+              <Label htmlFor="description" className="text-[#F5F7FA]">
+                Monitoring Target Name <span className="text-[#FF5C81]">*</span>
               </Label>
               <Input
                 id="description"
@@ -153,13 +154,14 @@ export function AddOrEditDialog() {
                 placeholder="e.g., api-service-prod"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                className="bg-[#0E0F13] border-[#2A2F37] text-[#F5F7FA] placeholder:text-[#A9B2C1] focus:border-[#00E5FF] focus:ring-[#00E5FF]/20"
                 required
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-3">
-                <Label htmlFor="amount">
-                  Endpoint / Port <span className="text-destructive">*</span>
+                <Label htmlFor="amount" className="text-[#F5F7FA]">
+                  Endpoint / Port <span className="text-[#FF5C81]">*</span>
                 </Label>
                 <Input
                   id="amount"
@@ -172,12 +174,13 @@ export function AddOrEditDialog() {
                     const value = e.target.value.replace(/[^0-9.]/g, '');
                     setFormData({ ...formData, amount: value });
                   }}
+                  className="bg-[#0E0F13] border-[#2A2F37] text-[#F5F7FA] placeholder:text-[#A9B2C1] focus:border-[#00E5FF] focus:ring-[#00E5FF]/20"
                   required
                 />
               </div>
               <div className="grid gap-3">
-                <Label htmlFor="date">
-                  Connection Start Date <span className="text-destructive">*</span>
+                <Label htmlFor="date" className="text-[#F5F7FA]">
+                  Connection Start Date <span className="text-[#FF5C81]">*</span>
                 </Label>
                 <Input
                   id="date"
@@ -185,25 +188,33 @@ export function AddOrEditDialog() {
                   type="date"
                   value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                  className="bg-[#0E0F13] border-[#2A2F37] text-[#F5F7FA] focus:border-[#00E5FF] focus:ring-[#00E5FF]/20"
                   required
                 />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-3">
-                <Label htmlFor="category">
-                  Monitoring Category <span className="text-destructive">*</span>
+                <Label htmlFor="category" className="text-[#F5F7FA]">
+                  Monitoring Category <span className="text-[#FF5C81]">*</span>
                 </Label>
                 <Select
                   value={formData.category}
                   onValueChange={(value) => setFormData({ ...formData, category: value })}
                 >
-                  <SelectTrigger id="category">
+                  <SelectTrigger
+                    id="category"
+                    className="bg-[#0E0F13] border-[#2A2F37] text-[#F5F7FA] hover:border-[#00E5FF]/50"
+                  >
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-[#1A1D23] border-[#2A2F37]">
                     {CATEGORIES.map((category) => (
-                      <SelectItem key={category} value={category}>
+                      <SelectItem
+                        key={category}
+                        value={category}
+                        className="text-[#F5F7FA] hover:bg-[#2A2F37] focus:bg-[#2A2F37]"
+                      >
                         {category}
                       </SelectItem>
                     ))}
@@ -211,14 +222,23 @@ export function AddOrEditDialog() {
                 </Select>
               </div>
               <div className="grid gap-3">
-                <Label htmlFor="status">Connection Status</Label>
+                <Label htmlFor="status" className="text-[#F5F7FA]">
+                  Connection Status
+                </Label>
                 <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
-                  <SelectTrigger id="status">
+                  <SelectTrigger
+                    id="status"
+                    className="bg-[#0E0F13] border-[#2A2F37] text-[#F5F7FA] hover:border-[#00E5FF]/50"
+                  >
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-[#1A1D23] border-[#2A2F37]">
                     {STATUSES.map((status) => (
-                      <SelectItem key={status} value={status}>
+                      <SelectItem
+                        key={status}
+                        value={status}
+                        className="text-[#F5F7FA] hover:bg-[#2A2F37] focus:bg-[#2A2F37]"
+                      >
                         {status.charAt(0).toUpperCase() + status.slice(1)}
                       </SelectItem>
                     ))}
@@ -227,18 +247,25 @@ export function AddOrEditDialog() {
               </div>
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="account">Environment / Cluster</Label>
+              <Label htmlFor="account" className="text-[#F5F7FA]">
+                Environment / Cluster
+              </Label>
               <Select
                 value={formData.account || '__none__'}
                 onValueChange={(value) => setFormData({ ...formData, account: value })}
               >
-                <SelectTrigger id="account">
+                <SelectTrigger
+                  id="account"
+                  className="bg-[#0E0F13] border-[#2A2F37] text-[#F5F7FA] hover:border-[#00E5FF]/50"
+                >
                   <SelectValue placeholder="Select account (optional)" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="__none__">None</SelectItem>
+                <SelectContent className="bg-[#1A1D23] border-[#2A2F37]">
+                  <SelectItem value="__none__" className="text-[#F5F7FA] hover:bg-[#2A2F37]">
+                    None
+                  </SelectItem>
                   {ACCOUNTS.map((account) => (
-                    <SelectItem key={account} value={account}>
+                    <SelectItem key={account} value={account} className="text-[#F5F7FA] hover:bg-[#2A2F37]">
                       {account}
                     </SelectItem>
                   ))}
@@ -248,11 +275,21 @@ export function AddOrEditDialog() {
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="outline" onClick={handleCancel}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleCancel}
+                className="bg-[#0E0F13] border-[#2A2F37] text-[#A9B2C1] hover:bg-[#1A1D23] hover:border-[#2A2F37] hover:text-[#F5F7FA]"
+              >
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit">Add Transaction</Button>
+            <Button
+              type="submit"
+              className="bg-[#00E5FF] text-[#0E0F13] hover:bg-[#00B8D4] shadow-[0_0_12px_rgba(0,229,255,0.4)]"
+            >
+              Start Monitoring
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
