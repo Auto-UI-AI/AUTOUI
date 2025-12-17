@@ -4,7 +4,6 @@ import PlayGround from './playground/PlayGround';
 import Demo3 from './demo/pages/task-manager/Demo3.tsx';
 
 export function App() {
-
   return (
     <>
       <Routes>

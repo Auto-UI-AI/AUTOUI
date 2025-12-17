@@ -25,7 +25,7 @@ export function resolveProps(input: any, ctx: Record<string, any>, config: AutoU
         out[k] = resolveProps(v, ctx, config);
       }
     }
-    
+
     return out;
   }
 

@@ -14,8 +14,6 @@ export function addTransaction(tx: AddTransactionInput) {
 
 export function markTransactionAsActive(id: number | string) {
   const { transactions, setTransactions } = useFinanceStore.getState();
-  const updated = transactions.map((t) =>
-    t.id === id ? { ...t, status: 'active' } : t
-  );
+  const updated = transactions.map((t) => (t.id === id ? { ...t, status: 'active' } : t));
   setTransactions(updated);
 }

@@ -50,19 +50,22 @@ export const financialAutouiConfig: AutoUIConfig = {
   functions: {
     addTransaction: {
       prompt:
-        "Add a new monitoring source to the system. Extract endpoint/port (as amount), description (source name), optional date (defaults to today), category, environment/cluster (account), and status.",
+        'Add a new monitoring source to the system. Extract endpoint/port (as amount), description (source name), optional date (defaults to today), category, environment/cluster (account), and status.',
       params: {
-        description: 'string — monitoring source name/description (e.g., "Kubernetes Cluster - Prod", "API Gateway Metrics")',
+        description:
+          'string — monitoring source name/description (e.g., "Kubernetes Cluster - Prod", "API Gateway Metrics")',
         amount: 'number | string — endpoint/port number (e.g., 10255, "9090", "8080")',
         date: 'string (optional) — connection date in YYYY-MM-DD format, defaults to today',
         category:
           'string (optional) — one of: Infrastructure, Services, Logs, Traces, Database, Network, Cloud. Defaults to "Infrastructure"',
-        account: 'string (optional) — environment/cluster name (e.g., "Production", "Staging", "Dev", "EU-Cluster", "US-West-Cluster")',
+        account:
+          'string (optional) — environment/cluster name (e.g., "Production", "Staging", "Dev", "EU-Cluster", "US-West-Cluster")',
         status: 'string (optional) — "active" or "pending", defaults to "pending"',
       },
       callFunc: addTransaction,
       returns: '{ success: boolean, transaction: Transaction }',
-      exampleUsage: 'addTransaction({ description: "Kubernetes Cluster - Prod", amount: 10255, category: "Infrastructure", account: "Production" })',
+      exampleUsage:
+        'addTransaction({ description: "Kubernetes Cluster - Prod", amount: 10255, category: "Infrastructure", account: "Production" })',
     },
 
     getSpendingByCategory: {
@@ -77,7 +80,8 @@ export const financialAutouiConfig: AutoUIConfig = {
     },
 
     getUpcomingBills: {
-      prompt: 'Get all pending monitoring sources (transactions with status "pending"). Returns sources sorted by connection date.',
+      prompt:
+        'Get all pending monitoring sources (transactions with status "pending"). Returns sources sorted by connection date.',
       params: {},
       callFunc: getUpcomingBills,
       returns:
@@ -89,7 +93,8 @@ export const financialAutouiConfig: AutoUIConfig = {
       prompt:
         'Get all monitoring sources filtered by environment/cluster (e.g., "Production", "Staging", "Dev", "EU-Cluster", "US-West-Cluster"). Returns sources in the specified environment. If no environment is provided, returns all sources.',
       params: {
-        environment: 'string (optional) — environment/cluster name to filter by (case-insensitive partial match). Examples: "Production", "Staging", "Dev", "EU-Cluster"',
+        environment:
+          'string (optional) — environment/cluster name to filter by (case-insensitive partial match). Examples: "Production", "Staging", "Dev", "EU-Cluster"',
       },
       callFunc: getSourcesByEnvironment,
       returns:
@@ -113,7 +118,8 @@ export const financialAutouiConfig: AutoUIConfig = {
       prompt:
         'Mark a monitoring source as active by searching for it by description (e.g., "Kubernetes Cluster") or by ID. The source status will be updated to "active".',
       params: {
-        description: 'string (optional) — description of the monitoring source to mark as active (case-insensitive partial match)',
+        description:
+          'string (optional) — description of the monitoring source to mark as active (case-insensitive partial match)',
         sourceId: 'number | string (optional) — ID of the monitoring source to mark as active',
       },
       callFunc: markSourceAsActive,

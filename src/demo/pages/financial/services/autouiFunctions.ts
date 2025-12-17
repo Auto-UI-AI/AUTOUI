@@ -91,7 +91,7 @@ export async function getSourcesByEnvironment(params: { environment?: string }) 
 
   // Case-insensitive partial match for environment
   const filtered = transactions.filter((transaction) =>
-    transaction.account.toLowerCase().includes(environment.toLowerCase())
+    transaction.account.toLowerCase().includes(environment.toLowerCase()),
   );
 
   return {
@@ -132,9 +132,7 @@ export async function markSourceAsActive(params: { description?: string; sourceI
   if (params.sourceId) {
     sourceToMark = transactions.find((t) => t.id === params.sourceId);
   } else if (params.description) {
-    sourceToMark = transactions.find((t) =>
-      t.description.toLowerCase().includes(params.description!.toLowerCase())
-    );
+    sourceToMark = transactions.find((t) => t.description.toLowerCase().includes(params.description!.toLowerCase()));
   }
 
   if (!sourceToMark) {

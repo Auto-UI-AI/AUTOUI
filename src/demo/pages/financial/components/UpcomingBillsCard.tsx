@@ -44,7 +44,9 @@ export function UpcomingBillsCard() {
   return (
     <Card className="@container/card h-full bg-[#1A1D23] border-[#2A2F37] shadow-lg">
       <CardHeader className="relative border-b border-[#2A2F37]">
-        <CardDescription className="text-[#A9B2C1] text-xs uppercase tracking-wider">Pending Monitoring Sources</CardDescription>
+        <CardDescription className="text-[#A9B2C1] text-xs uppercase tracking-wider">
+          Pending Monitoring Sources
+        </CardDescription>
         <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums text-[#FFC043] mt-2">
           {totalPending} {totalPending === 1 ? 'source' : 'sources'}
         </CardTitle>
@@ -73,7 +75,12 @@ export function UpcomingBillsCard() {
         )}
       </CardContent>
       <CardFooter className="flex-col items-start gap-1 text-sm border-t border-[#2A2F37] pt-4">
-        <Button variant="ghost" size="sm" className="h-auto p-0 font-medium text-[#00E5FF] hover:text-[#00B8D4] hover:bg-transparent" onClick={handleViewAll}>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-auto p-0 font-medium text-[#00E5FF] hover:text-[#00B8D4] hover:bg-transparent"
+          onClick={handleViewAll}
+        >
           View all sources
           <ArrowRight className="ml-2 size-4" />
         </Button>

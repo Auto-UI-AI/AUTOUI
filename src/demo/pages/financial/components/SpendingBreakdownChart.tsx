@@ -135,18 +135,30 @@ export function SpendingBreakdownChart() {
             variant="outline"
             className="@[767px]/card:flex hidden border-[#2A2F37] bg-[#0E0F13]"
           >
-            <ToggleGroupItem value="90d" className="h-8 px-2.5 text-[#A9B2C1] data-[state=on]:bg-[#00E5FF]/20 data-[state=on]:text-[#00E5FF] data-[state=on]:border-[#00E5FF]/50 hover:text-[#00E5FF]">
+            <ToggleGroupItem
+              value="90d"
+              className="h-8 px-2.5 text-[#A9B2C1] data-[state=on]:bg-[#00E5FF]/20 data-[state=on]:text-[#00E5FF] data-[state=on]:border-[#00E5FF]/50 hover:text-[#00E5FF]"
+            >
               Last 3 months
             </ToggleGroupItem>
-            <ToggleGroupItem value="30d" className="h-8 px-2.5 text-[#A9B2C1] data-[state=on]:bg-[#00E5FF]/20 data-[state=on]:text-[#00E5FF] data-[state=on]:border-[#00E5FF]/50 hover:text-[#00E5FF]">
+            <ToggleGroupItem
+              value="30d"
+              className="h-8 px-2.5 text-[#A9B2C1] data-[state=on]:bg-[#00E5FF]/20 data-[state=on]:text-[#00E5FF] data-[state=on]:border-[#00E5FF]/50 hover:text-[#00E5FF]"
+            >
               Last 30 days
             </ToggleGroupItem>
-            <ToggleGroupItem value="7d" className="h-8 px-2.5 text-[#A9B2C1] data-[state=on]:bg-[#00E5FF]/20 data-[state=on]:text-[#00E5FF] data-[state=on]:border-[#00E5FF]/50 hover:text-[#00E5FF]">
+            <ToggleGroupItem
+              value="7d"
+              className="h-8 px-2.5 text-[#A9B2C1] data-[state=on]:bg-[#00E5FF]/20 data-[state=on]:text-[#00E5FF] data-[state=on]:border-[#00E5FF]/50 hover:text-[#00E5FF]"
+            >
               Last 7 days
             </ToggleGroupItem>
           </ToggleGroup>
           <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="@[767px]/card:hidden flex w-40 bg-[#0E0F13] border-[#2A2F37] text-[#A9B2C1] hover:border-[#00E5FF]/50" aria-label="Select a value">
+            <SelectTrigger
+              className="@[767px]/card:hidden flex w-40 bg-[#0E0F13] border-[#2A2F37] text-[#A9B2C1] hover:border-[#00E5FF]/50"
+              aria-label="Select a value"
+            >
               <SelectValue placeholder="Last 3 months" />
             </SelectTrigger>
             <SelectContent className="rounded-xl bg-[#1A1D23] border-[#2A2F37]">
@@ -207,7 +219,7 @@ export function SpendingBreakdownChart() {
                       day: 'numeric',
                     });
                   }}
-                  formatter={(value, name, item) => (
+                  formatter={(value) => (
                     <div className="flex w-full flex-wrap items-center gap-2">
                       <div className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#00E5FF] shadow-[0_0_8px_rgba(0,229,255,0.5)]" />
                       <div className="flex flex-1 justify-between leading-none items-center">
