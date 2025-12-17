@@ -1,6 +1,7 @@
 import { useFinanceStore } from '../store/useFinanceStore';
 import { mockSummaries } from './summaries';
 import { markBillAsPaid } from './bills';
+import { markTransactionAsActive } from './transactions';
 import type { Transaction } from '../types/finance';
 
 /**
@@ -41,7 +42,7 @@ export async function addTransaction(params: {
 }
 
 /**
- * Get spending breakdown by category for a specific period
+ * Get monitoring sources breakdown by category for a specific period
  */
 export async function getSpendingByCategory(params: { period?: 7 | 30 | 90 }) {
   const transactions = useFinanceStore.getState().transactions;
@@ -58,23 +59,45 @@ export async function getSpendingByCategory(params: { period?: 7 | 30 | 90 }) {
 }
 
 /**
- * Get all upcoming bills (pending bills with due date >= today)
+ * Get all pending monitoring sources (transactions with status 'pending')
  */
 export async function getUpcomingBills() {
-  const bills = useFinanceStore.getState().bills;
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const transactions = useFinanceStore.getState().transactions;
 
-  const upcoming = bills
-    .filter((bill) => bill.status === 'pending' && new Date(bill.due) >= today)
-    .sort((a, b) => new Date(a.due).getTime() - new Date(b.due).getTime());
-
-  const totalPending = upcoming.reduce((sum, bill) => sum + bill.amount, 0);
+  const pending = transactions
+    .filter((transaction) => transaction.status === 'pending')
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   return {
-    bills: upcoming,
-    totalPending,
-    count: upcoming.length,
+    sources: pending,
+    count: pending.length,
+  };
+}
+
+/**
+ * Get monitoring sources by environment/cluster
+ */
+export async function getSourcesByEnvironment(params: { environment?: string }) {
+  const transactions = useFinanceStore.getState().transactions;
+  const environment = params.environment || '';
+
+  if (!environment) {
+    return {
+      sources: transactions,
+      count: transactions.length,
+      environment: 'all',
+    };
+  }
+
+  // Case-insensitive partial match for environment
+  const filtered = transactions.filter((transaction) =>
+    transaction.account.toLowerCase().includes(environment.toLowerCase()),
+  );
+
+  return {
+    sources: filtered,
+    count: filtered.length,
+    environment: environment,
   };
 }
 
@@ -97,4 +120,25 @@ export async function markBillAsPaidByName(params: { billName?: string; billId?:
 
   markBillAsPaid(billToMark.id);
   return { success: true, bill: { ...billToMark, status: 'paid' as const } };
+}
+
+/**
+ * Mark a monitoring source as active by description or ID
+ */
+export async function markSourceAsActive(params: { description?: string; sourceId?: number | string }) {
+  const transactions = useFinanceStore.getState().transactions;
+
+  let sourceToMark;
+  if (params.sourceId) {
+    sourceToMark = transactions.find((t) => t.id === params.sourceId);
+  } else if (params.description) {
+    sourceToMark = transactions.find((t) => t.description.toLowerCase().includes(params.description!.toLowerCase()));
+  }
+
+  if (!sourceToMark) {
+    return { success: false, error: 'Monitoring source not found' };
+  }
+
+  markTransactionAsActive(sourceToMark.id);
+  return { success: true, source: { ...sourceToMark, status: 'active' } };
 }
