@@ -2,10 +2,9 @@ import type { AutoUIConfig } from '../../lib/types/index';
 import { Chat, ModalChat } from '../../lib/components';
 
 const config: AutoUIConfig = {
+  appId: 'demo_auto_ui_app',
   llm: {
-    provider: 'openai',
-    apiKey: 'YOUR_KEY',
-    model: 'gpt-5.1-chat',
+    proxyUrl: import.meta.env.VITE_BASE_URL,
     temperature: 0.7,
     maxTokens: 2048,
     appDescriptionPrompt: 'This is a demo Auto UI chat system.',

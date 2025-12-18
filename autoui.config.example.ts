@@ -25,8 +25,6 @@ import { fetchProducts, addToCart } from '@/demo/pages/ecommerce/functions';
 import { PLACEHOLDER_IMAGE } from '@/demo/constants';
 
 // Pull model key from Vite env like in your example
-const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-const aiModel = import.meta.env.VITE_AIMODEL_NAME;
 const baseUrl = import.meta.env.VITE_BASE_URL;
 export const autouiConfig: AutoUIConfig = {
   /* =========================
@@ -40,15 +38,12 @@ export const autouiConfig: AutoUIConfig = {
     description: 'Config derived from DemoStorybook: registers demo e-commerce components and mock functions.',
     tags: ['demo', 'ecommerce', 'react', 'autoui'],
   },
-
+  appId: 'autoui_demo_app',
   /* =========================
    *   LLM
    * ========================= */
   llm: {
-    provider: 'openrouter',
-    baseUrl: baseUrl,
-    apiKey,
-    model: aiModel,
+    proxyUrl: baseUrl,
     temperature: 0.2,
     appDescriptionPrompt: 'A demo e-commerce app with product listing, cart, checkout and wishlists.',
     maxTokens: 2048,
