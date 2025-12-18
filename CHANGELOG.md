@@ -1,3 +1,19 @@
+# [0.2.0](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.10...v0.2.0) (2025-12-18)
+
+
+### Bug Fixes
+
+* css in js added ([ca67808](https://github.com/Auto-UI-AI/AUTOUI/commit/ca67808eab3a4e49f13a3eb81c2048accb7ea1b6))
+* for build ([b35930e](https://github.com/Auto-UI-AI/AUTOUI/commit/b35930ed885f4393ae68a7daa69020a54c7edeb5))
+* popover added, styles changed ([0251512](https://github.com/Auto-UI-AI/AUTOUI/commit/0251512ca6a8a1cf26ba86e69500c9e88b35fe81))
+
+
+### Features
+
+* mic added ([be4468a](https://github.com/Auto-UI-AI/AUTOUI/commit/be4468a2d70cadfe183f2a01ad5cb36acc2aff29))
+* proxy added ([349f688](https://github.com/Auto-UI-AI/AUTOUI/commit/349f6882793936dc3b437968f214b3668ae99c69))
+* scroll to index added, styles update ([36e6b56](https://github.com/Auto-UI-AI/AUTOUI/commit/36e6b5605eaf7d3fc34477dbfceac8681b2bf795))
+
 ## [0.1.10](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.1.9...v0.1.10) (2025-12-08)
 
 
