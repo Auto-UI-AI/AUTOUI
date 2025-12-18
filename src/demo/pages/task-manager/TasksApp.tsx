@@ -127,7 +127,7 @@ const TasksApp = () => {
 
       openTaskForm: {
         prompt:
-          'Open the task creation form in the main app UI. After opening, tell the user they can close the chat and continue in the form.',
+          'function opening the TaskForm on the main apps page so that the user would just input the data by himself. After opening it, say in the next message that user can close the chat and input data in that newly opened form',
         callFunc: () => {
           setShowForm(true);
         },
@@ -191,12 +191,24 @@ const TasksApp = () => {
       },
 
       PointerHintButton: {
-        prompt: 'Button that highlights a specific UI element using a guided pointer.',
+        prompt: 'button which triggers the custom cursor showing specified components',
         props: {
-          target: 'string — data-guide-id of the UI element to highlight.',
+          target: `string, the actual data-guide-id of the component to be pointed out. The parameter MUST be a string that matches one of the known data-guide-id values
+already present in the UI. For this demo, the allowed values are:
+
+- "TaskFilters"
+- "TaskFormButton"
+- "StatusFilters"
+- "PriorityFilters"
+You MUST pass the single string parameter
+`,
+          textToBeInserted:
+            'optional prop, string, the prop which means what would be rendered inside that button, the actual text of it',
+          className: 'optional prop, string, some styles which could be written in tailwindcss',
         },
         callComponent: PointerHintButton,
         category: 'guide',
+        exampleUsage: '<PointerHintButton target="TaskFilters">show me where are task filters</PointerHintButton>',
       },
     },
   };

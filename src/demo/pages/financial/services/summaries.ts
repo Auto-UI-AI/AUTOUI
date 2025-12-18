@@ -22,29 +22,26 @@ export function mockSummaries({
   startDate.setDate(startDate.getDate() - period);
   startDate.setHours(0, 0, 0, 0);
 
-  // Filter transactions by date and exclude income
+  // Filter transactions by date
   const filteredTransactions = transactions.filter((transaction) => {
     const date = new Date(transaction.date);
     date.setHours(0, 0, 0, 0);
-    return date >= startDate && transaction.category !== 'Income';
+    return date >= startDate;
   });
 
-  // Group by category and sum amounts
-  const categoryTotals = new Map<string, number>();
+  // Group by category and count monitoring sources
+  const categoryCounts = new Map<string, number>();
 
   filteredTransactions.forEach((transaction) => {
-    const amountStr = transaction.amount.replace(/[$,\s]/g, '');
-    const amount = parseFloat(amountStr) || 0;
     const category = transaction.category;
-
-    categoryTotals.set(category, (categoryTotals.get(category) || 0) + amount);
+    categoryCounts.set(category, (categoryCounts.get(category) || 0) + 1);
   });
 
-  // Convert to array, sort by total (descending), and return top 5
-  return Array.from(categoryTotals.entries())
+  // Convert to array, sort by count (descending), and return top 5
+  return Array.from(categoryCounts.entries())
     .map(([category, total]) => ({
       category,
-      total: Math.round(total * 100) / 100,
+      total,
     }))
     .sort((a, b) => b.total - a.total)
     .slice(0, 5);

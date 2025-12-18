@@ -8,8 +8,8 @@ export interface Task {
   description?: string;
   status: Status;
   priority: Priority;
-  due_date?: string;   // yyyy-MM-dd
-  created_at: string;  // ISO
+  due_date?: string; // yyyy-MM-dd
+  created_at: string; // ISO
 }
 
 // For forms / creating or editing a task (no id/created_at yet)

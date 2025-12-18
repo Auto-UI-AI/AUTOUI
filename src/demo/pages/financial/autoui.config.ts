@@ -3,7 +3,9 @@ import {
   addTransaction,
   getSpendingByCategory,
   getUpcomingBills,
+  getSourcesByEnvironment,
   markBillAsPaidByName,
+  markSourceAsActive,
 } from './services/autouiFunctions';
 import { CategorySpendingWrapper } from './components/CategorySpendingWrapper';
 import { UpcomingBillsWrapper } from './components/UpcomingBillsWrapper';
@@ -21,11 +23,11 @@ export const financialAutouiConfig: AutoUIConfig = {
    *   METADATA
    * ========================= */
   metadata: {
-    appName: 'Financial Demo',
+    appName: 'Monitoring Sources Demo',
     appVersion: '0.1.0',
     description:
-      'A personal finance management app with transactions, bills, spending tracking, and category analysis.',
-    tags: ['demo', 'finance', 'react', 'autoui'],
+      'A monitoring sources management app for tracking infrastructure monitoring endpoints, services, and clusters across different environments.',
+    tags: ['demo', 'monitoring', 'infrastructure', 'react', 'autoui'],
   },
 
   /* =========================
@@ -36,10 +38,12 @@ export const financialAutouiConfig: AutoUIConfig = {
     sharedSecret,
 
     appDescriptionPrompt:
-      'A personal finance management application where users can track transactions, manage bills, view spending by category, and analyze financial data.',
-
-    temperature: 0.2,
+      'A monitoring sources management application where users can track monitoring endpoints, services, and infrastructure components across different environments (Production, Staging, Dev, etc.). Users can add monitoring sources with endpoints/ports, view sources by category (Infrastructure, Services, Logs, Traces, etc.), manage pending sources that need setup, and analyze monitoring coverage over time.',
     maxTokens: 2048,
+    requestHeaders: {
+      'HTTP-Referer': 'https://autoui.dev',
+      'X-Title': 'AutoUI Monitoring Sources Demo',
+    },
   },
 
   /* =========================
@@ -63,21 +67,27 @@ export const financialAutouiConfig: AutoUIConfig = {
   functions: {
     addTransaction: {
       prompt:
-        'Add a new transaction to the user’s financial records. Extract amount, description, optional date, category, account, and status.',
+        'Add a new monitoring source to the system. Extract endpoint/port (as amount), description (source name), optional date (defaults to today), category, environment/cluster (account), and status.',
       params: {
-        description: 'string — transaction description',
-        amount: 'number | string — transaction amount',
-        date: 'string (optional) — YYYY-MM-DD',
-        category: 'string (optional) — transaction category',
-        account: 'string (optional) — account name',
-        status: 'string (optional) — paid | pending',
+        description:
+          'string — monitoring source name/description (e.g., "Kubernetes Cluster - Prod", "API Gateway Metrics")',
+        amount: 'number | string — endpoint/port number (e.g., 10255, "9090", "8080")',
+        date: 'string (optional) — connection date in YYYY-MM-DD format, defaults to today',
+        category:
+          'string (optional) — one of: Infrastructure, Services, Logs, Traces, Database, Network, Cloud. Defaults to "Infrastructure"',
+        account:
+          'string (optional) — environment/cluster name (e.g., "Production", "Staging", "Dev", "EU-Cluster", "US-West-Cluster")',
+        status: 'string (optional) — "active" or "pending", defaults to "pending"',
       },
       callFunc: addTransaction,
       returns: '{ success: boolean, transaction: Transaction }',
+      exampleUsage:
+        'addTransaction({ description: "Kubernetes Cluster - Prod", amount: 10255, category: "Infrastructure", account: "Production" })',
     },
 
     getSpendingByCategory: {
-      prompt: 'Get spending breakdown by category for a given period.',
+      prompt:
+        'Get monitoring sources breakdown by category for a specific time period. Returns total monitoring sources count and category summaries.',
       params: {
         period: 'number (optional) — 7, 30, or 90 days',
       },
@@ -86,10 +96,26 @@ export const financialAutouiConfig: AutoUIConfig = {
     },
 
     getUpcomingBills: {
-      prompt: 'Get all upcoming unpaid bills sorted by due date.',
+      prompt:
+        'Get all pending monitoring sources (transactions with status "pending"). Returns sources sorted by connection date.',
       params: {},
       callFunc: getUpcomingBills,
-      returns: '{ bills: Bill[], totalPending: number, count: number }',
+      returns:
+        '{ sources: Transaction[], count: number } — sources array with id, description, amount, date, category, account, status',
+      exampleUsage: 'getUpcomingBills()',
+    },
+
+    getSourcesByEnvironment: {
+      prompt:
+        'Get all monitoring sources filtered by environment/cluster (e.g., "Production", "Staging", "Dev", "EU-Cluster", "US-West-Cluster"). Returns sources in the specified environment. If no environment is provided, returns all sources.',
+      params: {
+        environment:
+          'string (optional) — environment/cluster name to filter by (case-insensitive partial match). Examples: "Production", "Staging", "Dev", "EU-Cluster"',
+      },
+      callFunc: getSourcesByEnvironment,
+      returns:
+        '{ sources: Transaction[], count: number, environment: string } — sources array with id, description, amount, date, category, account, status',
+      exampleUsage: 'getSourcesByEnvironment({ environment: "Production" })',
     },
 
     markBillAsPaid: {
@@ -100,6 +126,20 @@ export const financialAutouiConfig: AutoUIConfig = {
       },
       callFunc: markBillAsPaidByName,
       returns: '{ success: boolean, bill?: Bill, error?: string }',
+      exampleUsage: 'markBillAsPaid({ billName: "Spotify" })',
+    },
+
+    markSourceAsActive: {
+      prompt:
+        'Mark a monitoring source as active by searching for it by description (e.g., "Kubernetes Cluster") or by ID. The source status will be updated to "active".',
+      params: {
+        description:
+          'string (optional) — description of the monitoring source to mark as active (case-insensitive partial match)',
+        sourceId: 'number | string (optional) — ID of the monitoring source to mark as active',
+      },
+      callFunc: markSourceAsActive,
+      returns: '{ success: boolean, source?: Transaction, error?: string }',
+      exampleUsage: 'markSourceAsActive({ description: "Kubernetes Cluster" })',
     },
   },
 
@@ -108,7 +148,8 @@ export const financialAutouiConfig: AutoUIConfig = {
    * ========================= */
   components: {
     CategorySpending: {
-      prompt: 'Widget showing spending breakdown by category for a selected time period.',
+      prompt:
+        'Display monitoring sources breakdown by category widget showing total monitoring sources and top categories for a selected time period (7, 30, or 90 days).',
       props: {
         period: 'number (optional) — 7, 30, or 90 days',
       },
@@ -117,10 +158,12 @@ export const financialAutouiConfig: AutoUIConfig = {
     },
 
     UpcomingBills: {
-      prompt: 'Widget showing upcoming bills and allowing marking them as paid.',
+      prompt:
+        'Display pending monitoring sources widget showing monitoring sources with status "pending", sorted by connection date. Shows total count and allows marking sources as active.',
       props: {},
       callComponent: UpcomingBillsWrapper,
-      category: 'bills',
+      category: 'monitoring',
+      exampleUsage: '<UpcomingBills />',
     },
   },
 };

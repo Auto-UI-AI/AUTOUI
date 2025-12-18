@@ -38,8 +38,8 @@ const COMPONENT_CATEGORIES: ComponentCategory[] = [
         route: '/demo/ecommerce',
       },
       {
-        name: 'Personal Finance Copilot',
-        route: '/demo/financial',
+        name: 'Observability Copilot',
+        route: '/demo/observability',
       },
       {
         name: 'Task Manager',
