@@ -8,7 +8,7 @@ export function useChatState(storageKey: string, config: AutoUIConfig) {
   const { resolveComponent, setUI } = useRendering(config);
   const [serializedMessages, setSerializedMessages] = useState<SerializedMessage[]>(() => {
     try {
-      const s = localStorage.getItem(storageKey);
+      const s = sessionStorage.getItem(storageKey);
       return s ? (JSON.parse(s) as SerializedMessage[]) : [];
     } catch {
       return [];
@@ -22,7 +22,7 @@ export function useChatState(storageKey: string, config: AutoUIConfig) {
 
   useEffect(() => {
     try {
-      const s = localStorage.getItem(storageKey);
+      const s = sessionStorage.getItem(storageKey);
       setSerializedMessages(s ? (JSON.parse(s) as SerializedMessage[]) : []);
     } catch {
       setSerializedMessages([]);
@@ -36,7 +36,7 @@ export function useChatState(storageKey: string, config: AutoUIConfig) {
   useEffect(() => {
     if (!hydratedRef.current) return;
     const id = setTimeout(() => {
-      localStorage.setItem(storageKey, JSON.stringify(serializedMessages));
+      sessionStorage.setItem(storageKey, JSON.stringify(serializedMessages));
     }, 50);
     return () => clearTimeout(id);
   }, [serializedMessages, storageKey]);

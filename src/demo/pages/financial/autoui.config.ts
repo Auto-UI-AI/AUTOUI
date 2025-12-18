@@ -10,11 +10,18 @@ import {
 import { CategorySpendingWrapper } from './components/CategorySpendingWrapper';
 import { UpcomingBillsWrapper } from './components/UpcomingBillsWrapper';
 
-const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-const aiModel = import.meta.env.VITE_AIMODEL_NAME;
-const baseUrl = import.meta.env.VITE_BASE_URL;
+const proxyUrl = import.meta.env.VITE_BASE_URL;
+const sharedSecret = import.meta.env.VITE_AUTOUI_SHARED_SECRET;
 
 export const financialAutouiConfig: AutoUIConfig = {
+  /* =========================
+   *   APP ID
+   * ========================= */
+  appId: 'financial-demo',
+
+  /* =========================
+   *   METADATA
+   * ========================= */
   metadata: {
     appName: 'Monitoring Sources Demo',
     appVersion: '0.1.0',
@@ -23,12 +30,13 @@ export const financialAutouiConfig: AutoUIConfig = {
     tags: ['demo', 'monitoring', 'infrastructure', 'react', 'autoui'],
   },
 
+  /* =========================
+   *   LLM (PROXY ONLY)
+   * ========================= */
   llm: {
-    provider: 'openrouter',
-    baseUrl: baseUrl,
-    apiKey,
-    model: aiModel,
-    temperature: 0.2,
+    proxyUrl,
+    sharedSecret,
+
     appDescriptionPrompt:
       'A monitoring sources management application where users can track monitoring endpoints, services, and infrastructure components across different environments (Production, Staging, Dev, etc.). Users can add monitoring sources with endpoints/ports, view sources by category (Infrastructure, Services, Logs, Traces, etc.), manage pending sources that need setup, and analyze monitoring coverage over time.',
     maxTokens: 2048,
@@ -38,15 +46,24 @@ export const financialAutouiConfig: AutoUIConfig = {
     },
   },
 
+  /* =========================
+   *   RUNTIME
+   * ========================= */
   runtime: {
     validateLLMOutput: true,
     storeChatToLocalStorage: true,
     localStorageKey: 'autoui_financial_chat',
     enableDebugLogs: true,
     maxSteps: 20,
-    errorHandling: { showToUser: true, retryOnFail: false },
+    errorHandling: {
+      showToUser: true,
+      retryOnFail: false,
+    },
   },
 
+  /* =========================
+   *   FUNCTIONS
+   * ========================= */
   functions: {
     addTransaction: {
       prompt:
@@ -72,11 +89,10 @@ export const financialAutouiConfig: AutoUIConfig = {
       prompt:
         'Get monitoring sources breakdown by category for a specific time period. Returns total monitoring sources count and category summaries.',
       params: {
-        period: 'number (optional) — 7, 30, or 90 days. Defaults to 30',
+        period: 'number (optional) — 7, 30, or 90 days',
       },
       callFunc: getSpendingByCategory,
       returns: '{ period: number, total: number, categories: Array<{ category: string, total: number }> }',
-      exampleUsage: 'getSpendingByCategory({ period: 30 })',
     },
 
     getUpcomingBills: {
@@ -103,11 +119,10 @@ export const financialAutouiConfig: AutoUIConfig = {
     },
 
     markBillAsPaid: {
-      prompt:
-        'Mark a bill as paid by searching for it by name (e.g., "Spotify") or by ID. The bill status will be updated to "paid".',
+      prompt: 'Mark a bill as paid by name or ID.',
       params: {
-        billName: 'string (optional) — name of the bill to mark as paid (case-insensitive partial match)',
-        billId: 'number (optional) — ID of the bill to mark as paid',
+        billName: 'string (optional)',
+        billId: 'number (optional)',
       },
       callFunc: markBillAsPaidByName,
       returns: '{ success: boolean, bill?: Bill, error?: string }',
@@ -128,16 +143,18 @@ export const financialAutouiConfig: AutoUIConfig = {
     },
   },
 
+  /* =========================
+   *   COMPONENTS
+   * ========================= */
   components: {
     CategorySpending: {
       prompt:
         'Display monitoring sources breakdown by category widget showing total monitoring sources and top categories for a selected time period (7, 30, or 90 days).',
       props: {
-        period: 'number (optional) — 7, 30, or 90 days. Defaults to 30',
+        period: 'number (optional) — 7, 30, or 90 days',
       },
       callComponent: CategorySpendingWrapper,
       category: 'analytics',
-      exampleUsage: '<CategorySpending period={30} />',
     },
 
     UpcomingBills: {

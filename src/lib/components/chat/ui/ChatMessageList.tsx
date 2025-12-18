@@ -49,7 +49,17 @@ export const ChatMessageList: React.FC<ChatMessageListProps> = () => {
           ),
         }}
         initialTopMostItemIndex={length - 1}
-        itemContent={(_, message) => <ChatMessageListItem key={message.id} message={message} />}
+        itemContent={(_, message) => (
+          <div
+            className={clsx(
+              'autoui-message-row',
+              message.role === 'user' && 'is-user',
+              message.role === 'assistant' && 'is-assistant',
+            )}
+          >
+            <ChatMessageListItem message={message} />
+          </div>
+        )}
       />
       <ScrollToBottomButton visible={showScrollBtn} onClick={scrollToBottom} />
       {isLoading && <Spinner variant="dots" color="#0a84ff" />}

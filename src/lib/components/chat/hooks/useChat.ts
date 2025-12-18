@@ -66,10 +66,9 @@ export function useChat({
   );
 
   const handleClear = useCallback(() => {
-    console.log(storageKey);
     setSerializedMessages([]);
 
-    localStorage.removeItem(storageKey);
+    sessionStorage.removeItem(storageKey);
   }, [setSerializedMessages, storageKey]);
 
   const getChatInputProps = useCallback(
