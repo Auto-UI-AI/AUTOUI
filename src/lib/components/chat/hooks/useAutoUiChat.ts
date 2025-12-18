@@ -6,6 +6,7 @@ export function useAutoUiChat(config: AutoUIConfig) {
   const processMessage = useCallback(
     async (text: string) => {
       let plan = await getInstructionPlan(text, config);
+      console.log('RAW PLAN FROM LLM:', plan);
 
       if (typeof plan === 'string') {
         try {

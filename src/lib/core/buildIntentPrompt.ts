@@ -34,7 +34,7 @@ SCHEMA (must match exactly):
 {
   "type": "sequence",
   "steps": [
-    { "type": "function", "name": "<function name>", "params": { /* optional */ }, "assign": "<ctxKey>" },
+    { "type": "function", "name": "<function name>", "params": { /* optional */ }, "assign": "<ctxKey>", "hasToShareDataWithLLM": true|false },
     { "type": "component", "name": "<component name>", "props": { /* optional, may reference {{ctxKey}} */ } }
      { "type": "text", "text": "<actual generated text>"} }
   ]
@@ -55,7 +55,7 @@ ${config.llm.appDescriptionPrompt && `Here is the description of the current app
 {
   "type": "sequence",
   "steps": [
-    { "type": "function", "name": "fetchProducts", "params": { "color": "red" }, "assign": "items" },
+    { "type": "function", "name": "fetchProducts", "params": { "color": "red" }, "assign": "items", hasToShareDataWithLLM: true },
     { "type": "component", "name": "ProductList", "props": { "products": "{{items}}", "onAddToCart": "addToCart" } }
     { "type": "text", "text": "Here is the product list we found for you" }
   ]

@@ -38,8 +38,8 @@ const COMPONENT_CATEGORIES: ComponentCategory[] = [
         route: '/demo/ecommerce',
       },
       {
-        name: 'Personal Finance Copilot',
-        route: '/demo/financial',
+        name: 'Observability Copilot',
+        route: '/demo/observability',
       },
       {
         name: 'Task Manager',
@@ -269,7 +269,6 @@ export default function HomePage() {
             ))}
           </ScrollArea>
         </aside>
-
         {/* Preview Pane */}
         <main className="flex-1 overflow-y-auto p-10">{renderPreview()}</main>
       </div>

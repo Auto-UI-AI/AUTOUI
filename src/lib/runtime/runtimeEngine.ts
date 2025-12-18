@@ -62,11 +62,14 @@ export async function runInstructionPlan(
   resolveComponent: ResolveComponent,
   setUI: SetUI,
   setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
+  userMessage: string,
   opts?: RunOptions,
+ 
 ) {
+  console.log("Running instruction plan:", plan, "userMessage: ",userMessage);
   const shouldValidate = opts?.validate ?? config.runtime?.validateLLMOutput ?? true;
   if (shouldValidate) {
     validateInstructionPlan(plan);
   }
-  return await executePlanSteps(plan, config, resolveComponent, setUI, setSerializedMessages);
+  return await executePlanSteps(plan, config, resolveComponent, setUI, setSerializedMessages, userMessage);
 }

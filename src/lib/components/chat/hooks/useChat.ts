@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { ChatContextType, ChatProps, SerializedMessage } from '../types';
 import { useAutoUiChat } from './useAutoUiChat';
 import { runInstructionPlan } from '@lib/runtime/runtimeEngine';
@@ -7,6 +7,9 @@ import { useRendering } from './useRendering';
 
 export function useChat({
   config,
+  theme,
+  mode,
+  setTheme,
   onError,
   onClose,
   storageKey = 'autoui_chat_history',
@@ -40,7 +43,9 @@ export function useChat({
 
         const plan = await processMessage(text);
 
-        await runInstructionPlan(plan, config, resolveComponent, setUI, setSerializedMessages, { validate: true });
+        await runInstructionPlan(plan, config, resolveComponent, setUI, setSerializedMessages, text, {
+          validate: true,
+        });
       } catch (err) {
         setSerializedMessages((prev) => [
           ...prev,
@@ -63,8 +68,9 @@ export function useChat({
   const handleClear = useCallback(() => {
     setSerializedMessages([]);
 
-    localStorage.removeItem(storageKey);
+    sessionStorage.removeItem(storageKey);
   }, [setSerializedMessages, storageKey]);
+
   const getChatInputProps = useCallback(
     () => ({
       onSend: handleSend,
@@ -88,20 +94,41 @@ export function useChat({
     [messages],
   );
 
-  return {
-    config,
-    isOpen,
-    title,
-    classNames,
-    messages,
-    isLoading,
-    handleSend,
-    onClose,
-    handleClear,
-    getChatInputProps,
-    getChatHeaderProps,
-    getMessageListProps,
-  };
+  const contextValue = useMemo(
+    () => ({
+      config,
+      isOpen,
+      title,
+      theme,
+      mode,
+      classNames,
+      messages,
+      isLoading,
+      setTheme,
+      handleSend,
+      onClose,
+      handleClear,
+      getChatInputProps,
+      getChatHeaderProps,
+      getMessageListProps,
+    }),
+    [
+      config,
+      isOpen,
+      title,
+      classNames,
+      messages,
+      isLoading,
+      handleSend,
+      onClose,
+      handleClear,
+      getChatInputProps,
+      getChatHeaderProps,
+      getMessageListProps,
+    ],
+  );
+
+  return contextValue;
 }
 
 export type UseChatReturn = ReturnType<typeof useChat>;

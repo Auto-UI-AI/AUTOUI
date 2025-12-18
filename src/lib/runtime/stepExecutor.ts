@@ -4,6 +4,7 @@ import { resolveProps } from '../utils/resolveProps';
 import type { SerializedMessage } from '@lib/components/chat/types';
 import type { Dispatch, SetStateAction } from 'react';
 import type React from 'react';
+import { extraAnalysisWithLLM } from '@lib/core/extraDataAnalyzingWithLLM';
 
 export type ResolveComponent = (name: string, props: any) => React.ReactNode;
 export type SetUI = (ui: React.ReactNode | string) => void;
@@ -14,10 +15,11 @@ export async function executePlanSteps(
   resolveComponent: ResolveComponent,
   setUI: SetUI,
   setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
+  userMessage: string,
 ) {
   const ctx: Record<string, any> = {};
   for (const step of plan.steps) {
-    await runStep(step, ctx, config, resolveComponent, setUI, setSerializedMessages);
+    await runStep(step, ctx, config, resolveComponent, setUI, setSerializedMessages, userMessage, plan);
   }
   return ctx;
 }
@@ -29,6 +31,8 @@ async function runStep(
   resolveComponent: ResolveComponent,
   setUI: SetUI,
   setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
+  userMessage: string,
+  plan: InstructionPlan,
 ) {
   const isPlainObject = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
 
@@ -63,14 +67,15 @@ async function runStep(
       out = await fn();
     }
 
-    if ((step as any).assign) ctx[(step as any).assign] = out;
+    if (fCfg.canShareDataWithLLM && step.hasToShareDataWithLLM) {
+      const dataToShare = await extraAnalysisWithLLM(out, config, userMessage, plan, step.name);
+      if ((step as any).assign) ctx[(step as any).assign] = dataToShare;
+    } else {
+      if ((step as any).assign) ctx[(step as any).assign] = out;
+    }
     return;
   }
   if (step.type === 'component') {
-    console.log(
-      'component step already includes the context of the instructionPlan, so here it is:',
-      JSON.stringify(ctx),
-    );
     const props = resolveProps(step.props ?? {}, ctx, config);
     const node = resolveComponent(step.name, props);
 
