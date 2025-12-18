@@ -8,7 +8,6 @@ import TasksList from './componentsForChat.tsx/TasksList';
 import { useTasksContext } from './hooks/useAppFunctions';
 import { useCallback } from 'react';
 import { PointerHintButton } from './componentsForChat.tsx/PointerHintButton';
-
 const TasksApp = () => {
   const { tasks, setShowForm } = useTasksContext();
 
@@ -137,7 +136,7 @@ const TasksApp = () => {
       fetchCurrentTasksState: {
         prompt: 'Return the current list of tasks from application state.',
         callFunc: () => tasks,
-        canShareDataWithLLM: true,
+        // canShareDataWithLLM: true,
       },
 
       showHowManyTasks: {
