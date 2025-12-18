@@ -10,22 +10,16 @@ export interface AutoUIConfig {
   metadata?: AutoUIMetadata;
 }
 export interface LLMConfig {
-  /** LLM provider (informational, used by proxy) */
-  provider?: string;
-
-  /** 🔐 Backend proxy URL (REQUIRED in prod) */
+  /** 🔐 Backend proxy URL */
   proxyUrl: string;
 
-  /** Optional shared secret for proxy auth */
+  /** Shared secret for proxy auth */
   sharedSecret?: string;
 
-  /** Model hint (actual model enforced by proxy) */
-  model?: string;
-
-  /** Sampling temperature */
+  /** Sampling temperature (hint only) */
   temperature?: number;
 
-  /** Max tokens hint */
+  /** Max tokens (hint only) */
   maxTokens?: number;
 
   /** App description context */
@@ -34,19 +28,6 @@ export interface LLMConfig {
   /** Optional headers forwarded to proxy */
   requestHeaders?: Record<string, string>;
 }
-
-export type OpenAIToolSchema = {
-  type: 'function';
-  function: {
-    name: string;
-    description: string;
-    parameters?: {
-      type: 'object';
-      properties: Record<string, any>;
-      required?: string[];
-    };
-  };
-};
 
 export interface RuntimeConfig {
   /** Whether to validate LLM JSON output */
@@ -60,8 +41,6 @@ export interface RuntimeConfig {
 
   /** Enable internal debug logging */
   enableDebugLogs?: boolean;
-
-  toolsSchema?: OpenAIToolSchema[];
 
   /** Maximum instruction steps allowed */
   maxSteps?: number;

@@ -11,13 +11,19 @@ export const ChatMessageListItem: React.FC<ChatMessageListItemProps> = ({ messag
   const isUser = message.role === 'user';
   const { classNames } = useChatContext();
 
+  const isContentString = typeof message.content === 'string' || message.content instanceof String;
+
   return (
     <div
       role="message"
       className={clsx('autoui-chat-message', isUser ? 'user' : 'assistant', classNames?.message)}
       aria-label={isUser ? 'User message' : 'Assistant message'}
     >
-      <div className="autoui-chat-bubble">{message.content as ReactNode}</div>
+      <div
+        className={`autoui-chat-bubble ${isContentString ? 'autoui-chat-bubble--string' : 'autoui-chat-bubble--react-node'}`}
+      >
+        {message.content as ReactNode}
+      </div>
     </div>
   );
 };

@@ -4,18 +4,16 @@ import { parseInstructionPlanFromSSE } from './sseParser';
 import { buildIntentPrompt } from './buildIntentPrompt';
 
 export async function getInstructionPlan(userMessage: string, config: AutoUIConfig): Promise<InstructionPlan> {
-  console.log('RAW PLAN FROM LLM:');
-
-  const res = await fetch(`${config.llm.proxyUrl}/v1/chat`, {
+  const res = await fetch(`${config.llm.proxyUrl}/chat/create`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'X-AUTOUI-APP-ID': config.appId,
       ...(config.llm.sharedSecret && {
-        'x-autoui-secret': config.llm.sharedSecret,
+        'X-AUTOUI-SECRET': config.llm.sharedSecret,
       }),
     },
     body: JSON.stringify({
-      appId: config.appId,
       messages: [
         {
           role: 'user',
@@ -23,11 +21,13 @@ export async function getInstructionPlan(userMessage: string, config: AutoUIConf
         },
       ],
       temperature: config.llm.temperature,
+      maxTokens: config.llm.maxTokens,
+      appDescriptionPrompt: config.llm.appDescriptionPrompt,
     }),
   });
 
   if (!res.ok || !res.body) {
-    throw new Error(`LLM proxy error: ${res.status}`);
+    throw new Error(`AutoUI proxy error: ${res.status}`);
   }
 
   return parseInstructionPlanFromSSE(res.body);

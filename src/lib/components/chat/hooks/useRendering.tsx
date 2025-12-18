@@ -11,7 +11,7 @@ export function useRendering(config: AutoUIConfig) {
   const resolveComponent = useCallback(
     (name: string, props: any): ReactNode => {
       const entry = config?.components?.[name];
-      if (!entry?.callComponent) throw new Error(`Unknown component: ${name}`);
+      if (!entry?.callComponent) return;
       const Comp = entry.callComponent as React.ComponentType<any>;
       return <Comp {...props} />;
     },
