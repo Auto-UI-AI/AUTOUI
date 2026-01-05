@@ -32,7 +32,7 @@ const TasksApp = () => {
     /* =========================
      *   APP ID (IMPORTANT)
      * ========================= */
-    appId: 'tasks-demo',
+    appId: 'tasks-demo4',
 
     /* =========================
      *   METADATA
@@ -53,7 +53,6 @@ const TasksApp = () => {
     llm: {
       proxyUrl,
       sharedSecret,
-
       /**
        * High-level context for the assistant
        */
