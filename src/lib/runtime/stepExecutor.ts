@@ -5,6 +5,7 @@ import type { SerializedMessage } from '@lib/components/chat/types';
 import type { Dispatch, SetStateAction } from 'react';
 import type React from 'react';
 import { extraAnalysisWithLLM } from '@lib/core/extraDataAnalyzingWithLLM';
+import { getConsumerKeysForAssign, getExpectedSchemaForStep, normalizeForCtx, stepConsumesAssign } from '@lib/utils/normalizationHelpers';
 
 export type ResolveComponent = (name: string, props: any) => React.ReactNode;
 export type SetUI = (ui: React.ReactNode | string) => void;
@@ -68,8 +69,35 @@ async function runStep(
     }
 
     if (fCfg.canShareDataWithLLM && step.hasToShareDataWithLLM) {
-      const dataToShare = await extraAnalysisWithLLM(out, config, userMessage, plan, step.name);
-      if ((step as any).assign) ctx[(step as any).assign] = dataToShare;
+      const assignKey = (step as any).assign;
+const currentIndex = plan.steps.indexOf(step);
+const nextStep = plan.steps[currentIndex + 1];
+
+let expectedSchema: ReturnType<typeof getExpectedSchemaForStep> | null = null;
+
+if (assignKey && stepConsumesAssign(nextStep, assignKey)) {
+  expectedSchema = getExpectedSchemaForStep(nextStep, config);
+}
+
+const analyzed = await extraAnalysisWithLLM(
+  out,
+  config,
+  userMessage,
+  plan,
+  step.name,
+  expectedSchema
+);
+
+const consumerKeys = getConsumerKeysForAssign(nextStep, assignKey);
+
+const normalized = normalizeForCtx(analyzed, consumerKeys);
+
+console.log('Extra analysis data received from LLM:', analyzed);
+console.log('Normalized ctx value:', normalized);
+
+if (assignKey) {
+  ctx[assignKey] = normalized;
+}
     } else {
       if ((step as any).assign) ctx[(step as any).assign] = out;
     }
@@ -112,3 +140,5 @@ async function runStep(
   const result: never = step;
   return result;
 }
+
+

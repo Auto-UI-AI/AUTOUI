@@ -8,12 +8,11 @@ export async function parseInstructionPlanFromSSE(stream: ReadableStream<Uint8Ar
   while (true) {
     const { value, done } = await reader.read();
     if (done) break;
-
+    console.log('chunk received');
     buffer += decoder.decode(value, { stream: true });
-
     const events = buffer.split('\n\n');
     buffer = events.pop() ?? '';
-
+    
     for (const event of events) {
       if (!event.startsWith('data:')) continue;
 

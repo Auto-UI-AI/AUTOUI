@@ -31,6 +31,6 @@ export async function getInstructionPlan(userMessage: string, config: AutoUIConf
   if (!res.ok || !res.body) {
     throw new Error(`AutoUI proxy error: ${res.status}`);
   }
-
+  console.log('Response received from LLM proxy for instruction plan.: ', JSON.stringify(res.body));
   return parseInstructionPlanFromSSE(res.body);
 }
