@@ -32,7 +32,7 @@ const TasksApp = () => {
     /* =========================
      *   APP ID (IMPORTANT)
      * ========================= */
-    appId: 'tasks-demo',
+    appId: 'tasks-demo4',
 
     /* =========================
      *   METADATA
@@ -53,7 +53,6 @@ const TasksApp = () => {
     llm: {
       proxyUrl,
       sharedSecret,
-
       /**
        * High-level context for the assistant
        */
@@ -136,7 +135,7 @@ const TasksApp = () => {
       fetchCurrentTasksState: {
         prompt: 'Return the current list of tasks from application state.',
         callFunc: () => tasks,
-        // canShareDataWithLLM: true,
+        canShareDataWithLLM: true,
       },
 
       showHowManyTasks: {
