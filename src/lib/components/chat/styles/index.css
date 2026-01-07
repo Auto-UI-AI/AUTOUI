@@ -26,10 +26,14 @@
   display: flex;
   flex-direction: column;
   width: 400px;
-  height: 560px;
+  height: clamp(200px, 80dvh, 600px);
   font-family: system-ui, sans-serif;
 }
-
+/* @media (max-height: 650px) {
+  .autoui-chat {
+    height: 500px;
+  }
+} */
 .autoui-chat-header {
   background: var(--autoui-bg-alt);
   padding: 0.75rem 1rem;
@@ -81,6 +85,7 @@
 }
 
 [data-testid='virtuoso-item-list'] {
+  padding-left: 0.5rem !important;
   padding-right: 0.5rem !important;
 }
 
@@ -305,7 +310,6 @@
   pointer-events: auto;
   margin: 1rem;
   width: full;
-  max-height: 600px;
   background: var(--autoui-bg);
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
