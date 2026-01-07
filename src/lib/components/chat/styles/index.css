@@ -223,7 +223,7 @@
 .autoui-chat-messages > div::-webkit-scrollbar {
   width: 6px;
   padding-right: 8px;
-  padding-ещз: 8px;
+  padding-left: 8px;
 }
 
 .autoui-chat-messages > div::-webkit-scrollbar-track {
