@@ -109,26 +109,28 @@
 
 .autoui-message-row {
   padding: 0.6rem 0;
+  max-width: 90%;
 }
 
 .autoui-message-row.is-user {
+  position: relative;
   justify-self: flex-end;
   display: flex;
   justify-content: flex-end;
+  max-width: 80%;
 }
 
 .autoui-chat-bubble {
   background: var(--autoui-bg-alt);
   padding: 0.5rem 0.75rem;
   border-radius: 16px;
-  max-width: 80%;
+  max-width: 100%;
   word-break: break-word;
 }
 
 .autoui-chat-message.assistant .autoui-chat-bubble:has(> div[class*='w-full']) {
   max-width: 100%;
   width: 100%;
-
   background: transparent;
 }
 
@@ -139,18 +141,24 @@
 }
 
 .autoui-chat-bubble--string {
+  width: 100%;
 }
 
 .autoui-chat-bubble--react-node {
   background: transparent;
   padding: 0;
 }
-
+.autoui-chat-message.user{
+  position:relative;
+  width: 100%;
+}
 .autoui-chat-message.user .autoui-chat-bubble {
+  width: 100%;
   background: var(--autoui-accent);
   color: #fff;
   justify-content: flex-end;
   justify-self: flex-end;
+  /* width: full; */
 }
 
 .autoui-chat-input {
