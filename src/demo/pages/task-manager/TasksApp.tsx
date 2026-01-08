@@ -32,7 +32,7 @@ const TasksApp = () => {
     /* =========================
      *   APP ID (IMPORTANT)
      * ========================= */
-    appId: 'tasks-demo4',
+    appId: 'app_1767826708328_d4tnlkj',
 
     /* =========================
      *   METADATA

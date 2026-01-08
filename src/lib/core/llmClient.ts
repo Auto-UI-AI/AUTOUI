@@ -4,14 +4,14 @@ import { parseInstructionPlanFromSSE } from './sseParser';
 import { buildIntentPrompt } from './buildIntentPrompt';
 
 export async function getInstructionPlan(userMessage: string, config: AutoUIConfig): Promise<InstructionPlan> {
-  const res = await fetch(`${config.llm.proxyUrl}/v1/chat`, {
+  const res = await fetch(`${config.llm.proxyUrl}/chat/create`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-AUTOUI-APP-ID': config.appId,
       ...(config.llm.sharedSecret && {
         'X-AUTOUI-SECRET': config.llm.sharedSecret,
-      'Authorization': 'Bearer ' + config.llm.sharedSecret,
+        'authorization': 'Bearer ' + config.llm.sharedSecret,
       }),
     },
     body: JSON.stringify({
@@ -27,7 +27,6 @@ export async function getInstructionPlan(userMessage: string, config: AutoUIConf
       appId: config.appId,
     }),
   });
-
   if (!res.ok || !res.body) {
     throw new Error(`AutoUI proxy error: ${res.status}`);
   }

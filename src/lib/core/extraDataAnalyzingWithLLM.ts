@@ -9,18 +9,11 @@ export const extraAnalysisWithLLM = async (
   userMessage: string,
   plan: InstructionPlan,
   currentStepName: string,
-  expectedSchema: { parseTo: 'array' | 'object' | 'primitive'; schema: unknown } | null
+  expectedSchema: { parseTo: 'array' | 'object' | 'primitive'; schema: unknown } | null,
 ): Promise<any> => {
-  const prompt = buildDataAnalyzingPrompt(
-    data,
-    config,
-    userMessage,
-    plan,
-    currentStepName,
-    expectedSchema
-  );
+  const prompt = buildDataAnalyzingPrompt(data, config, userMessage, plan, currentStepName, expectedSchema);
 
-  const res = await fetch(`${config.llm.proxyUrl}/v1/chat/extraAnalysis`, {
+  const res = await fetch(`${config.llm.proxyUrl}/chat/extraAnalysis`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
