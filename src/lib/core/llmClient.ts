@@ -4,7 +4,7 @@ import { parseInstructionPlanFromSSE } from './sseParser';
 import { buildIntentPrompt } from './buildIntentPrompt';
 
 export async function getInstructionPlan(userMessage: string, config: AutoUIConfig): Promise<InstructionPlan> {
-  const res = await fetch(`${config.llm.proxyUrl}/v1/chat`, {
+  const res = await fetch(`${config.llm.proxyUrl}/chat/create`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -20,7 +20,7 @@ export const extraAnalysisWithLLM = async (
     expectedSchema
   );
 
-  const res = await fetch(`${config.llm.proxyUrl}/v1/chat/extraAnalysis`, {
+  const res = await fetch(`${config.llm.proxyUrl}/chat/extraAnalysis`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

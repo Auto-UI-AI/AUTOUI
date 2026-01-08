@@ -1,41 +1,31 @@
-export const parseAnalyzedData = (res: unknown) => {
-  if (typeof res !== "string") {
-    throw new Error("Analyzed data must be a JSON string");
+export function parseAnalyzedData(content: any) {
+  if (!content || typeof content !== 'object') {
+    throw new Error('Invalid LLM response: not an object');
   }
 
-  let parsed: any;
-  try {
-    parsed = JSON.parse(res);
-  } catch {
-    throw new Error("LLM returned invalid JSON");
+  const { parseTo, data } = content;
+
+  if (data === undefined) {
+    throw new Error('Invalid LLM response: missing data');
   }
 
-  if (!parsed || typeof parsed !== "object") {
-    throw new Error("Analyzed data must be an object");
+  // If data is an object, extract its single value
+  if (parseTo === 'object' || parseTo === 'array') {
+    if (typeof data !== 'object' || data === null) {
+      throw new Error(`Expected ${parseTo} but got non-object`);
+    }
+
+    const values = Object.values(data);
+
+    if (values.length !== 1) {
+      throw new Error(
+        `LLM data object must contain exactly one value, got ${values.length}`
+      );
+    }
+
+    return values[0];
   }
 
-  if (!("parseTo" in parsed) || !("data" in parsed)) {
-    throw new Error("Missing parseTo or data fields");
-  }
-
-  switch (parsed.parseTo) {
-    case "array":
-      if (!Array.isArray(parsed.data)) {
-        throw new Error("Expected array data");
-      }
-      return parsed.data;
-
-    case "object":
-      if (typeof parsed.data !== "object") {
-        throw new Error("Expected object data");
-      }
-      return parsed.data;
-
-    case "primitive":
-      return parsed.data;
-
-    default:
-      throw new Error(`Unknown parseTo: ${parsed.parseTo}`);
-  }
-};
-
+  // primitive → data itself is the value
+  return data;
+}
