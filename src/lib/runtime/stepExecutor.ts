@@ -17,10 +17,11 @@ export async function executePlanSteps(
   setUI: SetUI,
   setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
   userMessage: string,
+  prevMessagesForContext: string
 ) {
   const ctx: Record<string, any> = {};
   for (const step of plan.steps) {
-    await runStep(step, ctx, config, resolveComponent, setUI, setSerializedMessages, userMessage, plan);
+    await runStep(step, ctx, config, resolveComponent, setUI, setSerializedMessages, userMessage, prevMessagesForContext, plan);
   }
   return ctx;
 }
@@ -33,18 +34,17 @@ async function runStep(
   setUI: SetUI,
   setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
   userMessage: string,
+  prevMessagesForContext: string,
   plan: InstructionPlan,
 ) {
   const isPlainObject = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
 
-  // --- inside runStep ---
   if (step.type === 'function') {
     const fCfg = config.functions[step.name];
     if (!fCfg) throw new Error(`Unknown function: ${step.name}`);
 
     const fn = fCfg.callFunc as any;
 
-    // The plan may provide either .args (positional) or .params (object).
     const anyStep = step as any;
     const hasArgs = Array.isArray(anyStep.args);
     const hasParamsObj = !!anyStep.params && typeof anyStep.params === 'object';
@@ -78,11 +78,13 @@ let expectedSchema: ReturnType<typeof getExpectedSchemaForStep> | null = null;
 if (assignKey && stepConsumesAssign(nextStep, assignKey)) {
   expectedSchema = getExpectedSchemaForStep(nextStep, config);
 }
+try{
 
 const analyzed = await extraAnalysisWithLLM(
   out,
   config,
   userMessage,
+  prevMessagesForContext,
   plan,
   step.name,
   expectedSchema
@@ -97,6 +99,11 @@ console.log('Normalized ctx value:', normalized);
 
 if (assignKey) {
   ctx[assignKey] = normalized;
+}
+
+}
+catch(e){
+  console.error(e)
 }
     } else {
       if ((step as any).assign) ctx[(step as any).assign] = out;

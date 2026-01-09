@@ -4,6 +4,7 @@ import { useAutoUiChat } from './useAutoUiChat';
 import { runInstructionPlan } from '@lib/runtime/runtimeEngine';
 import { useChatState } from './useChatState';
 import { useRendering } from './useRendering';
+import { getLastNMessages } from '@lib/utils/getLastNMessages';
 
 export function useChat({
   config,
@@ -17,7 +18,7 @@ export function useChat({
   classNames,
   isOpen,
 }: ChatProps): ChatContextType {
-  const { messages, setSerializedMessages } = useChatState(storageKey, config);
+  const { messages, serializedMessages, setSerializedMessages } = useChatState(storageKey, config);
 
   const { processMessage } = useAutoUiChat(config);
   const { resolveComponent, setUI } = useRendering(config);
@@ -40,10 +41,11 @@ export function useChat({
 
       try {
         setIsLoading(true);
+        let lastNMessages = serializedMessages?getLastNMessages(serializedMessages):''
+        console.log(lastNMessages)
+        const plan = await processMessage(text, lastNMessages);
 
-        const plan = await processMessage(text);
-
-        await runInstructionPlan(plan, config, resolveComponent, setUI, setSerializedMessages, text, {
+        await runInstructionPlan(plan, config, resolveComponent, setUI, setSerializedMessages, text, lastNMessages,  {
           validate: true,
         });
       } catch (err) {

@@ -63,6 +63,7 @@ export async function runInstructionPlan(
   setUI: SetUI,
   setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
   userMessage: string,
+  lastNMessages: string, 
   opts?: RunOptions,
  
 ) {
@@ -71,5 +72,5 @@ export async function runInstructionPlan(
   if (shouldValidate) {
     validateInstructionPlan(plan);
   }
-  return await executePlanSteps(plan, config, resolveComponent, setUI, setSerializedMessages, userMessage);
+  return await executePlanSteps(plan, config, resolveComponent, setUI, setSerializedMessages, userMessage, lastNMessages);
 }

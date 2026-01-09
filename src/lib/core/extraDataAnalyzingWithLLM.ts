@@ -7,6 +7,7 @@ export const extraAnalysisWithLLM = async (
   data: unknown,
   config: AutoUIConfig,
   userMessage: string,
+  prevMessagesForContext:string,
   plan: InstructionPlan,
   currentStepName: string,
   expectedSchema: { parseTo: 'array' | 'object' | 'primitive'; schema: unknown } | null
@@ -15,6 +16,7 @@ export const extraAnalysisWithLLM = async (
     data,
     config,
     userMessage,
+    prevMessagesForContext,
     plan,
     currentStepName,
     expectedSchema

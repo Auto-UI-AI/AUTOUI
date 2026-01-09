@@ -3,7 +3,7 @@ import type { InstructionPlan } from '../types/llmTypes';
 import { parseInstructionPlanFromSSE } from './sseParser';
 import { buildIntentPrompt } from './buildIntentPrompt';
 
-export async function getInstructionPlan(userMessage: string, config: AutoUIConfig): Promise<InstructionPlan> {
+export async function getInstructionPlan(userMessage: string, config: AutoUIConfig, prevMessagesForContext: string): Promise<InstructionPlan> {
   const res = await fetch(`${config.llm.proxyUrl}/chat/create`, {
     method: 'POST',
     headers: {
@@ -18,7 +18,7 @@ export async function getInstructionPlan(userMessage: string, config: AutoUIConf
       messages: [
         {
           role: 'user',
-          content: buildIntentPrompt(userMessage, config),
+          content: buildIntentPrompt(userMessage, config, prevMessagesForContext),
         },
       ],
       temperature: config.llm.temperature,
