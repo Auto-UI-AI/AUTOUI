@@ -38,10 +38,12 @@ export const analyzeDataStep = async (config:AutoUIConfig, out: any, assignKey: 
       if(analyzed.newInstructionPlan!=null && analyzed.newInstructionPlan!=''){
         console.log('analyzed.newInstructionPlan: ', analyzed.newInstructionPlan)
         executePlanSteps(analyzed.newInstructionPlan, config, resolveComponent, setUI, setSerializedMessages,userMessage,prevMessagesForContext, ctx)
-        return
+        return true
       }
+      return false
     } catch (e) {
       console.error(e);
+      return true
     }
 
 }

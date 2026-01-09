@@ -24,7 +24,7 @@ export async function executePlanSteps(
   console.log("Running instruction plan:", plan, "userMessage: ",userMessage);
   const ctx: Record<string, any> = contextVars ?? {};
   for (const step of plan.steps) {
-    await runStep(
+    const result = await runStep(
       step,
       ctx,
       config,
@@ -35,6 +35,7 @@ export async function executePlanSteps(
       prevMessagesForContext,
       plan,
     );
+    if(result) break;
   }
   return ctx;
 }
@@ -62,18 +63,18 @@ async function runStep(
       const currentIndex = plan.steps.indexOf(step);
       const nextStep = plan.steps[currentIndex + 1];
 
-      await analyzeDataStep(config, out, assignKey, step, currentIndex, nextStep, userMessage, prevMessagesForContext, ctx, plan, resolveComponent, setUI, setSerializedMessages);
+      return await analyzeDataStep(config, out, assignKey, step, currentIndex, nextStep, userMessage, prevMessagesForContext, ctx, plan, resolveComponent, setUI, setSerializedMessages);
     } else {
       if ((step as any).assign) ctx[(step as any).assign] = out;
+      return false
     }
-    return;
   }
   if (step.type === 'component') {
     const props = resolveProps(step.props ?? {}, ctx, config);
     const node = resolveComponent(step.name, props);
     setUI(node);
     updateSerializedMessages(setSerializedMessages, props, step);
-    return;
+    return false;
   }
 
   if (step.type === 'text') {
@@ -82,7 +83,7 @@ async function runStep(
       return [...prev, { id: `${Date.now()}-a`, role: 'assistant', kind: 'text', text: s.text }];
     });
     setUI(s.text ?? '');
-    return;
+    return false;
   }
 
   const result: never = step;
