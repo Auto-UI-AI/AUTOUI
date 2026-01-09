@@ -154,7 +154,7 @@ VALID EXAMPLE:
     'PREVIOUS MESSAGE SLICE (USE ONLY IF INTENT REQUIRES IT):',
     prevMessagesForContext,
     '',
-    `USER MESSAGE: "${userMessage}"`,
+    `THIS IS THE LAST USER MESSAGE (HIGHEST PRIORITY) IT IS THE MOST IMPORTANT REQUEST: "${userMessage}"`,
     '',
     'Respond with ONLY the InstructionPlan JSON.',
   ].join('\n');

@@ -3,13 +3,14 @@ export function parseAnalyzedData(content: any) {
     throw new Error('Invalid LLM response: not an object');
   }
 
-  const { parseTo, data } = content;
+  const { parseTo, data, newInstructionPlan } = content;
 
   if (data === undefined) {
     throw new Error('Invalid LLM response: missing data');
   }
 
-  // If data is an object, extract its single value
+  let extractedData: any;
+
   if (parseTo === 'object' || parseTo === 'array') {
     if (typeof data !== 'object' || data === null) {
       throw new Error(`Expected ${parseTo} but got non-object`);
@@ -23,9 +24,13 @@ export function parseAnalyzedData(content: any) {
       );
     }
 
-    return values[0];
+    extractedData = values[0];
+  } else {
+    extractedData = data;
   }
 
-  // primitive → data itself is the value
-  return data;
+  return {
+    data: extractedData,
+    newInstructionPlan: newInstructionPlan ?? null,
+  };
 }
