@@ -4,7 +4,7 @@ import { useAutoUiChat } from './useAutoUiChat';
 import { runInstructionPlan } from '@lib/runtime/runtimeEngine';
 import { useChatState } from './useChatState';
 import { useRendering } from './useRendering';
-import { getLastNMessages } from '@lib/utils/getLastNMessages';
+import { getLastNMessages } from '@lib/utils/formatting/getLastNMessages';
 
 export function useChat({
   config,

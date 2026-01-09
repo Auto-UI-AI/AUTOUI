@@ -1,5 +1,5 @@
 import type { AutoUIConfig } from "@lib/types";
-import type { InstructionPlan } from "@lib/types/llmTypes";
+import type { InstructionPlan, InstructionStep } from "@lib/types/llmTypes";
 
 export const buildDataAnalyzingPrompt = (
   data: unknown,
@@ -7,7 +7,8 @@ export const buildDataAnalyzingPrompt = (
   userMessage: string,
   prevMessagesForContext: string,
   plan: InstructionPlan,
-  currentStepName: string,
+  currentStep: InstructionStep,
+  currentStepIndex: number,
   expectedSchema: {
     parseTo: "array" | "object" | "primitive";
     schema: unknown;
@@ -35,8 +36,8 @@ You MUST NOT cause another analysis cycle.
 EXECUTION CONTEXT (NON-NEGOTIABLE)
 ────────────────────────────────────────
 
-- The CURRENT step (${currentStepName}) has ALREADY executed.
-- ALL steps BEFORE and INCLUDING the current step are FINAL and IMMUTABLE.
+- The CURRENT step (${currentStep}) has ALREADY executed.
+- ALL steps BEFORE and INCLUDING the current step at index:${currentStepIndex} are FINAL and IMMUTABLE.
 - The IMMEDIATE NEXT step consumes the output of the current step.
 - You are ONLY allowed to modify steps that come AFTER that consumer step.
 
@@ -171,7 +172,7 @@ CURRENT INSTRUCTION PLAN:
 ${JSON.stringify(plan, null, 2)}
 
 CURRENT STEP (ALREADY EXECUTED):
-${currentStepName}
+${currentStep} at index:${currentStepIndex} in the instruction plan
 
 INPUT DATA:
 ${JSON.stringify(data, null, 2)}

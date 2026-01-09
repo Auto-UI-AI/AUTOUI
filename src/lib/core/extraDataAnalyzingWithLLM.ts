@@ -1,7 +1,7 @@
 import type { AutoUIConfig } from '@lib/types';
 import { buildDataAnalyzingPrompt } from './buildDataAnalyzingPrompt';
-import type { InstructionPlan } from '@lib/types/llmTypes';
-import { parseAnalyzedData } from './parseAnalyzedData';
+import type { InstructionPlan, InstructionStep } from '@lib/types/llmTypes';
+import { parseAnalyzedData } from '../utils/formatting/parseAnalyzedData';
 
 export const extraAnalysisWithLLM = async (
   data: unknown,
@@ -9,7 +9,8 @@ export const extraAnalysisWithLLM = async (
   userMessage: string,
   prevMessagesForContext:string,
   plan: InstructionPlan,
-  currentStepName: string,
+  currentStep: InstructionStep,
+  currentStepIndex: number,
   expectedSchema: { parseTo: 'array' | 'object' | 'primitive'; schema: unknown } | null
 ): Promise<any> => {
   const prompt = buildDataAnalyzingPrompt(
@@ -18,7 +19,8 @@ export const extraAnalysisWithLLM = async (
     userMessage,
     prevMessagesForContext,
     plan,
-    currentStepName,
+    currentStep,
+    currentStepIndex,
     expectedSchema
   );
 
