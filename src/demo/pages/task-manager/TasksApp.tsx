@@ -161,24 +161,24 @@ const TasksApp = () => {
         exampleUsage: '<TasksList tasks={tasks} />',
       },
 
-      TaskItem: {
-        prompt: 'Single task card with title, description, status, priority and actions.',
-        props: {
-          task: 'Task — task data',
-        },
-        defaults: {
-          task: {
-            id: 'example-id',
-            title: 'Example Task',
-            description: 'This is an example task.',
-            status: 'todo',
-            priority: 'medium',
-            created_at: new Date().toISOString(),
-          } as Task,
-        },
-        callComponent: TaskItem,
-        category: 'tasks',
-      },
+      // TaskItem: {
+      //   prompt: 'Single task card with title, description, status, priority and actions.',
+      //   props: {
+      //     task: 'Task — task data',
+      //   },
+      //   defaults: {
+      //     task: {
+      //       id: 'example-id',
+      //       title: 'Example Task',
+      //       description: 'This is an example task.',
+      //       status: 'todo',
+      //       priority: 'medium',
+      //       created_at: new Date().toISOString(),
+      //     } as Task,
+      //   },
+      //   callComponent: TaskItem,
+      //   category: 'tasks',
+      // },
 
       TaskStats: {
         prompt: 'Statistics bar showing counts of tasks by status and priority.',

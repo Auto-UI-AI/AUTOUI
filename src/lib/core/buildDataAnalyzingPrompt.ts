@@ -36,36 +36,34 @@ RESPONSE SCHEMA (MANDATORY):
 CRITICAL THINKING RULES (VERY IMPORTANT):
 
 1. FIRST, determine whether the USER MESSAGE explicitly or implicitly references previous conversation history.
-   Examples of referencing intent:
-   - "what did I ask before?"
-   - "based on what I said earlier"
-   - "those tasks you showed previously"
-   - follow-up questions that clearly depend on prior answers
 
-2. If (and ONLY IF) the USER MESSAGE shows clear intent to reference prior messages:
-   - Use PREVIOUS MESSAGES as authoritative context
-   - Resolve ambiguity by carefully analyzing message order and meaning
-   - Prefer user messages over assistant messages when interpreting intent
-   - Detect corrections, dissatisfaction, or clarifications in follow-ups
+2. If (and ONLY IF) previous messages are relevant:
+   - Treat the MOST RECENT messages as having the HIGHEST importance.
+   - Later messages OVERRIDE earlier ones.
+   - User corrections, clarifications, or follow-ups in the last messages
+     MUST take priority over older intent.
+   - Never resurrect earlier intent that was implicitly corrected later.
 
-3. If the USER MESSAGE does NOT reference prior messages:
-   - IGNORE previous messages completely
-   - Do NOT infer hidden intent
-   - Base analysis strictly on USER MESSAGE + INPUT DATA only
+3. Prefer USER messages over assistant messages at all times.
+   Assistant messages may be incorrect or over-broad.
 
-4. NEVER reuse previous context by default.
-   Context usage must be INTENT-DRIVEN, not convenience-driven.
+4. If the USER MESSAGE does NOT reference prior messages:
+   - IGNORE previous messages completely.
+   - Base analysis strictly on USER MESSAGE + INPUT DATA only.
 
-5. When context is used:
-   - Identify what the user originally asked
-   - Identify how the current message modifies, corrects, or narrows that request
-   - Detect mistakes or over-broad previous assistant responses
+5. NEVER reuse previous context by default.
+   Context usage must be INTENT-DRIVEN and RECENCY-WEIGHTED.
+
+6. When context is used:
+   - Identify the latest user intent
+   - Detect scope narrowing ("I mean", "actually", "only", "that one")
+   - Detect dissatisfaction or correction
    - Produce a refined, corrected interpretation
 
-6. Be extremely precise:
+7. Be extremely precise:
    - Do NOT overgeneralize
    - Do NOT include unrelated data
-   - Do NOT assume the assistant was correct previously
+   - Do NOT summarize unless explicitly requested
 
 STRICT OUTPUT RULES:
 - "parseTo" MUST be exactly "${parseTo}"
@@ -73,10 +71,10 @@ STRICT OUTPUT RULES:
 - Do NOT add any extra fields
 - Output MUST be directly consumable by the next step
 
-PREVIOUS MESSAGE SLICE (USE ONLY IF INTENT REQUIRES IT):
+PREVIOUS MESSAGE SLICE (ORDERED FROM OLDEST → NEWEST, RECENCY MATTERS):
 ${prevMessagesForContext}
 
-USER MESSAGE:
+USER MESSAGE (HIGHEST PRIORITY):
 ${userMessage}
 
 CURRENT STEP:
@@ -91,3 +89,4 @@ ${schemaBlock}
 Return ONLY the JSON object described above.
 `.trim();
 };
+

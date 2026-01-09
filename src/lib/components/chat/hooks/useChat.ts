@@ -42,7 +42,6 @@ export function useChat({
       try {
         setIsLoading(true);
         let lastNMessages = serializedMessages?getLastNMessages(serializedMessages):''
-        console.log(lastNMessages)
         const plan = await processMessage(text, lastNMessages);
 
         await runInstructionPlan(plan, config, resolveComponent, setUI, setSerializedMessages, text, lastNMessages,  {

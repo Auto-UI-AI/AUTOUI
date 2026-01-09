@@ -6,7 +6,7 @@ import { Switch } from '@lib/components/switch';
 export const ChatMenu = () => {
   const { handleClear, setTheme, theme, mode } = useChatContext();
 
-  console.log(mode);
+  // console.log(mode);
   return (
     <PopoverMenu
       popoverStyles={{

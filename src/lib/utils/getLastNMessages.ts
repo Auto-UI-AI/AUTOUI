@@ -1,7 +1,7 @@
 import type { SerializedMessage } from "@lib/components/chat/types";
 
-const USER_MESSAGES_TO_GET = 5;
-const ASSISTANT_MESSAGES_TO_GET = 3;
+const USER_MESSAGES_TO_GET = 8;
+const ASSISTANT_MESSAGES_TO_GET = 7;
 
 export const getLastNMessages = (
   messages: SerializedMessage[]
