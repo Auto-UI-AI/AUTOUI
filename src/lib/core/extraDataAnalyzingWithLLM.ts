@@ -23,8 +23,8 @@ export const extraAnalysisWithLLM = async (
     currentStepIndex,
     expectedSchema
   );
-
-  const res = await fetch(`${config.llm.proxyUrl}/chat/extraAnalysis`, {
+  const autouiProxyUrl = config.llm.proxyUrl??'https://autoui-proxy.onrender.com'
+  const res = await fetch(`${autouiProxyUrl}/chat/extraAnalysis`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

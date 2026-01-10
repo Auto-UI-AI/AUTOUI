@@ -4,7 +4,8 @@ import { parseInstructionPlanFromSSE } from './sseParser';
 import { buildIntentPrompt } from './buildIntentPrompt';
 
 export async function getInstructionPlan(userMessage: string, config: AutoUIConfig, prevMessagesForContext: string): Promise<InstructionPlan> {
-  const res = await fetch(`${config.llm.proxyUrl}/chat/create`, {
+  const autouiProxyUrl = config.llm.proxyUrl??'https://autoui-proxy.onrender.com'
+  const res = await fetch(`${autouiProxyUrl}/chat/create`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
