@@ -32,7 +32,7 @@ const TasksApp = () => {
     /* =========================
      *   APP ID (IMPORTANT)
      * ========================= */
-    appId: 'task-manager5',
+    appId: 'app_1768076810546_8lq96nw',
 
     /* =========================
      *   METADATA
