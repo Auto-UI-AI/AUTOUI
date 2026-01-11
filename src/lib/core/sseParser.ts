@@ -11,7 +11,7 @@ export async function parseInstructionPlanFromSSE(stream: ReadableStream<Uint8Ar
     buffer += decoder.decode(value, { stream: true });
     const events = buffer.split('\n\n');
     buffer = events.pop() ?? '';
-    
+
     for (const event of events) {
       if (!event.startsWith('data:')) continue;
 
@@ -28,8 +28,8 @@ export async function parseInstructionPlanFromSSE(stream: ReadableStream<Uint8Ar
         if (delta) {
           text += delta;
         }
-      } catch(e) {
-        console.error(e)
+      } catch (e) {
+        console.error(e);
       }
     }
   }

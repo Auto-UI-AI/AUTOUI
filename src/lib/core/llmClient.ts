@@ -12,7 +12,7 @@ export async function getInstructionPlan(userMessage: string, config: AutoUIConf
       'X-AUTOUI-APP-ID': config.appId,
       ...(config.llm.sharedSecret && {
         'X-AUTOUI-SECRET': config.llm.sharedSecret,
-      'Authorization': 'Bearer ' + config.llm.sharedSecret,
+        'authorization': 'Bearer ' + config.llm.sharedSecret,
       }),
     },
     body: JSON.stringify({
@@ -28,7 +28,6 @@ export async function getInstructionPlan(userMessage: string, config: AutoUIConf
       appId: config.appId,
     }),
   });
-
   if (!res.ok || !res.body) {
     throw new Error(`AutoUI proxy error: ${res.status}`);
   }
