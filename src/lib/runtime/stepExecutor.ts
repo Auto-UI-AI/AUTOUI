@@ -1,11 +1,12 @@
 import type { InstructionPlan, InstructionStep } from '@lib/types/llmTypes';
 import type { AutoUIConfig } from '../types';
-import { resolveProps } from '../utils/resolveProps';
+import { resolveProps } from '../utils/formatting/resolveProps';
 import type { SerializedMessage } from '@lib/components/chat/types';
 import type { Dispatch, SetStateAction } from 'react';
 import type React from 'react';
-import { extraAnalysisWithLLM } from '@lib/core/extraDataAnalyzingWithLLM';
-import { getConsumerKeysForAssign, getExpectedSchemaForStep, normalizeForCtx, stepConsumesAssign } from '@lib/utils/normalizationHelpers';
+import { updateSerializedMessages } from './updateSerializedMessages';
+import { invokeFunction } from './invokeFunction';
+import { analyzeDataStep } from './analyzeDataStep';
 
 export type ResolveComponent = (name: string, props: any) => React.ReactNode;
 export type SetUI = (ui: React.ReactNode | string) => void;
@@ -17,10 +18,24 @@ export async function executePlanSteps(
   setUI: SetUI,
   setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
   userMessage: string,
+  prevMessagesForContext: string,
+  contextVars?: Record<string, any>,
 ) {
-  const ctx: Record<string, any> = {};
+  console.log("Running instruction plan:", plan, "userMessage: ",userMessage);
+  const ctx: Record<string, any> = contextVars ?? {};
   for (const step of plan.steps) {
-    await runStep(step, ctx, config, resolveComponent, setUI, setSerializedMessages, userMessage, plan);
+    const result = await runStep(
+      step,
+      ctx,
+      config,
+      resolveComponent,
+      setUI,
+      setSerializedMessages,
+      userMessage,
+      prevMessagesForContext,
+      plan,
+    );
+    if(result) break;
   }
   return ctx;
 }
@@ -33,99 +48,33 @@ async function runStep(
   setUI: SetUI,
   setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>,
   userMessage: string,
+  prevMessagesForContext: string,
   plan: InstructionPlan,
 ) {
-  const isPlainObject = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
-
-  // --- inside runStep ---
+ 
   if (step.type === 'function') {
     const fCfg = config.functions[step.name];
     if (!fCfg) throw new Error(`Unknown function: ${step.name}`);
 
-    const fn = fCfg.callFunc as any;
-
-    // The plan may provide either .args (positional) or .params (object).
-    const anyStep = step as any;
-    const hasArgs = Array.isArray(anyStep.args);
-    const hasParamsObj = !!anyStep.params && typeof anyStep.params === 'object';
-
-    let out: any;
-
-    if (hasArgs) {
-      let args = anyStep.args as unknown[];
-      if (args.length === 1 && isPlainObject(args[0]) && Array.isArray(fCfg.params) && fCfg.params.length > 0) {
-        const obj = args[0] as Record<string, unknown>;
-        args = (fCfg.params as string[]).map((k) => obj[k]);
-      }
-      try {
-        out = await (fn as (...a: unknown[]) => any)(...args);
-      } catch {
-        out = await (fn as (a?: unknown[]) => any)(args);
-      }
-    } else if (hasParamsObj) {
-      out = await (fn as (p?: any) => any)(anyStep.params);
-    } else {
-      out = await fn();
-    }
-
+    let out = await invokeFunction(fCfg, step);
+    
     if (fCfg.canShareDataWithLLM && step.hasToShareDataWithLLM) {
       const assignKey = (step as any).assign;
-const currentIndex = plan.steps.indexOf(step);
-const nextStep = plan.steps[currentIndex + 1];
+      const currentIndex = plan.steps.indexOf(step);
+      const nextStep = plan.steps[currentIndex + 1];
 
-let expectedSchema: ReturnType<typeof getExpectedSchemaForStep> | null = null;
-
-if (assignKey && stepConsumesAssign(nextStep, assignKey)) {
-  expectedSchema = getExpectedSchemaForStep(nextStep, config);
-}
-
-const analyzed = await extraAnalysisWithLLM(
-  out,
-  config,
-  userMessage,
-  plan,
-  step.name,
-  expectedSchema
-);
-
-const consumerKeys = getConsumerKeysForAssign(nextStep, assignKey);
-
-const normalized = normalizeForCtx(analyzed, consumerKeys);
-
-console.log('Extra analysis data received from LLM:', analyzed);
-console.log('Normalized ctx value:', normalized);
-
-if (assignKey) {
-  ctx[assignKey] = normalized;
-}
+      return await analyzeDataStep(config, out, assignKey, step, currentIndex, nextStep, userMessage, prevMessagesForContext, ctx, plan, resolveComponent, setUI, setSerializedMessages);
     } else {
       if ((step as any).assign) ctx[(step as any).assign] = out;
+      return false
     }
-    return;
   }
   if (step.type === 'component') {
     const props = resolveProps(step.props ?? {}, ctx, config);
     const node = resolveComponent(step.name, props);
-
     setUI(node);
-    setSerializedMessages((prev) => {
-      if (props?.children)
-        return [
-          ...prev,
-          { id: `${Date.now()}-a`, role: 'assistant', kind: 'ui', ui: { t: 'fragment', children: props.children } },
-        ];
-      else
-        return [
-          ...prev,
-          {
-            id: `${Date.now()}-a`,
-            role: 'assistant',
-            kind: 'ui',
-            ui: { t: 'component', name: step.name, props: props },
-          },
-        ];
-    });
-    return;
+    updateSerializedMessages(setSerializedMessages, props, step);
+    return false;
   }
 
   if (step.type === 'text') {
@@ -134,7 +83,7 @@ if (assignKey) {
       return [...prev, { id: `${Date.now()}-a`, role: 'assistant', kind: 'text', text: s.text }];
     });
     setUI(s.text ?? '');
-    return;
+    return false;
   }
 
   const result: never = step;

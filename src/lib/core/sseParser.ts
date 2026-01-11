@@ -2,33 +2,42 @@ export async function parseInstructionPlanFromSSE(stream: ReadableStream<Uint8Ar
   const reader = stream.getReader();
   const decoder = new TextDecoder();
 
+  let buffer = '';
   let text = '';
 
   while (true) {
     const { value, done } = await reader.read();
     if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const events = buffer.split('\n\n');
+    buffer = events.pop() ?? '';
 
-    const chunk = decoder.decode(value, { stream: true });
+    for (const event of events) {
+      if (!event.startsWith('data:')) continue;
 
-    // Each line is a JSON object from the proxy
-    const lines = chunk.split('\n').filter((line) => line.trim().startsWith('data: '));
+      const payload = event.slice(5).trim();
 
-    for (const line of lines) {
+      if (payload === '[DONE]') {
+        reader.cancel();
+        break;
+      }
+
       try {
-        const json = JSON.parse(line.replace(/^data: /, ''));
+        const json = JSON.parse(payload);
         const delta = json.choices?.[0]?.delta?.content;
-        if (delta) text += delta;
-      } catch {
-        // ignore incomplete lines
+        if (delta) {
+          text += delta;
+        }
+      } catch (e) {
+        console.error(e);
       }
     }
   }
 
-  // Now text should contain the full JSON object as string
-  try {
-    return JSON.parse(text);
-  } catch (err) {
-    console.error('Failed to parse InstructionPlan JSON:', text);
-    throw new Error('Invalid InstructionPlan JSON from LLM stream');
+  const jsonMatch = text.match(/\{[\s\S]*\}$/);
+  if (!jsonMatch) {
+    throw new Error('LLM did not return valid JSON InstructionPlan');
   }
+
+  return JSON.parse(jsonMatch[0]);
 }

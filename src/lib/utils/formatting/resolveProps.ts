@@ -1,4 +1,4 @@
-import type { AutoUIConfig } from '../types';
+import type { AutoUIConfig } from '../../types';
 
 export function resolveProps(input: any, ctx: Record<string, any>, config: AutoUIConfig): any {
   if (input == null) return input;

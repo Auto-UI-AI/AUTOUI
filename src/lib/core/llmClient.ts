@@ -3,8 +3,9 @@ import type { InstructionPlan } from '../types/llmTypes';
 import { parseInstructionPlanFromSSE } from './sseParser';
 import { buildIntentPrompt } from './buildIntentPrompt';
 
-export async function getInstructionPlan(userMessage: string, config: AutoUIConfig): Promise<InstructionPlan> {
-  const res = await fetch(`${config.llm.proxyUrl}/chat/create`, {
+export async function getInstructionPlan(userMessage: string, config: AutoUIConfig, prevMessagesForContext: string): Promise<InstructionPlan> {
+  const autouiProxyUrl = config.llm.proxyUrl??'https://autoui-proxy.onrender.com'
+  const res = await fetch(`${autouiProxyUrl}/chat/create`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -18,7 +19,7 @@ export async function getInstructionPlan(userMessage: string, config: AutoUIConf
       messages: [
         {
           role: 'user',
-          content: buildIntentPrompt(userMessage, config),
+          content: buildIntentPrompt(userMessage, config, prevMessagesForContext),
         },
       ],
       temperature: config.llm.temperature,
