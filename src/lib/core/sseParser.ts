@@ -8,7 +8,6 @@ export async function parseInstructionPlanFromSSE(stream: ReadableStream<Uint8Ar
   while (true) {
     const { value, done } = await reader.read();
     if (done) break;
-    console.log('chunk received');
     buffer += decoder.decode(value, { stream: true });
     const events = buffer.split('\n\n');
     buffer = events.pop() ?? '';
@@ -29,13 +28,12 @@ export async function parseInstructionPlanFromSSE(stream: ReadableStream<Uint8Ar
         if (delta) {
           text += delta;
         }
-      } catch {
-        // ignore malformed chunks
+      } catch(e) {
+        console.error(e)
       }
     }
   }
 
-  // 🔥 Витягуємо JSON навіть якщо є текст навколо
   const jsonMatch = text.match(/\{[\s\S]*\}$/);
   if (!jsonMatch) {
     throw new Error('LLM did not return valid JSON InstructionPlan');

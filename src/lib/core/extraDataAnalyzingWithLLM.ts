@@ -1,26 +1,30 @@
 import type { AutoUIConfig } from '@lib/types';
 import { buildDataAnalyzingPrompt } from './buildDataAnalyzingPrompt';
-import type { InstructionPlan } from '@lib/types/llmTypes';
-import { parseAnalyzedData } from './parseAnalyzedData';
+import type { InstructionPlan, InstructionStep } from '@lib/types/llmTypes';
+import { parseAnalyzedData } from '../utils/formatting/parseAnalyzedData';
 
 export const extraAnalysisWithLLM = async (
   data: unknown,
   config: AutoUIConfig,
   userMessage: string,
+  prevMessagesForContext:string,
   plan: InstructionPlan,
-  currentStepName: string,
+  currentStep: InstructionStep,
+  currentStepIndex: number,
   expectedSchema: { parseTo: 'array' | 'object' | 'primitive'; schema: unknown } | null
 ): Promise<any> => {
   const prompt = buildDataAnalyzingPrompt(
     data,
     config,
     userMessage,
+    prevMessagesForContext,
     plan,
-    currentStepName,
+    currentStep,
+    currentStepIndex,
     expectedSchema
   );
-
-  const res = await fetch(`${config.llm.proxyUrl}/v1/chat/extraAnalysis`, {
+  const autouiProxyUrl = config.llm.proxyUrl??'https://autoui-proxy.onrender.com'
+  const res = await fetch(`${autouiProxyUrl}/chat/extraAnalysis`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
