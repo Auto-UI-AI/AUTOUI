@@ -2,7 +2,7 @@ import { useTasksContext } from '../hooks/useAppFunctions';
 import TaskItem from '../components/tasks/TaskItem';
 import type { Task } from '../types/tasks';
 
-const TasksList = ({ tasks }: { tasks: Task[] }) => {
+const TasksList = ({ tasks = [] }: { tasks?: Task[] }) => {
   const { tasks: tasksFromContext } = useTasksContext();
 
   return (

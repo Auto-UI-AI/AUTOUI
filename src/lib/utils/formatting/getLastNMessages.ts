@@ -7,8 +7,7 @@ export const getLastNMessages = (
   messages: SerializedMessage[]
 ): string => {
   if (!messages?.length) return '';
-
-  // Keep original index so we can restore order later
+  
   const indexed = messages.map((m, index) => ({ m, index }));
 
   const lastUserMessages = indexed

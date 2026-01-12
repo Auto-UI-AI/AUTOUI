@@ -6,7 +6,11 @@ export function resolveProps(input: any, ctx: Record<string, any>, config: AutoU
   if (typeof input === 'string') {
     if (input.startsWith('{{') && input.endsWith('}}')) {
       const key = input.slice(2, -2).trim();
-      return ctx[key];
+      const value = ctx[key];
+      if (value === undefined) {
+        console.warn(`⚠️ [ResolveProps] Context key "${key}" not found. Available keys:`, Object.keys(ctx));
+      }
+      return value;
     }
     return input;
   }

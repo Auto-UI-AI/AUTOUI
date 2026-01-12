@@ -1,3 +1,4 @@
+/// <reference types="../types/speech" />
 import { useCallback, useRef, useState } from 'react';
 
 export const useSpeechToText = ({ lang = 'en-us' } = {}) => {
@@ -23,7 +24,7 @@ export const useSpeechToText = ({ lang = 'en-us' } = {}) => {
     recognition.onstart = () => setListening(true);
     recognition.onend = () => setListening(false);
 
-    recognition.onresult = (e) => {
+    recognition.onresult = (e: SpeechRecognitionEvent) => {
       const result = e.results[0][0].transcript;
       setText(result);
       setListening(false);

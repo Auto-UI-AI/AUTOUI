@@ -48,13 +48,16 @@ export function useChat({
           validate: true,
         });
       } catch (err) {
+        console.error('[Chat] Error during plan execution:', err);
+        
+        const fallbackMessage = `I encountered an issue while processing your request. Could you try rephrasing it?`;
         setSerializedMessages((prev) => [
           ...prev,
           {
             id: `${Date.now()}-e`,
             role: 'assistant',
             kind: 'text',
-            text: '⚠️ Something went wrong.',
+            text: `⚠️ ${fallbackMessage}`,
             ts: Date.now(),
           },
         ]);

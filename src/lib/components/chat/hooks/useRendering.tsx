@@ -13,7 +13,8 @@ export function useRendering(config: AutoUIConfig) {
       const entry = config?.components?.[name];
       if (!entry?.callComponent) return;
       const Comp = entry.callComponent as React.ComponentType<any>;
-      return <Comp {...props} />;
+      const mergedProps = { ...entry.defaults, ...props };
+      return <Comp {...mergedProps} />;
     },
     [config?.components],
   );

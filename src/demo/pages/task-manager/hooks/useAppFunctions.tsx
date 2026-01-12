@@ -1,4 +1,3 @@
-// demo3/hooks/useTasksContext.tsx
 import React, { createContext, useCallback, useContext, useState } from 'react';
 import type { Task, TaskDraft } from '../types/tasks';
 const STORAGE_KEY = 'task_management_tasks';
@@ -18,9 +17,17 @@ interface TasksContextType {
 const TasksContext = createContext<TasksContextType | undefined>(undefined);
 
 export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [tasks, setTasks] = useState<Task[]>(
-    localStorage.getItem(STORAGE_KEY) ? (JSON.parse(localStorage.getItem(STORAGE_KEY)!) as Task[]) : [],
-  );
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) return [];
+      const parsed = JSON.parse(stored) as Task[];
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter((t): t is Task => t != null && typeof t === 'object' && typeof t.id === 'string');
+    } catch {
+      return [];
+    }
+  });
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [showForm, setShowForm] = useState(false);
   const addTask = (task: Task) => setTasks((prev) => [...prev, task]);

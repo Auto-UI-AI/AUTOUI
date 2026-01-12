@@ -25,3 +25,5 @@ export type {
 export type { InstructionPlan, InstructionStep, ComponentStep, FunctionStep, TextStep } from './types/llmTypes';
 
 export type { SpinnerProps } from './components/spinner/ui/Spinner';
+
+export { autouiRegisterComponentPropsSchema, autouiRegisterFunctionParamsSchema } from './registration';

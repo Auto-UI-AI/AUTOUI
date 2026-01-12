@@ -49,6 +49,85 @@ export function getExpectedSchemaForStep(
 
   return null;
 }
+
+export async function getExpectedSchemaForAssignKey(
+  assignKey: string,
+  remainingSteps: InstructionStep[],
+  config: AutoUIConfig
+): Promise<{ parseTo: 'array' | 'object' | 'primitive'; schema: unknown; paramName?: string } | null> {
+  for (const step of remainingSteps) {
+    if (stepConsumesAssign(step, assignKey)) {
+      let paramName: string | undefined;
+      
+      if (step.type === 'function') {
+        const params = (step as any).params ?? {};
+        paramName = Object.keys(params).find(key => {
+          const value = params[key];
+          return typeof value === 'string' && value.includes(`{{${assignKey}}}`);
+        });
+      } else if (step.type === 'component') {
+        const props = step.props ?? {};
+        paramName = Object.keys(props).find(key => {
+          const value = props[key];
+          return typeof value === 'string' && value.includes(`{{${assignKey}}}`);
+        });
+      }
+      
+      const runtimeSchemaModule = await import('./runtimeSchemaValidator');
+      const runtimeSchema = await runtimeSchemaModule.getRuntimeSchemaAsync(config);
+      
+      if (runtimeSchema && paramName) {
+        if (step.type === 'function') {
+          const funcSchema = runtimeSchema.functions.find(f => f.name === step.name);
+          if (funcSchema && funcSchema.params[paramName]) {
+            const paramRef = funcSchema.params[paramName];
+            const typeDef = runtimeSchemaModule.resolveType(paramRef.type, runtimeSchema);
+            
+            if (typeDef) {
+              let parseTo: 'array' | 'object' | 'primitive' = 'primitive';
+              if (typeDef.type === 'array') {
+                parseTo = 'array';
+              } else if (typeDef.type === 'object') {
+                parseTo = 'object';
+              }
+              
+              return {
+                parseTo,
+                schema: typeDef,
+                paramName,
+              };
+            }
+          }
+        } else if (step.type === 'component') {
+          const compSchema = runtimeSchema.components.find(c => c.name === step.name);
+          if (compSchema && compSchema.props[paramName]) {
+            const propRef = compSchema.props[paramName];
+            const typeDef = runtimeSchemaModule.resolveType(propRef.type, runtimeSchema);
+            
+            if (typeDef) {
+              let parseTo: 'array' | 'object' | 'primitive' = 'primitive';
+              if (typeDef.type === 'array') {
+                parseTo = 'array';
+              } else if (typeDef.type === 'object') {
+                parseTo = 'object';
+              }
+              
+              return {
+                parseTo,
+                schema: typeDef,
+                paramName,
+              };
+            }
+          }
+        }
+      }
+          
+      return getExpectedSchemaForStep(step, config);
+    }
+  }
+  
+  return null;
+}
 export function getConsumerKeysForAssign(
   step: InstructionStep | undefined,
   assignKey: string

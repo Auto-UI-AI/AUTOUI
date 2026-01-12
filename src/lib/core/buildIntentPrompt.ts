@@ -7,155 +7,123 @@ export function buildIntentPrompt(
 ) {
   const funcLines = Object.entries(config.functions).map(([name, f]) => {
     const params = f.params
-      ? Object.entries(f.params)
-          .map(([k, v]) => `- ${k}: ${v}`)
-          .join('\n')
-      : '(no documented params)';
-    return `FUNCTION ${name}:
-Description: ${f.prompt}
-Params:
-${params}`;
+      ? Object.entries(f.params).map(([k, v]) => `  ${k}: ${v}`).join('\n')
+      : '  (no params)';
+    
+    const canShareNote = f.canShareDataWithLLM
+      ? '\n  [Can share data with LLM - set hasToShareDataWithLLM based on user intent]'
+      : '';
+    
+    return `${name}:
+  ${f.prompt}
+  Params:
+${params}${canShareNote}`;
   });
 
   const compLines = Object.entries(config.components).map(([name, c]) => {
     const props = c.props
-      ? Object.entries(c.props)
-          .map(([k, v]) => `- ${k}: ${v}`)
-          .join('\n')
-      : '(no documented props)';
-    return `COMPONENT ${name}:
-Description: ${c.prompt}
-Props:
+      ? Object.entries(c.props).map(([k, v]) => `  ${k}: ${v}`).join('\n')
+      : '  (no props)';
+    
+    return `${name}:
+  ${c.prompt}
+  Props:
 ${props}`;
   });
 
-  const system = `
-You are AutoUI Intent Planner.
+  const appContext = config.llm.appDescriptionPrompt
+    ? `\nAPP CONTEXT:\n${config.llm.appDescriptionPrompt}${config.metadata?.appName ? `\nApp: ${config.metadata.appName}` : ''}\n`
+    : '';
 
-Your job is to convert the USER MESSAGE into a precise InstructionPlan.
+  return `You are an Intent Planner. Analyze available functions/components, user message, and message history to create an InstructionPlan.
 
-You MUST return ONLY a valid JSON object matching the schema below.
-Do NOT include markdown, comments, explanations, or extra fields.
-
-SCHEMA (MUST MATCH EXACTLY):
+OUTPUT SCHEMA:
 {
   "type": "sequence",
   "steps": [
     {
       "type": "function",
       "name": "<function name>",
-      "params": { /* optional */ },
-      "assign": "<ctxKey>",
+      "params": { /* required if function has params */ },
+      "assign": "<contextKey>",
       "hasToShareDataWithLLM": true | false
     },
     {
       "type": "component",
       "name": "<component name>",
-      "props": { /* optional, may reference {{ctxKey}} */ }
+      "props": { /* may reference {{contextKey}} */ }
     },
     {
       "type": "text",
-      "text": "<actual generated text>"
+      "text": "<message>"
     }
   ]
 }
 
-CRITICAL PLANNING RULES (READ CAREFULLY):
+RULES:
+1. Analyze user message + history to understand intent. Use history ONLY if message references prior conversation.
+2. If function has params listed, they are REQUIRED. Chain functions if needed: call data-fetching function first, assign result, then use {{contextKey}} in params.
+   IMPORTANT: When a function requires a param that should come from a previous step's assign key, use {{contextKey}} syntax in the params object.
+   Example: If step 1 has assign: "tasks", and step 2 function needs "tasks" param, use params: { "tasks": "{{tasks}}" }
+3. hasToShareDataWithLLM: Set to true if user requests FILTERED/SPECIFIC data (criteria, conditions, analysis, explanations) OR false if user wants ALL/COMPLETE data.
+4. Extract component props from user message or use context variables. Function params can also use context variables with {{contextKey}} syntax.
+5. Be minimal - only include necessary steps.
+6. Return ONLY valid JSON, no markdown or comments.
 
-1. FIRST, determine whether the USER MESSAGE explicitly or implicitly references prior conversation.
-   Examples:
-   - "what did I ask before?"
-   - "those tasks you showed"
-   - follow-up complaints or corrections
-   - narrowing or clarifying earlier requests
+${appContext}AVAILABLE FUNCTIONS:
+${funcLines.join('\n\n')}
 
-2. Use PREVIOUS MESSAGES ONLY IF such intent exists.
-   - If no reference intent is present, IGNORE previous messages entirely.
-   - Never assume context relevance by default.
+AVAILABLE COMPONENTS:
+${compLines.join('\n\n')}
 
-3. When previous messages ARE relevant:
-   - Prefer USER messages over assistant messages
-   - Detect corrections, dissatisfaction, or scope narrowing
-   - Do NOT repeat earlier assistant mistakes
-   - Generate a refined and corrected plan
-
-4. When previous messages are NOT relevant:
-   - Base the plan strictly on USER MESSAGE only
-
-5. Be precise and minimal:
-   - Do NOT overfetch data
-   - Do NOT include unrelated functions or components
-   - Do NOT create steps “just in case”
-
-6. If data is required for rendering:
-   - Call a function FIRST
-   - Store result using "assign"
-   - Reference it via "{{assignKey}}" in component props
-
-7. If no function or component is appropriate:
-   - Return a single "text" step
-
-STRICT OUTPUT RULES:
-- "type" must be exactly "sequence"
-- "steps" must be non-empty
-- Use ONLY declared function/component names
-- Do NOT add any extra keys
-- Output ONE JSON object at top level
-
-${config.llm.appDescriptionPrompt && `
-APPLICATION CONTEXT (IMPORTANT):
-This app is built using AutoUI.
-You must ONLY respond to requests related to this app.
-If the USER MESSAGE is unrelated, respond with a single "text" step explaining the limitation.
-
-App description:
-${config.llm.appDescriptionPrompt}
-App name:
-${config.metadata?.appName}
-`}
-`.trim();
-
-  const example = `
-VALID EXAMPLE:
+EXAMPLE 1:
+User: "show tasks related to food"
 {
   "type": "sequence",
   "steps": [
     {
       "type": "function",
-      "name": "fetchProducts",
-      "params": { "color": "red" },
-      "assign": "items",
+      "name": "fetchTasks",
+      "params": {},
+      "assign": "tasks",
       "hasToShareDataWithLLM": true
     },
     {
       "type": "component",
-      "name": "ProductList",
-      "props": { "products": "{{items}}" }
-    },
-    {
-      "type": "text",
-      "text": "Here are the red products we found for you."
+      "name": "TasksList",
+      "props": { "tasks": "{{tasks}}" }
     }
   ]
 }
-`.trim();
+Note: hasToShareDataWithLLM: true because user requested filtered data (tasks "related to food").
 
-  return [
-    system,
-    '',
-    'AVAILABLE FUNCTIONS:',
-    funcLines.join('\n\n'),
-    '',
-    'AVAILABLE COMPONENTS:',
-    compLines.join('\n\n'),
-    '',
-    example,
-    '',
-    'PREVIOUS MESSAGE SLICE (USE ONLY IF INTENT REQUIRES IT):',
-    prevMessagesForContext,
-    '',
-    `THIS IS THE LAST USER MESSAGE (HIGHEST PRIORITY) IT IS THE MOST IMPORTANT REQUEST: "${userMessage}"`,
-    '',
-    'Respond with ONLY the InstructionPlan JSON.',
-  ].join('\n');
+EXAMPLE 2 (Function params using context):
+User: "fetch tasks and then summarize them"
+{
+  "type": "sequence",
+  "steps": [
+    {
+      "type": "function",
+      "name": "fetchTasks",
+      "params": {},
+      "assign": "tasks",
+      "hasToShareDataWithLLM": false
+    },
+    {
+      "type": "function",
+      "name": "summarizeTasks",
+      "params": { "tasks": "{{tasks}}" },
+      "assign": "summary"
+    }
+  ]
+}
+Note: The second function uses {{tasks}} in params to reference the assign key from the first step.
+
+MESSAGE HISTORY:
+${prevMessagesForContext || '(none)'}
+
+CURRENT USER MESSAGE:
+"${userMessage}"
+
+Return InstructionPlan JSON:`.trim();
 }
