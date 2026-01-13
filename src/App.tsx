@@ -7,7 +7,6 @@ export function App() {
   return (
     <>
       <Routes>
-        
         <Route path="/" element={<HomePage />} />
         <Route path="/demo/ecommerce" element={<EcommerceDemoPage />} />
         <Route path="/demo/observability" element={<FinancialDemoPage />} />
