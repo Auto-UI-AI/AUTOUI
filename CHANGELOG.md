@@ -1,3 +1,10 @@
+## [0.2.5](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.4...v0.2.5) (2026-01-13)
+
+
+### Bug Fixes
+
+* added more externals and removed plugin from library build config ([195d2e9](https://github.com/Auto-UI-AI/AUTOUI/commit/195d2e950588fde7b134fcf066322575f5838ba9))
+
 ## [0.2.4](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.3...v0.2.4) (2026-01-13)
 
 
