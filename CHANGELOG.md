@@ -1,3 +1,10 @@
+## [0.2.3](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.2...v0.2.3) (2026-01-13)
+
+
+### Bug Fixes
+
+* handle edge case in schema validation ([5c8df9b](https://github.com/Auto-UI-AI/AUTOUI/commit/5c8df9bff92d01f26f7a36b3df206a24f436b619))
+
 ## [0.2.2](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.1...v0.2.2) (2025-12-18)
 
 
