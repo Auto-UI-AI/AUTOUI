@@ -71,6 +71,8 @@ export const buildDataAnalyzingPrompt = async (
       if (componentNames.size > 0) {
         componentNames.forEach(compName => {
           const compSchema = runtimeSchema.components.find(c => c.name === compName);
+          const compConfig = config.components[compName];
+          
           if (compSchema) {
             const requiredProps = Object.entries(compSchema.props)
               .filter(([_, ref]) => ref.required)
@@ -87,6 +89,27 @@ export const buildDataAnalyzingPrompt = async (
             if (optionalProps.length > 0) {
               compInfo += `\n  OPTIONAL PROPS: ${optionalProps.join(', ')}`;
             }
+            
+            // Add callback information if available
+            if (compConfig?.callbacks) {
+              const callbackNames = Object.keys(compConfig.callbacks);
+              if (callbackNames.length > 0) {
+                compInfo += `\n  AVAILABLE CALLBACKS: ${callbackNames.join(', ')}`;
+                // Add callback descriptions
+                const callbackDetails = Object.entries(compConfig.callbacks)
+                  .map(([name, callback]) => {
+                    if (typeof callback === 'function') {
+                      return `    ${name}: Callback handler`;
+                    }
+                    const def = callback;
+                    const whenToUse = 'whenToUse' in def && def.whenToUse ? ` (use when: ${def.whenToUse})` : '';
+                    return `    ${name}: ${def.description}${whenToUse}`;
+                  })
+                  .join('\n');
+                compInfo += `\n  Callback Details:\n${callbackDetails}`;
+              }
+            }
+            
             schemaParts.push(compInfo);
           }
         });
@@ -161,7 +184,11 @@ CRITICAL RULES FOR newInstructionPlan:
 - DO NOT create props/params that don't exist in the schema above
 - Use context variables ({{contextKey}}) to reference data from previous steps
 - If a component requires a prop (marked as required), you MUST include it in the props object
+- For component callbacks: Use the "callbacks" field to specify callback handlers, or pass callback names in props
+  - Format: { "callbacks": { "onAction": "callbackName" } } or props: { "onAddToCart": "addToCart" }
+  - Use callback names from "AVAILABLE CALLBACKS" listed above
 - Example: If TaskStats requires "tasks" prop, use: { "tasks": "{{tasks}}" } NOT { "filter": "food" }
+- Example: If ProductCard has "addToCart" callback, use: { "callbacks": { "onAction": "addToCart" } } or props: { "onAddToCart": "addToCart" }
 
 Return JSON only.`.trim();
 };

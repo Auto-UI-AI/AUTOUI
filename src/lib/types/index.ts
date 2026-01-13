@@ -80,6 +80,17 @@ export interface AutoUIFunction {
   /** Then remember that we have to make sure that this is not a void function, and it actually returns something */
 }
 
+export interface AutoUICallback {
+  /** Description of what this callback does */
+  description: string;
+  /** When to use this callback */
+  whenToUse?: string;
+  /** Example usage */
+  example?: string;
+  /** The actual callback function implementation */
+  callFunc: Function;
+}
+
 export interface AutoUIComponent {
   /** Prompt describing what the component does (for LLM) */
   prompt: string;
@@ -92,6 +103,10 @@ export interface AutoUIComponent {
 
   /** Default prop values for runtime or mock previews */
   defaults?: Record<string, any>;
+
+  /** Callback definitions with handlers - combines metadata and implementation
+   */
+  callbacks?: Record<string, AutoUICallback | Function>;
 
   /** Example JSX usage (string literal for docs) */
   exampleUsage?: string;

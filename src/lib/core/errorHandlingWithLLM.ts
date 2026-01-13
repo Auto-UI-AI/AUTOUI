@@ -285,7 +285,20 @@ async function buildErrorHandlingPrompt(
       const props = compConfig.props
         ? Object.entries(compConfig.props).map(([k, v]) => `    ${k}: ${v}`).join('\n')
         : '    (no props)';
-      componentConfigs.push(`${name}:\n  ${compConfig.prompt}\n  Props:\n${props}`);
+      
+      const callbacks = compConfig.callbacks
+        ? Object.entries(compConfig.callbacks).map(([callbackName, callback]) => {
+            if (typeof callback === 'function') {
+              return `    ${callbackName}: Callback handler`;
+            }
+            const callbackDef = callback;
+            const whenToUse = 'whenToUse' in callbackDef && callbackDef.whenToUse ? `\n      When to use: ${callbackDef.whenToUse}` : '';
+            const example = 'example' in callbackDef && callbackDef.example ? `\n      Example: ${callbackDef.example}` : '';
+            return `    ${callbackName}: ${callbackDef.description}${whenToUse}${example}`;
+          }).join('\n')
+        : '    (no callbacks)';
+      
+      componentConfigs.push(`${name}:\n  ${compConfig.prompt}\n  Props:\n${props}\n  Available Callbacks:\n${callbacks}`);
     }
   });
   
@@ -342,6 +355,8 @@ async function buildErrorHandlingPrompt(
         
     planComponentNames.forEach(compName => {
       const schemaComp = runtimeSchema.components.find(c => c.name === compName);
+      const compConfig = config.components[compName];
+      
       if (schemaComp) {
         const requiredProps = Object.entries(schemaComp.props)
           .filter(([_, ref]) => ref.required)
@@ -358,6 +373,27 @@ async function buildErrorHandlingPrompt(
         if (optionalProps.length > 0) {
           compSchema += `\n  OPTIONAL PROPS: ${optionalProps.join(', ')}`;
         }
+        
+        // Add callback information if available
+        if (compConfig?.callbacks) {
+          const callbackNames = Object.keys(compConfig.callbacks);
+          if (callbackNames.length > 0) {
+            compSchema += `\n  AVAILABLE CALLBACKS: ${callbackNames.join(', ')}`;
+            // Add callback descriptions
+            const callbackDetails = Object.entries(compConfig.callbacks)
+              .map(([name, callback]) => {
+                if (typeof callback === 'function') {
+                  return `    ${name}: Callback handler`;
+                }
+                const def = callback;
+                const whenToUse = 'whenToUse' in def && def.whenToUse ? ` (use when: ${def.whenToUse})` : '';
+                return `    ${name}: ${def.description}${whenToUse}`;
+              })
+              .join('\n');
+            compSchema += `\n  Callback Details:\n${callbackDetails}`;
+          }
+        }
+        
         schemaInfo.push(compSchema);
       }
     });
@@ -435,6 +471,9 @@ Analyze what went wrong and provide a helpful response to the user.
    - Keeps all successfully executed steps (they should not be repeated)
    - Modifies or replaces the failed step with corrected information
    - Continues with the remaining steps if applicable
+   - For component steps: Use the "callbacks" field to specify callback handlers, or pass callback names in props
+     * Format: { "callbacks": { "onAction": "callbackName" } } or props: { "onAddToCart": "addToCart" }
+     * Use callback names from "Available Callbacks" listed in component configs above
    - When providing a newInstructionPlan, ALSO provide a fallbackSuggestion message that will be shown if the retry also fails
 
 2. If the error cannot be fixed by retrying, return an errorMessage and set shouldRetry to false.

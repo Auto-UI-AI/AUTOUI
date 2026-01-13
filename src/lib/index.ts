@@ -16,6 +16,7 @@ export type {
 
 export type {
   AutoUIComponent,
+  AutoUICallback,
   AutoUIConfig,
   AutoUIFunction,
   AutoUIMetadata,
