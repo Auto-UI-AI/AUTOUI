@@ -33,7 +33,7 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'vite', 'node:fs', 'node:path', 'node:crypto'],
+      external: ['react', 'react-dom', 'vite', 'node:fs', 'node:path', 'node:crypto', 'ts-morph'],
       output: {
         globals: {
           'react': 'React',

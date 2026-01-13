@@ -1,6 +1,6 @@
-import { ModalChat, autouiRegisterComponentPropsSchema, autouiRegisterFunctionParamsSchema } from '@lib';
+import { ModalChat, autouiRegisterComponentPropsSchema, autouiRegisterFunctionParamsSchema } from '@autoai-ui/autoui';
 import Tasks from './MainPage';
-import type { AutoUIConfig } from '@lib/types';
+import type { AutoUIConfig } from '@autoai-ui/autoui';
 import TaskStats from './components/tasks/TaskStats';
 import TasksList from './componentsForChat.tsx/TasksList';
 import { useTasksContext } from './hooks/useAppFunctions';
