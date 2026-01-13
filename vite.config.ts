@@ -5,8 +5,8 @@ import pkg from './package.json' with { type: 'json' };
 import { visualizer } from 'rollup-plugin-visualizer';
 import dts from 'vite-plugin-dts';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
-import { autouiTypeSchemaPlugin } from './src/lib/build-time/typeSchemaPlugin';
-// import { autouiTypeSchemaPlugin } from '@autoai-ui/autoui/plugin';
+// import { autouiTypeSchemaPlugin } from './src/lib/build-time/typeSchemaPlugin';
+import { autouiTypeSchemaPlugin } from '@autoai-ui/autoui/plugin';
 
 const external = [...Object.keys(pkg?.peerDependencies || {})];
 

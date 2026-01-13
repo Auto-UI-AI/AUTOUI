@@ -14,8 +14,8 @@ import {
   type CartItem,
 } from './functions';
 import { SearchBar, CategoryFilter, ProductGallery, CartSummary, ProductCard, CheckoutForm, WishlistPanel } from './components';
-import { ModalChat, autouiRegisterComponentPropsSchema, autouiRegisterFunctionParamsSchema } from '@lib';
-import type { AutoUIConfig } from '@lib/types';
+import { ModalChat, autouiRegisterComponentPropsSchema, autouiRegisterFunctionParamsSchema } from '@autoai-ui/autoui';
+import type { AutoUIConfig } from '@autoai-ui/autoui';
 
 autouiRegisterComponentPropsSchema(ProductGallery);
 autouiRegisterComponentPropsSchema(CartSummary);
