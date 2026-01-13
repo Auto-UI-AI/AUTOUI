@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import dts from 'vite-plugin-dts';
 import path from 'path';
-import { autouiTypeSchemaPlugin } from './src/lib/build-time/typeSchemaPlugin';
 
 export default defineConfig({
   plugins: [
@@ -12,7 +11,6 @@ export default defineConfig({
       include: ['src/lib/index.ts', 'src/lib/plugin.ts'],
       insertTypesEntry: true,
     }),
-    autouiTypeSchemaPlugin(),
   ],
   resolve: {
     alias: {
@@ -33,7 +31,7 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'vite', 'node:fs', 'node:path', 'node:crypto', 'ts-morph'],
+      external: ['react', 'react-dom', 'vite', 'node:fs', 'node:path', 'node:crypto', 'node:os', 'ts-morph'],
       output: {
         globals: {
           'react': 'React',
