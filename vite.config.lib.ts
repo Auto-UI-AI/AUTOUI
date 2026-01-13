@@ -8,7 +8,6 @@ export default defineConfig({
   plugins: [
     react(),
     cssInjectedByJsPlugin({
-      // Only inject CSS into the main index entry, not plugin
       jsAssetsFilterFunction: (asset) => asset.fileName === 'index.mjs' || asset.fileName === 'index.cjs',
     }),
     dts({
