@@ -1,53 +1,16 @@
+import { formatFuncsForPrompt } from '@lib/utils/formatting/formatFuncsForPrompt';
 import type { AutoUIConfig } from '../types';
+import { formatCompsForPrompt } from '@lib/utils/formatting/formatCompsForPrompt';
+import { formatAppDescForPrompt } from '@lib/utils/formatting/formatAppDescForPrompt';
 
 export function buildIntentPrompt(
   userMessage: string,
   config: AutoUIConfig,
   prevMessagesForContext: string
 ) {
-  const funcLines = Object.entries(config.functions).map(([name, f]) => {
-    const params = f.params
-      ? Object.entries(f.params).map(([k, v]) => `  ${k}: ${v}`).join('\n')
-      : '  (no params)';
-    
-    const canShareNote = f.canShareDataWithLLM
-      ? '\n  [Can share data with LLM - set hasToShareDataWithLLM based on user intent]'
-      : '';
-    
-    return `${name}:
-  ${f.prompt}
-  Params:
-${params}${canShareNote}`;
-  });
-
-  const compLines = Object.entries(config.components).map(([name, c]) => {
-    const props = c.props
-      ? Object.entries(c.props).map(([k, v]) => `  ${k}: ${v}`).join('\n')
-      : '  (no props)';
-    
-    const callbacks = c.callbacks
-      ? Object.entries(c.callbacks).map(([callbackName, callback]) => {
-          // Handle both old format (Function) and new format (AutoUICallback)
-          const callbackDef: { description: string; whenToUse?: string; example?: string } = typeof callback === 'function' 
-            ? { description: 'Callback handler' }
-            : callback;
-          const whenToUse = callbackDef.whenToUse ? `\n    When to use: ${callbackDef.whenToUse}` : '';
-          const example = callbackDef.example ? `\n    Example: ${callbackDef.example}` : '';
-          return `  ${callbackName}: ${callbackDef.description}${whenToUse}${example}`;
-        }).join('\n')
-      : '  (no callbacks)';
-    
-    return `${name}:
-  ${c.prompt}
-  Props:
-${props}
-  Available Callbacks:
-${callbacks}`;
-  });
-
-  const appContext = config.llm.appDescriptionPrompt
-    ? `\nAPP CONTEXT:\n${config.llm.appDescriptionPrompt}${config.metadata?.appName ? `\nApp: ${config.metadata.appName}` : ''}\n`
-    : '';
+  const funcLines = formatFuncsForPrompt(config);
+  const compLines = formatCompsForPrompt(config);
+  const appContext = formatAppDescForPrompt(config);
 
   return `You are an Intent Planner. Analyze available functions/components, user message, and message history to create an InstructionPlan.
 

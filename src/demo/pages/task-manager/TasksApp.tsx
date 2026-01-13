@@ -1,6 +1,6 @@
-import { ModalChat, autouiRegisterComponentPropsSchema, autouiRegisterFunctionParamsSchema } from '@autoai-ui/autoui';
+import { ModalChat, autouiRegisterComponentPropsSchema, autouiRegisterFunctionParamsSchema } from '@lib';
 import Tasks from './MainPage';
-import type { AutoUIConfig } from '@autoai-ui/autoui';
+import type { AutoUIConfig } from '@lib/types';
 import TaskStats from './components/tasks/TaskStats';
 import TasksList from './componentsForChat.tsx/TasksList';
 import { useTasksContext } from './hooks/useAppFunctions';
@@ -44,7 +44,7 @@ const TasksApp = () => {
     /* =========================
      *   APP ID (IMPORTANT)
      * ========================= */
-    // appId: 'app_1768157856796_sppwztm',
+    appId: 'app_1768157856796_sppwztm',
 
     /* =========================
      *   METADATA

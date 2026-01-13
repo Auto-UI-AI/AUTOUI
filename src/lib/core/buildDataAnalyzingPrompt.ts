@@ -1,5 +1,7 @@
 import type { AutoUIConfig } from "@lib/types";
 import type { InstructionPlan, InstructionStep } from "@lib/types/llmTypes";
+import { retrieveRuntimeSchemasForPrompt } from "../utils/formatting/retrieveRuntimeSchemas";
+import { formatDataPreviewForPrompt } from "@lib/utils/formatting/formatDataPreviewForPrompt";
 
 export const buildDataAnalyzingPrompt = async (
   data: unknown,
@@ -26,26 +28,7 @@ export const buildDataAnalyzingPrompt = async (
     ? JSON.stringify(expectedSchema.schema, null, 2)
     : null;
 
-  let dataPreview = data;
-  const dataStr = JSON.stringify(data);
-  if (dataStr.length > 2000) {
-    if (Array.isArray(data)) {
-      dataPreview = {
-        _type: 'array',
-        _length: (data as any[]).length,
-        _preview: (data as any[]).slice(0, 3),
-        _note: `... and ${(data as any[]).length - 3} more items`
-      };
-    } else if (typeof data === 'object' && data !== null) {
-      const keys = Object.keys(data);
-      dataPreview = {
-        _type: 'object',
-        _keys: keys,
-        _preview: Object.fromEntries(keys.slice(0, 5).map(k => [k, (data as any)[k]])),
-        _note: keys.length > 5 ? `... and ${keys.length - 5} more properties` : ''
-      };
-    }
-  }
+  let dataPreview = formatDataPreviewForPrompt(data);
 
   const usePrevMessages = prevMessagesForContext && prevMessagesForContext.length > 0 && prevMessagesForContext.length < 500;
 
@@ -60,91 +43,7 @@ export const buildDataAnalyzingPrompt = async (
     }
   });
 
-  let schemaInfo = '';
-  if (componentNames.size > 0 || functionNames.size > 0) {
-    const { getRuntimeSchemaAsync } = await import('@lib/utils/validation/runtimeSchemaValidator');
-    const runtimeSchema = await getRuntimeSchemaAsync(config);
-    
-    if (runtimeSchema) {
-      const schemaParts: string[] = [];
-      
-      if (componentNames.size > 0) {
-        componentNames.forEach(compName => {
-          const compSchema = runtimeSchema.components.find(c => c.name === compName);
-          const compConfig = config.components[compName];
-          
-          if (compSchema) {
-            const requiredProps = Object.entries(compSchema.props)
-              .filter(([_, ref]) => ref.required)
-              .map(([k, ref]) => `${k} (${ref.type}${ref.required ? ', required' : ''})`);
-            
-            const optionalProps = Object.entries(compSchema.props)
-              .filter(([_, ref]) => !ref.required)
-              .map(([k, ref]) => `${k} (${ref.type}, optional)`);
-            
-            let compInfo = `COMPONENT "${compName}":`;
-            if (requiredProps.length > 0) {
-              compInfo += `\n  REQUIRED PROPS: ${requiredProps.join(', ')}`;
-            }
-            if (optionalProps.length > 0) {
-              compInfo += `\n  OPTIONAL PROPS: ${optionalProps.join(', ')}`;
-            }
-            
-            // Add callback information if available
-            if (compConfig?.callbacks) {
-              const callbackNames = Object.keys(compConfig.callbacks);
-              if (callbackNames.length > 0) {
-                compInfo += `\n  AVAILABLE CALLBACKS: ${callbackNames.join(', ')}`;
-                // Add callback descriptions
-                const callbackDetails = Object.entries(compConfig.callbacks)
-                  .map(([name, callback]) => {
-                    if (typeof callback === 'function') {
-                      return `    ${name}: Callback handler`;
-                    }
-                    const def = callback;
-                    const whenToUse = 'whenToUse' in def && def.whenToUse ? ` (use when: ${def.whenToUse})` : '';
-                    return `    ${name}: ${def.description}${whenToUse}`;
-                  })
-                  .join('\n');
-                compInfo += `\n  Callback Details:\n${callbackDetails}`;
-              }
-            }
-            
-            schemaParts.push(compInfo);
-          }
-        });
-      }
-      
-      if (functionNames.size > 0) {
-        functionNames.forEach(funcName => {
-          const funcSchema = runtimeSchema.functions.find(f => f.name === funcName);
-          if (funcSchema) {
-            const requiredParams = Object.entries(funcSchema.params)
-              .filter(([_, ref]) => ref.required)
-              .map(([k, ref]) => `${k} (${ref.type}${ref.required ? ', required' : ''})`);
-            
-            const optionalParams = Object.entries(funcSchema.params)
-              .filter(([_, ref]) => !ref.required)
-              .map(([k, ref]) => `${k} (${ref.type}, optional)`);
-            
-            let funcInfo = `FUNCTION "${funcName}":`;
-            if (requiredParams.length > 0) {
-              funcInfo += `\n  REQUIRED PARAMS: ${requiredParams.join(', ')}`;
-            }
-            if (optionalParams.length > 0) {
-              funcInfo += `\n  OPTIONAL PARAMS: ${optionalParams.join(', ')}`;
-            }
-            funcInfo += `\n  RETURNS: ${funcSchema.returns.type}`;
-            schemaParts.push(funcInfo);
-          }
-        });
-      }
-      
-      if (schemaParts.length > 0) {
-        schemaInfo = `\n\nAVAILABLE COMPONENTS/FUNCTIONS IN PLAN (use ONLY these props/params):\n${schemaParts.join('\n\n')}\n`;
-      }
-    }
-  }
+  let schemaInfo = await retrieveRuntimeSchemasForPrompt(componentNames, functionNames, config);
 
   return `You are AutoUI Data Analyzer. Analyze function output and refine downstream steps.
 
