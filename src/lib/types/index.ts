@@ -50,6 +50,10 @@ export interface RuntimeConfig {
     showToUser?: boolean;
     retryOnFail?: boolean;
   };
+
+  /** Path to runtime schema file (relative to project root or absolute URL) */
+  /** Default: '.autoui-runtime-schema.json' */
+  runtimeSchemaPath?: string;
 }
 
 export interface AutoUIFunction {
@@ -76,10 +80,6 @@ export interface AutoUIFunction {
   /** Then remember that we have to make sure that this is not a void function, and it actually returns something */
 }
 
-// ===============================================
-// COMPONENT DESCRIPTORS
-// ===============================================
-
 export interface AutoUIComponent {
   /** Prompt describing what the component does (for LLM) */
   prompt: string;
@@ -102,10 +102,6 @@ export interface AutoUIComponent {
   /** Optional tags for search or grouping */
   tags?: string[];
 }
-
-// ===============================================
-// METADATA (optional informational block)
-// ===============================================
 
 export interface AutoUIMetadata {
   appName: string;

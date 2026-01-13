@@ -26,10 +26,14 @@
   display: flex;
   flex-direction: column;
   width: 400px;
-  height: 560px;
+  height: clamp(200px, 80dvh, 600px);
   font-family: system-ui, sans-serif;
 }
-
+/* @media (max-height: 650px) {
+  .autoui-chat {
+    height: 500px;
+  }
+} */
 .autoui-chat-header {
   background: var(--autoui-bg-alt);
   padding: 0.75rem 1rem;
@@ -81,6 +85,7 @@
 }
 
 [data-testid='virtuoso-item-list'] {
+  padding-left: 0.5rem !important;
   padding-right: 0.5rem !important;
 }
 
@@ -109,26 +114,28 @@
 
 .autoui-message-row {
   padding: 0.6rem 0;
+  max-width: 90%;
 }
 
 .autoui-message-row.is-user {
+  position: relative;
   justify-self: flex-end;
   display: flex;
   justify-content: flex-end;
+  max-width: 80%;
 }
 
 .autoui-chat-bubble {
   background: var(--autoui-bg-alt);
   padding: 0.5rem 0.75rem;
   border-radius: 16px;
-  max-width: 80%;
+  max-width: 100%;
   word-break: break-word;
 }
 
 .autoui-chat-message.assistant .autoui-chat-bubble:has(> div[class*='w-full']) {
   max-width: 100%;
   width: 100%;
-
   background: transparent;
 }
 
@@ -139,18 +146,24 @@
 }
 
 .autoui-chat-bubble--string {
+  width: 100%;
 }
 
 .autoui-chat-bubble--react-node {
   background: transparent;
   padding: 0;
 }
-
+.autoui-chat-message.user{
+  position:relative;
+  width: 100%;
+}
 .autoui-chat-message.user .autoui-chat-bubble {
+  width: 100%;
   background: var(--autoui-accent);
   color: #fff;
   justify-content: flex-end;
   justify-self: flex-end;
+  /* width: full; */
 }
 
 .autoui-chat-input {
@@ -215,7 +228,7 @@
 .autoui-chat-messages > div::-webkit-scrollbar {
   width: 6px;
   padding-right: 8px;
-  padding-ещз: 8px;
+  padding-left: 8px;
 }
 
 .autoui-chat-messages > div::-webkit-scrollbar-track {
@@ -297,7 +310,6 @@
   pointer-events: auto;
   margin: 1rem;
   width: full;
-  max-height: 600px;
   background: var(--autoui-bg);
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);

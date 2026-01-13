@@ -1,0 +1,282 @@
+{
+  "appId": "app_1768157856796_sppwztm",
+  "version": "1.0.0",
+  "generatedAt": "2026-01-12T23:12:01.403Z",
+  "types": {
+    "string": {
+      "type": "primitive"
+    },
+    "Anonymous_92ae098e": {
+      "type": "primitive"
+    },
+    "Anonymous_8ea97720": {
+      "type": "primitive"
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "required": true
+        },
+        "title": {
+          "type": "string",
+          "required": true
+        },
+        "description": {
+          "type": "string",
+          "required": false
+        },
+        "status": {
+          "type": "Anonymous_92ae098e",
+          "required": true
+        },
+        "priority": {
+          "type": "Anonymous_8ea97720",
+          "required": true
+        },
+        "due_date": {
+          "type": "string",
+          "required": false
+        },
+        "created_at": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "refs": [
+        "string",
+        "Anonymous_92ae098e",
+        "Anonymous_8ea97720"
+      ]
+    },
+    "Task[]": {
+      "type": "array",
+      "items": {
+        "type": "Task"
+      },
+      "refs": [
+        "Task"
+      ]
+    },
+    "number": {
+      "type": "primitive"
+    },
+    "Anonymous_44fa79b6": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "required": true
+        },
+        "description": {
+          "type": "string",
+          "required": false
+        },
+        "status": {
+          "type": "Anonymous_92ae098e",
+          "required": true
+        },
+        "priority": {
+          "type": "Anonymous_8ea97720",
+          "required": true
+        },
+        "due_date": {
+          "type": "string",
+          "required": false
+        }
+      },
+      "refs": [
+        "string",
+        "Anonymous_92ae098e",
+        "Anonymous_8ea97720"
+      ]
+    },
+    "Anonymous_68934a3e": {
+      "type": "primitive"
+    },
+    "Object_e20d9d5c": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "Anonymous_68934a3e",
+          "required": true
+        },
+        "deletedId": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "refs": [
+        "Anonymous_68934a3e",
+        "string"
+      ]
+    },
+    "Anonymous_cab8111f": {
+      "type": "object",
+      "properties": {},
+      "refs": []
+    },
+    "Object_3ad3551a": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "Anonymous_68934a3e",
+          "required": true
+        },
+        "clearedCount": {
+          "type": "number",
+          "required": true
+        }
+      },
+      "refs": [
+        "Anonymous_68934a3e",
+        "number"
+      ]
+    }
+  },
+  "components": [
+    {
+      "name": "TaskStats",
+      "props": {
+        "tasks": {
+          "type": "Task[]",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "TasksList",
+      "props": {
+        "tasks": {
+          "type": "Task[]",
+          "required": false
+        }
+      }
+    },
+    {
+      "name": "PointerHintButton",
+      "props": {
+        "target": {
+          "type": "string",
+          "required": true
+        },
+        "children": {
+          "type": "string",
+          "required": false
+        },
+        "className": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    {
+      "name": "NumberDisplay",
+      "props": {
+        "value": {
+          "type": "number",
+          "required": true
+        }
+      }
+    }
+  ],
+  "functions": [
+    {
+      "name": "createTask",
+      "params": {
+        "draft": {
+          "type": "Anonymous_44fa79b6",
+          "required": true
+        }
+      },
+      "returns": {
+        "type": "Task"
+      }
+    },
+    {
+      "name": "updateTask",
+      "params": {
+        "task": {
+          "type": "Task",
+          "required": true
+        },
+        "patch": {
+          "type": "Anonymous_44fa79b6",
+          "required": true
+        }
+      },
+      "returns": {
+        "type": "Task"
+      }
+    },
+    {
+      "name": "deleteTask",
+      "params": {
+        "taskId": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "returns": {
+        "type": "Object_e20d9d5c"
+      }
+    },
+    {
+      "name": "fetchCurrentTasksState",
+      "params": {},
+      "returns": {
+        "type": "Task[]"
+      }
+    },
+    {
+      "name": "openTaskForm",
+      "params": {},
+      "returns": {
+        "type": "Anonymous_cab8111f"
+      }
+    },
+    {
+      "name": "showHowManyTasks",
+      "params": {},
+      "returns": {
+        "type": "number"
+      }
+    },
+    {
+      "name": "createTaskFromDraft",
+      "params": {
+        "draft": {
+          "type": "Anonymous_44fa79b6",
+          "required": true
+        }
+      },
+      "returns": {
+        "type": "Task"
+      }
+    },
+    {
+      "name": "updateTaskWithDraft",
+      "params": {
+        "task": {
+          "type": "Task",
+          "required": true
+        },
+        "patch": {
+          "type": "Anonymous_44fa79b6",
+          "required": true
+        }
+      },
+      "returns": {
+        "type": "Task"
+      }
+    },
+    {
+      "name": "clearCompletedTasks",
+      "params": {},
+      "returns": {
+        "type": "Object_3ad3551a"
+      }
+    }
+  ]
+}
