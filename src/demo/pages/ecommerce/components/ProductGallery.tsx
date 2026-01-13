@@ -10,10 +10,13 @@ interface Product {
 
 interface ProductGalleryProps {
   products: Product[];
-  onAddToCart: (productId: string) => void;
+  // onAddToCart: (productId: string) => void;
 }
 
-export default function ProductGallery({ products, onAddToCart }: ProductGalleryProps) {
+export default function ProductGallery({ products }: ProductGalleryProps) {
+  const onAddToCart = (productId: string) => {
+    console.log('Adding to cart:', productId);
+  };
   if (products.length === 0) {
     return (
       <div className="py-12 text-center text-muted-foreground" data-testid="product-gallery-empty">

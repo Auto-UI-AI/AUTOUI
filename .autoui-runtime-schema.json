@@ -1,10 +1,178 @@
 {
-  "appId": "app_1768157856796_sppwztm",
+  "appId": "app_1768313360453_dbptv83",
   "version": "1.0.0",
-  "generatedAt": "2026-01-13T13:55:07.820Z",
+  "generatedAt": "2026-01-13T14:57:38.679Z",
   "types": {
     "string": {
       "type": "primitive"
+    },
+    "number": {
+      "type": "primitive"
+    },
+    "Product": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "required": true
+        },
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "description": {
+          "type": "string",
+          "required": true
+        },
+        "price": {
+          "type": "number",
+          "required": true
+        },
+        "image": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "refs": [
+        "string",
+        "number"
+      ]
+    },
+    "Product[]": {
+      "type": "array",
+      "items": {
+        "type": "Product"
+      },
+      "refs": [
+        "Product"
+      ]
+    },
+    "CartItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "required": true
+        },
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "price": {
+          "type": "number",
+          "required": true
+        },
+        "quantity": {
+          "type": "number",
+          "required": true
+        }
+      },
+      "refs": [
+        "string",
+        "number"
+      ]
+    },
+    "CartItem[]": {
+      "type": "array",
+      "items": {
+        "type": "CartItem"
+      },
+      "refs": [
+        "CartItem"
+      ]
+    },
+    "Anonymous_d4525839": {
+      "type": "object",
+      "properties": {},
+      "refs": []
+    },
+    "Object_dffb5c04": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "required": true
+        },
+        "id": {
+          "type": "string",
+          "required": true
+        },
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "price": {
+          "type": "number",
+          "required": true
+        },
+        "image": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "refs": [
+        "string",
+        "number"
+      ]
+    },
+    "Anonymous_7eafaa86": {
+      "type": "object",
+      "properties": {},
+      "refs": []
+    },
+    "Anonymous_b307493c": {
+      "type": "object",
+      "properties": {},
+      "refs": []
+    },
+    "string[]": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "refs": [
+        "string"
+      ]
+    },
+    "Anonymous_e317500f": {
+      "type": "object",
+      "properties": {},
+      "refs": []
+    },
+    "Anonymous_00f0bbd1": {
+      "type": "object",
+      "properties": {},
+      "refs": []
+    },
+    "Object_d8b9bf80": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "required": true
+        },
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "price": {
+          "type": "number",
+          "required": true
+        }
+      },
+      "refs": [
+        "string",
+        "number"
+      ]
+    },
+    "Object_d8b9bf80[]": {
+      "type": "array",
+      "items": {
+        "type": "Object_d8b9bf80"
+      },
+      "refs": [
+        "Object_d8b9bf80"
+      ]
     },
     "Anonymous_92ae098e": {
       "type": "primitive"
@@ -59,8 +227,303 @@
         "Task"
       ]
     },
-    "number": {
+    "FetchProductsParams": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "required": false
+        },
+        "q": {
+          "type": "string",
+          "required": false
+        }
+      },
+      "refs": [
+        "string"
+      ]
+    },
+    "Union_9fe724be": {
+      "type": "object",
+      "properties": {},
+      "refs": []
+    },
+    "Union_60bbab16": {
+      "type": "object",
+      "properties": {},
+      "refs": []
+    },
+    "Union_370ef115": {
+      "type": "object",
+      "properties": {},
+      "refs": []
+    },
+    "Array_ab0e3010": {
+      "type": "object",
+      "properties": {
+        "then": {
+          "type": "Union_9fe724be",
+          "required": true
+        },
+        "catch": {
+          "type": "Union_60bbab16",
+          "required": true
+        },
+        "finally": {
+          "type": "Union_370ef115",
+          "required": true
+        }
+      },
+      "refs": [
+        "Union_9fe724be",
+        "Union_60bbab16",
+        "Union_370ef115"
+      ]
+    },
+    "AddToCartParams": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "refs": [
+        "string"
+      ]
+    },
+    "Anonymous_8c550c6e": {
+      "type": "object",
+      "properties": {
+        "then": {
+          "type": "Union_9fe724be",
+          "required": true
+        },
+        "catch": {
+          "type": "Union_60bbab16",
+          "required": true
+        },
+        "finally": {
+          "type": "Union_370ef115",
+          "required": true
+        }
+      },
+      "refs": [
+        "Union_9fe724be",
+        "Union_60bbab16",
+        "Union_370ef115"
+      ]
+    },
+    "RemoveFromCartParams": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "refs": [
+        "string"
+      ]
+    },
+    "Anonymous_2e8988d5": {
+      "type": "object",
+      "properties": {
+        "then": {
+          "type": "Union_9fe724be",
+          "required": true
+        },
+        "catch": {
+          "type": "Union_60bbab16",
+          "required": true
+        },
+        "finally": {
+          "type": "Union_370ef115",
+          "required": true
+        }
+      },
+      "refs": [
+        "Union_9fe724be",
+        "Union_60bbab16",
+        "Union_370ef115"
+      ]
+    },
+    "Array_cd988360": {
+      "type": "object",
+      "properties": {
+        "then": {
+          "type": "Union_9fe724be",
+          "required": true
+        },
+        "catch": {
+          "type": "Union_60bbab16",
+          "required": true
+        },
+        "finally": {
+          "type": "Union_370ef115",
+          "required": true
+        }
+      },
+      "refs": [
+        "Union_9fe724be",
+        "Union_60bbab16",
+        "Union_370ef115"
+      ]
+    },
+    "GetRecommendationsParams": {
+      "type": "object",
+      "properties": {
+        "cart": {
+          "type": "CartItem[]",
+          "required": false
+        }
+      },
+      "refs": [
+        "CartItem[]"
+      ]
+    },
+    "Object_27a7a207": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "required": true
+        },
+        "cart": {
+          "type": "CartItem[]",
+          "required": true
+        }
+      },
+      "refs": [
+        "string",
+        "CartItem[]"
+      ]
+    },
+    "Anonymous_68934a3e": {
       "type": "primitive"
+    },
+    "Object_34cfd7aa": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "Anonymous_68934a3e",
+          "required": true
+        },
+        "newTotal": {
+          "type": "number",
+          "required": false
+        }
+      },
+      "refs": [
+        "Anonymous_68934a3e",
+        "number"
+      ]
+    },
+    "UserInfo": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "email": {
+          "type": "string",
+          "required": true
+        },
+        "address": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "refs": [
+        "string"
+      ]
+    },
+    "Object_e6db94c8": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "UserInfo",
+          "required": true
+        },
+        "cart": {
+          "type": "CartItem[]",
+          "required": true
+        }
+      },
+      "refs": [
+        "UserInfo",
+        "CartItem[]"
+      ]
+    },
+    "Object_9af8dc89": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "string",
+          "required": true
+        },
+        "eta": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "refs": [
+        "string"
+      ]
+    },
+    "Object_1096f752": {
+      "type": "object",
+      "properties": {
+        "cart": {
+          "type": "CartItem[]",
+          "required": true
+        }
+      },
+      "refs": [
+        "CartItem[]"
+      ]
+    },
+    "Object_8a094d45": {
+      "type": "object",
+      "properties": {
+        "summary": {
+          "type": "string",
+          "required": true
+        },
+        "total": {
+          "type": "number",
+          "required": true
+        }
+      },
+      "refs": [
+        "string",
+        "number"
+      ]
+    },
+    "Object_be5fd654": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "refs": [
+        "string"
+      ]
+    },
+    "Object_4f9cce52": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "Anonymous_68934a3e",
+          "required": true
+        }
+      },
+      "refs": [
+        "Anonymous_68934a3e"
+      ]
     },
     "Anonymous_44fa79b6": {
       "type": "object",
@@ -91,9 +554,6 @@
         "Anonymous_92ae098e",
         "Anonymous_8ea97720"
       ]
-    },
-    "Anonymous_68934a3e": {
-      "type": "primitive"
     },
     "Object_e20d9d5c": {
       "type": "object",
@@ -136,6 +596,93 @@
     }
   },
   "components": [
+    {
+      "name": "ProductGallery",
+      "props": {
+        "products": {
+          "type": "Product[]",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "CartSummary",
+      "props": {
+        "items": {
+          "type": "CartItem[]",
+          "required": false
+        },
+        "onCheckout": {
+          "type": "Anonymous_d4525839",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "ProductCard",
+      "props": {
+        "product": {
+          "type": "Object_dffb5c04",
+          "required": true
+        },
+        "onAddToCart": {
+          "type": "Anonymous_7eafaa86",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "SearchBar",
+      "props": {
+        "onSearch": {
+          "type": "Anonymous_b307493c",
+          "required": true
+        },
+        "placeholder": {
+          "type": "string",
+          "required": false
+        },
+        "debounceMs": {
+          "type": "number",
+          "required": false
+        }
+      }
+    },
+    {
+      "name": "CategoryFilter",
+      "props": {
+        "categories": {
+          "type": "string[]",
+          "required": true
+        },
+        "selected": {
+          "type": "string",
+          "required": true
+        },
+        "onSelect": {
+          "type": "Anonymous_e317500f",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "CheckoutForm",
+      "props": {
+        "onSubmit": {
+          "type": "Anonymous_00f0bbd1",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "WishlistPanel",
+      "props": {
+        "wishlist": {
+          "type": "Object_d8b9bf80[]",
+          "required": true
+        }
+      }
+    },
     {
       "name": "TaskStats",
       "props": {
@@ -182,6 +729,116 @@
     }
   ],
   "functions": [
+    {
+      "name": "fetchProducts",
+      "params": {
+        "params": {
+          "type": "FetchProductsParams",
+          "required": false
+        }
+      },
+      "returns": {
+        "type": "Array_ab0e3010"
+      }
+    },
+    {
+      "name": "addToCart",
+      "params": {
+        "params": {
+          "type": "AddToCartParams",
+          "required": true
+        }
+      },
+      "returns": {
+        "type": "Anonymous_8c550c6e"
+      }
+    },
+    {
+      "name": "removeFromCart",
+      "params": {
+        "params": {
+          "type": "RemoveFromCartParams",
+          "required": true
+        }
+      },
+      "returns": {
+        "type": "Anonymous_2e8988d5"
+      }
+    },
+    {
+      "name": "fetchCategories",
+      "params": {},
+      "returns": {
+        "type": "Array_cd988360"
+      }
+    },
+    {
+      "name": "getRecommendations",
+      "params": {
+        "params": {
+          "type": "GetRecommendationsParams",
+          "required": false
+        }
+      },
+      "returns": {
+        "type": "Array_ab0e3010"
+      }
+    },
+    {
+      "name": "applyCoupon",
+      "params": {
+        "input": {
+          "type": "Object_27a7a207",
+          "required": true
+        }
+      },
+      "returns": {
+        "type": "Object_34cfd7aa"
+      }
+    },
+    {
+      "name": "getWishlist",
+      "params": {},
+      "returns": {
+        "type": "Product[]"
+      }
+    },
+    {
+      "name": "submitOrder",
+      "params": {
+        "input": {
+          "type": "Object_e6db94c8",
+          "required": true
+        }
+      },
+      "returns": {
+        "type": "Object_9af8dc89"
+      }
+    },
+    {
+      "name": "summarizeCart",
+      "params": {
+        "input": {
+          "type": "Object_1096f752",
+          "required": true
+        }
+      },
+      "returns": {
+        "type": "Object_8a094d45"
+      }
+    },
+    {
+      "name": "toggleWishlistItem",
+      "params": {
+        "input": {
+          "type": "Object_be5fd654",
+          "required": true
+        }
+      },
+      "returns": {
+        "type": "Object_4f9cce52"
+      }
+    },
     {
       "name": "createTask",
       "params": {

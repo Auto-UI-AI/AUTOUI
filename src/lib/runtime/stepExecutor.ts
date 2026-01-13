@@ -1,4 +1,4 @@
-import type { InstructionPlan, InstructionStep } from '@lib/types/llmTypes';
+import type { InstructionPlan, InstructionStep, ComponentStep } from '@lib/types/llmTypes';
 import type { AutoUIConfig } from '../types';
 import { resolveProps } from '../utils/formatting/resolveProps';
 import type { SerializedMessage } from '@lib/components/chat/types';
@@ -270,8 +270,19 @@ async function runStep(
     }
   }
   if (step.type === 'component') {
-    console.log(`🔧 [ResolveProps] Before resolution - step.props:`, step.props, `ctx:`, ctx);
-    let props = resolveProps(step.props ?? {}, ctx, config);
+    const componentConfig = config.components[step.name];
+    const componentStep = step as ComponentStep;
+    
+    // Merge explicit callbacks from step into props (callbacks field takes precedence)
+    let propsToResolve = { ...(step.props ?? {}) };
+    if (componentStep.callbacks) {
+      console.log(`🔗 [ComponentStep] Merging explicit callbacks:`, componentStep.callbacks);
+      // Merge callbacks into props - these will be resolved by resolveProps
+      Object.assign(propsToResolve, componentStep.callbacks);
+    }
+    
+    console.log(`🔧 [ResolveProps] Before resolution - step.props:`, step.props, `callbacks:`, componentStep.callbacks, `ctx:`, ctx);
+    let props = resolveProps(propsToResolve, ctx, config, componentConfig);
     console.log(`🔧 [ResolveProps] After resolution - props:`, props);
     
     const { getRuntimeSchemaAsync, validateComponentPropsRuntime, parseJsonStringsInProps } = await import('@lib/utils/validation/runtimeSchemaValidator');

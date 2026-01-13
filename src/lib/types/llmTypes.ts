@@ -11,6 +11,8 @@ export type ComponentStep = {
   type: 'component';
   name: string;
   props?: Record<string, any>;
+  /** Explicit callback references - maps callback prop names to callback names from component config */
+  callbacks?: Record<string, string>;
 };
 export type TextStep = {
   type: 'text';
