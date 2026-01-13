@@ -1,3 +1,11 @@
+## [0.2.6](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.5...v0.2.6) (2026-01-13)
+
+
+### Bug Fixes
+
+* added callbacks to config components ([a649efa](https://github.com/Auto-UI-AI/AUTOUI/commit/a649efa2e7afc380663e9ca3348e799a832e2049))
+* callbacks property added to the components ([5868642](https://github.com/Auto-UI-AI/AUTOUI/commit/586864212d7c9d3f0d357d5b5cce932f92938de0))
+
 ## [0.2.5](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.4...v0.2.5) (2026-01-13)
 
 
