@@ -2,10 +2,15 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import dts from 'vite-plugin-dts';
 import path from 'path';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 export default defineConfig({
   plugins: [
     react(),
+    cssInjectedByJsPlugin({
+      // Only inject CSS into the main index entry, not plugin
+      jsAssetsFilterFunction: (asset) => asset.fileName === 'index.mjs' || asset.fileName === 'index.cjs',
+    }),
     dts({
       tsconfigPath: './tsconfig.build.json',
       include: ['src/lib/index.ts', 'src/lib/plugin.ts'],
@@ -41,5 +46,6 @@ export default defineConfig({
     },
     outDir: 'dist',
     emptyOutDir: true,
+    cssCodeSplit: false,
   },
 });
