@@ -1,3 +1,10 @@
+## [0.2.7](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.6...v0.2.7) (2026-01-13)
+
+
+### Bug Fixes
+
+* cssInjectedByJsPlugin added ([769550c](https://github.com/Auto-UI-AI/AUTOUI/commit/769550c560cbc701c589fdcaa5623ec08da7f622))
+
 ## [0.2.6](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.5...v0.2.6) (2026-01-13)
 
 
