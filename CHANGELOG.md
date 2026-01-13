@@ -1,3 +1,10 @@
+## [0.2.4](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.3...v0.2.4) (2026-01-13)
+
+
+### Bug Fixes
+
+* added ts-morph to externals ([85dab01](https://github.com/Auto-UI-AI/AUTOUI/commit/85dab01193280d96fb51b73e5a455cd051c6d58b))
+
 ## [0.2.3](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.2...v0.2.3) (2026-01-13)
 
 
