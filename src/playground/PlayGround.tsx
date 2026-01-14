@@ -7,7 +7,7 @@ const PlayGround = () => {
   const [response, setResponse] = useState({});
   const onSend = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let res = await getInstructionPlan(input, autouiConfig);
+    let res = await getInstructionPlan(input, autouiConfig as any, '');
     // console.log("response: ",response)
     setResponse(res);
   };

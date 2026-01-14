@@ -90,7 +90,7 @@ export function InteractiveDemo() {
         </div>
 
         <div className="lg:col-span-1">
-          <CartSummary items={cart} onCheckout={handleCheckout} />
+          <CartSummary cart={cart} onCheckout={handleCheckout} />
         </div>
       </div>
 

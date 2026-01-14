@@ -105,7 +105,7 @@ const COMPONENT_CATEGORIES: ComponentCategory[] = [
         name: 'CartSummary',
         component: (
           <CartSummary
-            items={[
+            cart={[
               { id: '1', name: 'Beige Coat', price: 89.99, quantity: 2 },
               { id: '2', name: 'Denim Jacket', price: 69.99, quantity: 1 },
             ]}
@@ -144,7 +144,16 @@ const COMPONENT_CATEGORIES: ComponentCategory[] = [
       },
       {
         name: 'OrderConfirmation',
-        component: <OrderConfirmation orderId="1234567890" eta="2 days" totalCost={100} />,
+        component: (
+          <OrderConfirmation
+            order={{
+              orderId: '1234567890',
+              eta: '2 days',
+              totalCost: 100,
+              createdAtIso: new Date().toISOString(),
+            }}
+          />
+        ),
       },
       {
         name: 'ProductDetailsModal',

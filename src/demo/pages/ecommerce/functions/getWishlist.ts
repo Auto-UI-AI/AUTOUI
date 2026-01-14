@@ -1,13 +1,9 @@
 /**
  * Return the list of products saved in the user’s wishlist.
  */
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-}
+import type { WishlistItem } from '../types';
 
-export function getWishlist(): Product[] {
+export function getWishlist(): WishlistItem[] {
   // Mock implementation
   return [
     { id: '1', name: 'Product A', price: 29.99 },
