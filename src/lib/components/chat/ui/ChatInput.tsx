@@ -19,6 +19,22 @@ export const ChatInput: React.FC<ChatInputProps> = () => {
     setValue((prev) => (prev ? `${prev} ${speech.text}` : speech.text));
   }, [speech.text]);
 
+  React.useEffect(() => {
+    const handleCustomMessage = (event: CustomEvent<{ message: string }>) => {
+      const message = event.detail?.message;
+      if (message && typeof message === 'string') {
+        setTimeout(() => {
+          handleSend(message);
+        }, 0);
+      }
+    };
+
+    document.addEventListener('autoui-send-message', handleCustomMessage as EventListener);
+    return () => {
+      document.removeEventListener('autoui-send-message', handleCustomMessage as EventListener);
+    };
+  }, [handleSend]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSend(value);
