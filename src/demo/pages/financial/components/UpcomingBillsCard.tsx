@@ -12,17 +12,18 @@ export function UpcomingBillsCard() {
   const navigate = useNavigate();
   const transactions = useFinanceStore((state) => state.transactions);
 
-  // Filter and sort pending monitoring sources
+  // Calculate total pending count
+  const totalPending = React.useMemo(() => {
+    return transactions.filter((transaction) => transaction.status === 'pending').length;
+  }, [transactions]);
+
+  // Filter and sort pending monitoring sources (limit display to 3)
   const pendingSources = React.useMemo(() => {
     return transactions
       .filter((transaction) => transaction.status === 'pending')
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
       .slice(0, 3);
   }, [transactions]);
-
-  const totalPending = React.useMemo(() => {
-    return pendingSources.length;
-  }, [pendingSources]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

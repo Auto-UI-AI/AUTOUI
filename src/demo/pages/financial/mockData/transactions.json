@@ -3,7 +3,7 @@
     "id": 1,
     "description": "Kubernetes Cluster - Prod",
     "amount": "10255",
-    "date": "2025-11-15",
+    "date": "2026-01-01",
     "category": "Infrastructure",
     "account": "Production",
     "status": "active"
@@ -12,7 +12,7 @@
     "id": 2,
     "description": "API Gateway Metrics",
     "amount": "9090",
-    "date": "2025-11-09",
+    "date": "2026-01-02",
     "category": "Services",
     "account": "Staging",
     "status": "active"
@@ -21,7 +21,7 @@
     "id": 3,
     "description": "Checkout Service Metrics",
     "amount": "8080",
-    "date": "2025-10-29",
+    "date": "2026-01-03",
     "category": "Services",
     "account": "",
     "status": "pending"
@@ -30,7 +30,7 @@
     "id": 4,
     "description": "Node Exporter - VM32",
     "amount": "9100",
-    "date": "2025-10-15",
+    "date": "2026-01-04",
     "category": "Infrastructure",
     "account": "Production",
     "status": "active"
@@ -39,7 +39,7 @@
     "id": 5,
     "description": "OpenTelemetry Trace Collector",
     "amount": "4317",
-    "date": "2025-11-02",
+    "date": "2026-01-05",
     "category": "Traces",
     "account": "",
     "status": "pending"
@@ -48,7 +48,7 @@
     "id": 6,
     "description": "User Authentication Service",
     "amount": "7001",
-    "date": "2025-10-22",
+    "date": "2026-01-06",
     "category": "Services",
     "account": "EU-Cluster",
     "status": "active"
@@ -57,7 +57,7 @@
     "id": 7,
     "description": "Database Metrics - PostgreSQL",
     "amount": "5432",
-    "date": "2025-11-01",
+    "date": "2026-01-07",
     "category": "Database",
     "account": "Production",
     "status": "active"
@@ -66,7 +66,7 @@
     "id": 8,
     "description": "Load Balancer Health Checks",
     "amount": "8081",
-    "date": "2025-09-27",
+    "date": "2026-01-08",
     "category": "Infrastructure",
     "account": "",
     "status": "pending"
@@ -75,7 +75,7 @@
     "id": 9,
     "description": "Syslog Collector - EU Region",
     "amount": "514",
-    "date": "2025-09-18",
+    "date": "2026-01-09",
     "category": "Logs",
     "account": "Production",
     "status": "active"
@@ -84,7 +84,7 @@
     "id": 10,
     "description": "Prometheus Scraper - Internal",
     "amount": "9091",
-    "date": "2025-10-01",
+    "date": "2026-01-10",
     "category": "Infrastructure",
     "account": "Production",
     "status": "active"
@@ -93,7 +93,7 @@
     "id": 11,
     "description": "Network Device Metrics - Switch 12",
     "amount": "9162",
-    "date": "2025-08-30",
+    "date": "2026-01-11",
     "category": "Network",
     "account": "EU-Cluster",
     "status": "active"
@@ -102,7 +102,7 @@
     "id": 12,
     "description": "Billing Service Logs",
     "amount": "9200",
-    "date": "2025-09-10",
+    "date": "2026-01-12",
     "category": "Logs",
     "account": "Production",
     "status": "active"
@@ -111,7 +111,7 @@
     "id": 13,
     "description": "Payment Gateway Latency Monitor",
     "amount": "8082",
-    "date": "2025-11-05",
+    "date": "2026-01-13",
     "category": "Services",
     "account": "",
     "status": "pending"
@@ -120,7 +120,7 @@
     "id": 14,
     "description": "Frontend Web Metrics",
     "amount": "3000",
-    "date": "2025-10-20",
+    "date": "2026-01-14",
     "category": "Services",
     "account": "Production",
     "status": "active"
@@ -129,7 +129,7 @@
     "id": 15,
     "description": "E-Commerce Service (Dev)",
     "amount": "8083",
-    "date": "2025-09-12",
+    "date": "2026-01-15",
     "category": "Services",
     "account": "EU-Cluster",
     "status": "active"
@@ -138,7 +138,7 @@
     "id": 16,
     "description": "Node Exporter - Prod Node 18",
     "amount": "9102",
-    "date": "2025-09-26",
+    "date": "2026-01-01",
     "category": "Infrastructure",
     "account": "Production",
     "status": "active"
@@ -147,7 +147,7 @@
     "id": 17,
     "description": "Internal API Metrics",
     "amount": "8123",
-    "date": "2025-10-11",
+    "date": "2026-01-02",
     "category": "Services",
     "account": "Staging",
     "status": "active"
@@ -156,7 +156,7 @@
     "id": 18,
     "description": "Cloud Storage Metrics - S3",
     "amount": "443",
-    "date": "2025-09-02",
+    "date": "2026-01-03",
     "category": "Cloud",
     "account": "Production",
     "status": "active"
@@ -165,7 +165,7 @@
     "id": 19,
     "description": "Authentication Logs Collector",
     "amount": "5141",
-    "date": "2025-10-03",
+    "date": "2026-01-04",
     "category": "Logs",
     "account": "Personal",
     "status": "active"
@@ -174,7 +174,7 @@
     "id": 20,
     "description": "Streaming Metrics - Video CDN",
     "amount": "9201",
-    "date": "2025-09-21",
+    "date": "2026-01-05",
     "category": "Services",
     "account": "",
     "status": "pending"
@@ -183,7 +183,7 @@
     "id": 21,
     "description": "Public Transit API Monitor",
     "amount": "8090",
-    "date": "2025-10-08",
+    "date": "2026-01-06",
     "category": "Services",
     "account": "Personal",
     "status": "active"
@@ -192,7 +192,7 @@
     "id": 22,
     "description": "Customer Analytics Pipeline",
     "amount": "9095",
-    "date": "2025-09-15",
+    "date": "2026-01-07",
     "category": "Infrastructure",
     "account": "EU-Cluster",
     "status": "active"
@@ -201,9 +201,270 @@
     "id": 23,
     "description": "Health Check - Email Service",
     "amount": "8085",
-    "date": "2025-08-25",
+    "date": "2026-01-08",
     "category": "Services",
     "account": "Personal",
     "status": "active"
+  },
+  {
+    "id": 24,
+    "description": "Docker Container Metrics",
+    "amount": "2375",
+    "date": "2026-01-09",
+    "category": "Infrastructure",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 25,
+    "description": "Redis Cache Metrics",
+    "amount": "6379",
+    "date": "2026-01-10",
+    "category": "Database",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 26,
+    "description": "Elasticsearch Cluster Monitor",
+    "amount": "9200",
+    "date": "2026-01-11",
+    "category": "Database",
+    "account": "EU-Cluster",
+    "status": "active"
+  },
+  {
+    "id": 27,
+    "description": "Message Queue Metrics - RabbitMQ",
+    "amount": "5672",
+    "date": "2026-01-12",
+    "category": "Services",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 28,
+    "description": "CDN Edge Server Metrics",
+    "amount": "8084",
+    "date": "2026-01-13",
+    "category": "Infrastructure",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 29,
+    "description": "Application Performance Monitor",
+    "amount": "8124",
+    "date": "2026-01-14",
+    "category": "Services",
+    "account": "Staging",
+    "status": "active"
+  },
+  {
+    "id": 30,
+    "description": "Firewall Security Logs",
+    "amount": "5142",
+    "date": "2026-01-15",
+    "category": "Logs",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 31,
+    "description": "Kubernetes Pod Metrics",
+    "amount": "10256",
+    "date": "2026-01-01",
+    "category": "Infrastructure",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 32,
+    "description": "MongoDB Replica Set Monitor",
+    "amount": "27017",
+    "date": "2026-01-02",
+    "category": "Database",
+    "account": "EU-Cluster",
+    "status": "active"
+  },
+  {
+    "id": 33,
+    "description": "API Rate Limiting Monitor",
+    "amount": "8086",
+    "date": "2026-01-03",
+    "category": "Services",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 34,
+    "description": "Network Traffic Analyzer",
+    "amount": "9163",
+    "date": "2026-01-04",
+    "category": "Network",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 35,
+    "description": "Distributed Tracing - Jaeger",
+    "amount": "4318",
+    "date": "2026-01-05",
+    "category": "Traces",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 36,
+    "description": "CloudWatch Metrics - AWS",
+    "amount": "444",
+    "date": "2026-01-06",
+    "category": "Cloud",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 37,
+    "description": "Serverless Function Metrics",
+    "amount": "8087",
+    "date": "2026-01-07",
+    "category": "Services",
+    "account": "Staging",
+    "status": "active"
+  },
+  {
+    "id": 38,
+    "description": "Container Registry Metrics",
+    "amount": "5000",
+    "date": "2026-01-08",
+    "category": "Infrastructure",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 39,
+    "description": "Error Tracking Service",
+    "amount": "5143",
+    "date": "2026-01-09",
+    "category": "Logs",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 40,
+    "description": "Load Balancer Metrics - NGINX",
+    "amount": "8088",
+    "date": "2026-01-10",
+    "category": "Infrastructure",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 41,
+    "description": "GraphQL API Monitor",
+    "amount": "4000",
+    "date": "2026-01-11",
+    "category": "Services",
+    "account": "EU-Cluster",
+    "status": "active"
+  },
+  {
+    "id": 42,
+    "description": "VPN Connection Monitor",
+    "amount": "9164",
+    "date": "2026-01-12",
+    "category": "Network",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 43,
+    "description": "Microservices Mesh Metrics",
+    "amount": "8089",
+    "date": "2026-01-13",
+    "category": "Services",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 44,
+    "description": "Infrastructure as Code Monitor",
+    "amount": "10257",
+    "date": "2026-01-14",
+    "category": "Infrastructure",
+    "account": "Staging",
+    "status": "active"
+  },
+  {
+    "id": 45,
+    "description": "Event Streaming Metrics - Kafka",
+    "amount": "9092",
+    "date": "2026-01-15",
+    "category": "Services",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 46,
+    "description": "Cloud Storage - Azure Blob",
+    "amount": "445",
+    "date": "2026-01-01",
+    "category": "Cloud",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 49,
+    "description": "Distributed Cache Monitor",
+    "amount": "6380",
+    "date": "2026-01-04",
+    "category": "Database",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 50,
+    "description": "API Gateway - Kong Metrics",
+    "amount": "8000",
+    "date": "2026-01-05",
+    "category": "Services",
+    "account": "Production",
+    "status": "active"
+  },
+  {
+    "id": 51,
+    "description": "WebSocket Connection Monitor",
+    "amount": "8091",
+    "date": "2026-01-10",
+    "category": "Services",
+    "account": "",
+    "status": "pending"
+  },
+  {
+    "id": 52,
+    "description": "Container Orchestration Metrics",
+    "amount": "10258",
+    "date": "2026-01-11",
+    "category": "Infrastructure",
+    "account": "",
+    "status": "pending"
+  },
+  {
+    "id": 53,
+    "description": "Database Replication Monitor",
+    "amount": "5433",
+    "date": "2026-01-12",
+    "category": "Database",
+    "account": "",
+    "status": "pending"
+  },
+  {
+    "id": 54,
+    "description": "Security Audit Logs",
+    "amount": "5145",
+    "date": "2026-01-13",
+    "category": "Logs",
+    "account": "",
+    "status": "pending"
   }
 ]
