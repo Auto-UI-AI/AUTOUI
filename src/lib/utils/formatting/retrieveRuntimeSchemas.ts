@@ -12,7 +12,7 @@ export const retrieveRuntimeSchemasForPrompt = async ( componentNames: Set<strin
           
           if (componentNames.size > 0) {
             componentNames.forEach(compName => {
-              const compSchema = runtimeSchema.components.find(c => c.name === compName);
+              const compSchema = runtimeSchema.components[compName];
               const compConfig = config.components[compName];
               
               if (compSchema) {
@@ -59,7 +59,7 @@ export const retrieveRuntimeSchemasForPrompt = async ( componentNames: Set<strin
           
           if (functionNames.size > 0) {
             functionNames.forEach(funcName => {
-              const funcSchema = runtimeSchema.functions.find(f => f.name === funcName);
+              const funcSchema = runtimeSchema.functions[funcName];
               if (funcSchema) {
                 const requiredParams = Object.entries(funcSchema.params)
                   .filter(([_, ref]) => ref.required)

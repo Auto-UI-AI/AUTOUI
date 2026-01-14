@@ -1,5 +1,5 @@
-import type { AutoUIConfig } from '../types';
-import type { InstructionPlan } from '../types/llmTypes';
+import type { AutoUIConfig } from '../../types';
+import type { InstructionPlan } from '../../types/llmTypes';
 import { parseInstructionPlanFromSSE } from './sseParser';
 import { buildIntentPrompt } from './buildIntentPrompt';
 

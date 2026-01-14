@@ -22,8 +22,8 @@ export interface AutoUIAppSchema {
   version: string;
   generatedAt: string;
   types: Record<string, TypeDefinition>;
-  components: Array<{ name: string } & ComponentDefinition>;
-  functions: Array<{ name: string } & FunctionDefinition>;
+  components: Record<string, ComponentDefinition>;
+  functions: Record<string, FunctionDefinition>;
 }
 
 import type { Project, Type, TypeChecker } from 'ts-morph';

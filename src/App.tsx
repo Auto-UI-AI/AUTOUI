@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import { EcommerceDemoPage, FinancialDemoPage, HomePage } from '@/demo/pages';
-import PlayGround from './playground/PlayGround';
 import Demo3 from './demo/pages/task-manager/Demo3.tsx';
 
 export function App() {
@@ -12,7 +11,6 @@ export function App() {
         <Route path="/demo/observability" element={<FinancialDemoPage />} />
         <Route path="/demo/task-manager" element={<Demo3 />} />
       </Routes>
-      <PlayGround />
     </>
   );
 }

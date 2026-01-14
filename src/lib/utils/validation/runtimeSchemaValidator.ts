@@ -1,5 +1,5 @@
-import type { AutoUIConfig } from '@lib/types';
-import type { AutoUIAppSchema, TypeDefinition } from '@lib/build-time/typeSchemaPlugin';
+import type { AutoUIConfig } from '../../types';
+import type { AutoUIAppSchema, TypeDefinition } from '../../build-time/typeSchemaPlugin';
 
 const schemaCache = new Map<string, AutoUIAppSchema | null>();
 const schemaLoadAttempted = new Set<string>();
@@ -58,8 +58,8 @@ async function loadRuntimeSchema(schemaPath?: string): Promise<AutoUIAppSchema |
       console.log('✅ [Runtime Validation] Runtime schema loaded successfully', {
         path,
         types: Object.keys(schemaData.types).length,
-        components: schemaData.components.length,
-        functions: schemaData.functions.length,
+        components: Object.keys(schemaData.components).length,
+        functions: Object.keys(schemaData.functions).length,
       });
       schemaCache.set(path, schemaData);
       return schemaData;
@@ -266,10 +266,10 @@ export function validateComponentPropsRuntime(
   console.log(`🔍 [Runtime Validation] Raw props received:`, JSON.stringify(props, null, 2));
   console.log(`🔍 [Runtime Validation] Props type check:`, Object.entries(props).map(([k, v]) => `${k}: ${typeof v} (${Array.isArray(v) ? 'array' : typeof v})`));
 
-  const component = schema.components.find((c) => c.name === componentName);
+  const component = schema.components[componentName];
   if (!component) {
     console.warn(`⚠️ [Runtime Validation] Component "${componentName}" not found in schema`);
-    console.log(`   Available components:`, schema.components.map(c => c.name));
+    console.log(`   Available components:`, Object.keys(schema.components));
     return errors;
   }
 
@@ -371,7 +371,7 @@ export function parseJsonStringsInProps(
   const warnings: string[] = [];
   const parsedProps: Record<string, any> = { ...props };
 
-  const component = schema.components.find((c) => c.name === componentName);
+  const component = schema.components[componentName];
   if (!component) {
     warnings.push(`Component "${componentName}" not found in schema - skipping JSON parsing`);
     return { props: parsedProps, errors, warnings };
@@ -458,10 +458,10 @@ export function validateFunctionParamsRuntime(
   console.log(`🔍 [Runtime Validation] Raw params received:`, JSON.stringify(params, null, 2));
   console.log(`🔍 [Runtime Validation] Params type check:`, Object.entries(params).map(([k, v]) => `${k}: ${typeof v} (${Array.isArray(v) ? 'array' : typeof v})`));
 
-  const func = schema.functions.find((f) => f.name === functionName);
+  const func = schema.functions[functionName];
   if (!func) {
     console.warn(`⚠️ [Runtime Validation] Function "${functionName}" not found in schema`);
-    console.log(`   Available functions:`, schema.functions.map(f => f.name));
+    console.log(`   Available functions:`, Object.keys(schema.functions));
     return errors;
   }
 
@@ -541,23 +541,27 @@ export async function getValidationSchemaRuntime(
   }
 
   const components = componentName
-    ? runtimeSchema.components.filter((c) => c.name === componentName)
-    : runtimeSchema.components;
+    ? runtimeSchema.components[componentName]
+      ? [{ name: componentName, props: runtimeSchema.components[componentName].props }]
+      : []
+    : Object.entries(runtimeSchema.components).map(([name, component]) => ({
+        name,
+        props: component.props,
+      }));
 
   const functions = functionName
-    ? runtimeSchema.functions.filter((f) => f.name === functionName)
-    : runtimeSchema.functions;
+    ? runtimeSchema.functions[functionName]
+      ? [{ name: functionName, params: runtimeSchema.functions[functionName].params, returns: runtimeSchema.functions[functionName].returns }]
+      : []
+    : Object.entries(runtimeSchema.functions).map(([name, func]) => ({
+        name,
+        params: func.params,
+        returns: func.returns,
+      }));
 
   return {
-    components: components.map((c) => ({
-      name: c.name,
-      props: c.props,
-    })),
-    functions: functions.map((f) => ({
-      name: f.name,
-      params: f.params,
-      returns: f.returns,
-    })),
+    components,
+    functions,
   };
 }
 

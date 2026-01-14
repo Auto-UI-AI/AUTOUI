@@ -59,7 +59,7 @@ export function autouiTypeSchemaPlugin(options: {
 
         const schema = generateSchema(project, appId, version);
 
-        if (schema.components.length === 0 && schema.functions.length === 0) {
+        if (Object.keys(schema.components).length === 0 && Object.keys(schema.functions).length === 0) {
           return;
         }
         

@@ -1,4 +1,4 @@
-import { getInstructionPlan } from '@lib/core/llmClient';
+import { getInstructionPlan } from '@lib/core/planGeneration/llmClient';
 import type { AutoUIConfig } from '@lib/types';
 import { useCallback } from 'react';
 export function useAutoUiChat(config: AutoUIConfig) {

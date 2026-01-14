@@ -1,7 +1,7 @@
 import type { AutoUIConfig } from '@lib/types';
 import { buildDataAnalyzingPrompt } from './buildDataAnalyzingPrompt';
 import type { InstructionPlan, InstructionStep } from '@lib/types/llmTypes';
-import { parseAnalyzedData } from '../utils/formatting/parseAnalyzedData';
+import { parseAnalyzedData } from '../../utils/formatting/parseAnalyzedData';
 
 export const extraAnalysisWithLLM = async (
   data: unknown,

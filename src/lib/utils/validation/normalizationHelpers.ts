@@ -78,7 +78,7 @@ export async function getExpectedSchemaForAssignKey(
       
       if (runtimeSchema && paramName) {
         if (step.type === 'function') {
-          const funcSchema = runtimeSchema.functions.find(f => f.name === step.name);
+          const funcSchema = runtimeSchema.functions[step.name];
           if (funcSchema && funcSchema.params[paramName]) {
             const paramRef = funcSchema.params[paramName];
             const typeDef = runtimeSchemaModule.resolveType(paramRef.type, runtimeSchema);
@@ -99,7 +99,7 @@ export async function getExpectedSchemaForAssignKey(
             }
           }
         } else if (step.type === 'component') {
-          const compSchema = runtimeSchema.components.find(c => c.name === step.name);
+          const compSchema = runtimeSchema.components[step.name];
           if (compSchema && compSchema.props[paramName]) {
             const propRef = compSchema.props[paramName];
             const typeDef = runtimeSchemaModule.resolveType(propRef.type, runtimeSchema);

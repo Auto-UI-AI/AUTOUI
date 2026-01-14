@@ -1,5 +1,11 @@
 import type { AutoUIConfig } from '@lib/types';
 import type { InstructionPlan, InstructionStep } from '@lib/types/llmTypes';
+import { formatComponentCallbacks } from '@lib/utils/formatting/formatComponentCallbacks';
+import { formatFunctionConfigsForErrorHandling } from '@lib/utils/formatting/formatFunctionConfigsForErrorHandling';
+import { formatFunctionSchemasForErrorHandling } from '@lib/utils/formatting/formatFunctionSchemasForErrorHandling';
+import { formatComponentSchemasForErrorHandling } from '@lib/utils/formatting/formatComponentSchemasForErrorHandling';
+import { formatExecutedStepsForErrorHandling } from '@lib/utils/formatting/formatExecutedStepsForErrorHandling';
+import { formatFailedStepInfo } from '@lib/utils/formatting/formatFailedStepInfo';
 
 export interface StepExecutionError {
   step: InstructionStep;
@@ -269,158 +275,43 @@ async function buildErrorHandlingPrompt(
   const functionConfigs: string[] = [];
   const componentConfigs: string[] = [];
   
-  planFunctionNames.forEach(name => {
-    const funcConfig = config.functions[name];
-    if (funcConfig) {
-      const params = funcConfig.params
-        ? Object.entries(funcConfig.params).map(([k, v]) => `    ${k}: ${v}`).join('\n')
-        : '    (no params)';
-      functionConfigs.push(`${name}:\n  ${funcConfig.prompt}\n  Params:\n${params}`);
-    }
-  });
+  formatFunctionConfigsForErrorHandling(planFunctionNames, functionConfigs, config);
+  await formatComponentCallbacks(planComponentNames, componentConfigs, config);
   
-  planComponentNames.forEach(name => {
-    const compConfig = config.components[name];
-    if (compConfig) {
-      const props = compConfig.props
-        ? Object.entries(compConfig.props).map(([k, v]) => `    ${k}: ${v}`).join('\n')
-        : '    (no props)';
-      
-      const callbacks = compConfig.callbacks
-        ? Object.entries(compConfig.callbacks).map(([callbackName, callback]) => {
-            if (typeof callback === 'function') {
-              return `    ${callbackName}: Callback handler`;
-            }
-            const callbackDef = callback;
-            const whenToUse = 'whenToUse' in callbackDef && callbackDef.whenToUse ? `\n      When to use: ${callbackDef.whenToUse}` : '';
-            const example = 'example' in callbackDef && callbackDef.example ? `\n      Example: ${callbackDef.example}` : '';
-            return `    ${callbackName}: ${callbackDef.description}${whenToUse}${example}`;
-          }).join('\n')
-        : '    (no callbacks)';
-      
-      componentConfigs.push(`${name}:\n  ${compConfig.prompt}\n  Props:\n${props}\n  Available Callbacks:\n${callbacks}`);
-    }
-  });
-  
-  let stepDescription = '';
-  let stepName = '';
-  
-  if (failedStep.step.type === 'component') {
-    const step = failedStep.step as { type: 'component'; name: string; props?: Record<string, any> };
-    stepName = step.name;
-    const componentConfig = config.components[step.name];
-    if (componentConfig) {
-      stepDescription = componentConfig.prompt;
-    }
-  } else if (failedStep.step.type === 'function') {
-    const step = failedStep.step as { type: 'function'; name: string; params?: Record<string, any> };
-    stepName = step.name;
-    const functionConfig = config.functions[step.name];
-    if (functionConfig) {
-      stepDescription = functionConfig.prompt;
-    }
-  } else if (failedStep.step.type === 'text') {
-    stepDescription = 'displaying text message';
-    stepName = 'text step';
-  }
+  const { stepDescription, stepName } = formatFailedStepInfo(failedStep, config);
   
   const { getRuntimeSchemaAsync } = await import('@lib/utils/validation/runtimeSchemaValidator');
   const runtimeSchema = await getRuntimeSchemaAsync(config);
   
-  const schemaInfo: string[] = [];
+  const functionSchemas = await formatFunctionSchemasForErrorHandling(
+    planFunctionNames,
+    runtimeSchema,
+  );
   
-  if (runtimeSchema) {
-    planFunctionNames.forEach(funcName => {
-      const schemaFunc = runtimeSchema.functions.find(f => f.name === funcName);
-      if (schemaFunc) {
-        const requiredParams = Object.entries(schemaFunc.params)
-          .filter(([_, ref]) => ref.required)
-          .map(([k, ref]) => `${k} (${ref.type})`);
-        
-        const optionalParams = Object.entries(schemaFunc.params)
-          .filter(([_, ref]) => !ref.required)
-          .map(([k, ref]) => `${k} (${ref.type})`);
-        
-        let funcSchema = `FUNCTION "${funcName}":`;
-        if (requiredParams.length > 0) {
-          funcSchema += `\n  REQUIRED PARAMS: ${requiredParams.join(', ')}`;
-        }
-        if (optionalParams.length > 0) {
-          funcSchema += `\n  OPTIONAL PARAMS: ${optionalParams.join(', ')}`;
-        }
-        funcSchema += `\n  RETURNS: ${schemaFunc.returns.type}`;
-        schemaInfo.push(funcSchema);
-      }
-    });
-        
-    planComponentNames.forEach(compName => {
-      const schemaComp = runtimeSchema.components.find(c => c.name === compName);
-      const compConfig = config.components[compName];
-      
-      if (schemaComp) {
-        const requiredProps = Object.entries(schemaComp.props)
-          .filter(([_, ref]) => ref.required)
-          .map(([k, ref]) => `${k} (${ref.type})`);
-        
-        const optionalProps = Object.entries(schemaComp.props)
-          .filter(([_, ref]) => !ref.required)
-          .map(([k, ref]) => `${k} (${ref.type})`);
-        
-        let compSchema = `COMPONENT "${compName}":`;
-        if (requiredProps.length > 0) {
-          compSchema += `\n  REQUIRED PROPS: ${requiredProps.join(', ')}`;
-        }
-        if (optionalProps.length > 0) {
-          compSchema += `\n  OPTIONAL PROPS: ${optionalProps.join(', ')}`;
-        }
-        
-        // Add callback information if available
-        if (compConfig?.callbacks) {
-          const callbackNames = Object.keys(compConfig.callbacks);
-          if (callbackNames.length > 0) {
-            compSchema += `\n  AVAILABLE CALLBACKS: ${callbackNames.join(', ')}`;
-            // Add callback descriptions
-            const callbackDetails = Object.entries(compConfig.callbacks)
-              .map(([name, callback]) => {
-                if (typeof callback === 'function') {
-                  return `    ${name}: Callback handler`;
-                }
-                const def = callback;
-                const whenToUse = 'whenToUse' in def && def.whenToUse ? ` (use when: ${def.whenToUse})` : '';
-                return `    ${name}: ${def.description}${whenToUse}`;
-              })
-              .join('\n');
-            compSchema += `\n  Callback Details:\n${callbackDetails}`;
-          }
-        }
-        
-        schemaInfo.push(compSchema);
-      }
-    });
-  }
-
-  const executedStepsDetails = executedSteps.map((s, i) => {
-    let detail = `  ${i + 1}. ${s.type}`;
-    if (s.type === 'function') {
-      const funcStep = s as { type: 'function'; name: string; params?: Record<string, any> };
-      detail += `: ${funcStep.name}`;
-      if (funcStep.params && Object.keys(funcStep.params).length > 0) {
-        detail += ` (params: ${JSON.stringify(funcStep.params)})`;
-      }
-    } else if (s.type === 'component') {
-      const compStep = s as { type: 'component'; name: string; props?: Record<string, any> };
-      detail += `: ${compStep.name}`;
-      if (compStep.props && Object.keys(compStep.props).length > 0) {
-        detail += ` (props: ${JSON.stringify(compStep.props)})`;
-      }
-    } else if (s.type === 'text') {
-      const textStep = s as { type: 'text'; text: string };
-      detail += `: "${textStep.text.substring(0, 50)}${textStep.text.length > 50 ? '...' : ''}"`;
-    }
-    return detail;
-  }).join('\n');
+  const componentSchemas = formatComponentSchemasForErrorHandling(
+    planComponentNames,
+    config,
+    runtimeSchema,
+  );
   
+  const executedStepsDetails = formatExecutedStepsForErrorHandling(executedSteps);
   const errorAnalysis = analyzeErrorContext(failedStep, stepDescription, userMessage);
+  
+  const formattedFunctions = functionConfigs.length > 0 
+    ? functionConfigs.map((funcConfig) => {
+        const funcName = funcConfig.split(':')[0];
+        const schema = functionSchemas.find(s => s.includes(`FUNCTION "${funcName}"`));
+        return `${funcConfig}${schema ? `\n\n  Type Schema:\n${schema.split('\n').map(line => `  ${line}`).join('\n')}` : ''}`;
+      }).join('\n\n')
+    : '  (none)';
+  
+  const formattedComponents = componentConfigs.length > 0
+    ? componentConfigs.map((compConfig) => {
+        const compName = compConfig.split(':')[0];
+        const schema = componentSchemas.find(s => s.includes(`COMPONENT "${compName}"`));
+        return `${compConfig}${schema ? `\n\n  Type Schema:\n${schema.split('\n').map(line => `  ${line}`).join('\n')}` : ''}`;
+      }).join('\n\n')
+    : '  (none)';
   
   return `You are an error handling assistant for an AutoUI application. A step in the instruction plan has failed.
 
@@ -455,14 +346,11 @@ ${JSON.stringify(context, null, 2)}
 
 ${failedStep.props ? `ATTEMPTED PROPS/PARAMS:\n${JSON.stringify(failedStep.props, null, 2)}\n` : ''}
 
-AVAILABLE FUNCTIONS (only those in the plan):
-${functionConfigs.length > 0 ? functionConfigs.join('\n\n') : '  (none)'}
+AVAILABLE FUNCTIONS IN PLAN (with descriptions and type schemas):
+${formattedFunctions}
 
-AVAILABLE COMPONENTS (only those in the plan):
-${componentConfigs.length > 0 ? componentConfigs.join('\n\n') : '  (none)'}
-
-TYPE SCHEMAS (only for functions/components in the plan):
-${schemaInfo.length > 0 ? schemaInfo.join('\n\n') : '  (none)'}
+AVAILABLE COMPONENTS IN PLAN (with descriptions and type schemas):
+${formattedComponents}
 
 YOUR TASK:
 Analyze what went wrong and provide a helpful response to the user.

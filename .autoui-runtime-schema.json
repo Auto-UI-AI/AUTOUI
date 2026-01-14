@@ -1,7 +1,7 @@
 {
   "appId": "app_1768313360453_dbptv83",
   "version": "1.0.0",
-  "generatedAt": "2026-01-13T21:53:13.136Z",
+  "generatedAt": "2026-01-14T15:28:52.848Z",
   "types": {
     "string": {
       "type": "primitive"
@@ -595,9 +595,8 @@
       ]
     }
   },
-  "components": [
-    {
-      "name": "ProductGallery",
+  "components": {
+    "ProductGallery": {
       "props": {
         "products": {
           "type": "Product[]",
@@ -605,8 +604,7 @@
         }
       }
     },
-    {
-      "name": "CartSummary",
+    "CartSummary": {
       "props": {
         "items": {
           "type": "CartItem[]",
@@ -618,8 +616,7 @@
         }
       }
     },
-    {
-      "name": "ProductCard",
+    "ProductCard": {
       "props": {
         "product": {
           "type": "Object_dffb5c04",
@@ -631,8 +628,7 @@
         }
       }
     },
-    {
-      "name": "SearchBar",
+    "SearchBar": {
       "props": {
         "onSearch": {
           "type": "Anonymous_b307493c",
@@ -648,8 +644,7 @@
         }
       }
     },
-    {
-      "name": "CategoryFilter",
+    "CategoryFilter": {
       "props": {
         "categories": {
           "type": "string[]",
@@ -665,8 +660,7 @@
         }
       }
     },
-    {
-      "name": "CheckoutForm",
+    "CheckoutForm": {
       "props": {
         "onSubmit": {
           "type": "Anonymous_00f0bbd1",
@@ -674,8 +668,7 @@
         }
       }
     },
-    {
-      "name": "WishlistPanel",
+    "WishlistPanel": {
       "props": {
         "wishlist": {
           "type": "Object_d8b9bf80[]",
@@ -683,8 +676,7 @@
         }
       }
     },
-    {
-      "name": "TaskStats",
+    "TaskStats": {
       "props": {
         "tasks": {
           "type": "Task[]",
@@ -692,8 +684,7 @@
         }
       }
     },
-    {
-      "name": "TasksList",
+    "TasksList": {
       "props": {
         "tasks": {
           "type": "Task[]",
@@ -701,8 +692,7 @@
         }
       }
     },
-    {
-      "name": "PointerHintButton",
+    "PointerHintButton": {
       "props": {
         "target": {
           "type": "string",
@@ -718,8 +708,7 @@
         }
       }
     },
-    {
-      "name": "NumberDisplay",
+    "NumberDisplay": {
       "props": {
         "value": {
           "type": "number",
@@ -727,10 +716,9 @@
         }
       }
     }
-  ],
-  "functions": [
-    {
-      "name": "fetchProducts",
+  },
+  "functions": {
+    "fetchProducts": {
       "params": {
         "params": {
           "type": "FetchProductsParams",
@@ -741,8 +729,7 @@
         "type": "Array_ab0e3010"
       }
     },
-    {
-      "name": "addToCart",
+    "addToCart": {
       "params": {
         "params": {
           "type": "AddToCartParams",
@@ -753,8 +740,7 @@
         "type": "Anonymous_8c550c6e"
       }
     },
-    {
-      "name": "removeFromCart",
+    "removeFromCart": {
       "params": {
         "params": {
           "type": "RemoveFromCartParams",
@@ -765,15 +751,13 @@
         "type": "Anonymous_2e8988d5"
       }
     },
-    {
-      "name": "fetchCategories",
+    "fetchCategories": {
       "params": {},
       "returns": {
         "type": "Array_cd988360"
       }
     },
-    {
-      "name": "getRecommendations",
+    "getRecommendations": {
       "params": {
         "params": {
           "type": "GetRecommendationsParams",
@@ -784,8 +768,7 @@
         "type": "Array_ab0e3010"
       }
     },
-    {
-      "name": "applyCoupon",
+    "applyCoupon": {
       "params": {
         "input": {
           "type": "Object_27a7a207",
@@ -796,15 +779,13 @@
         "type": "Object_34cfd7aa"
       }
     },
-    {
-      "name": "getWishlist",
+    "getWishlist": {
       "params": {},
       "returns": {
         "type": "Product[]"
       }
     },
-    {
-      "name": "submitOrder",
+    "submitOrder": {
       "params": {
         "input": {
           "type": "Object_e6db94c8",
@@ -815,8 +796,7 @@
         "type": "Object_9af8dc89"
       }
     },
-    {
-      "name": "summarizeCart",
+    "summarizeCart": {
       "params": {
         "input": {
           "type": "Object_1096f752",
@@ -827,8 +807,7 @@
         "type": "Object_8a094d45"
       }
     },
-    {
-      "name": "toggleWishlistItem",
+    "toggleWishlistItem": {
       "params": {
         "input": {
           "type": "Object_be5fd654",
@@ -839,8 +818,7 @@
         "type": "Object_4f9cce52"
       }
     },
-    {
-      "name": "createTask",
+    "createTask": {
       "params": {
         "draft": {
           "type": "Anonymous_44fa79b6",
@@ -851,8 +829,7 @@
         "type": "Task"
       }
     },
-    {
-      "name": "updateTask",
+    "updateTask": {
       "params": {
         "task": {
           "type": "Task",
@@ -867,8 +844,7 @@
         "type": "Task"
       }
     },
-    {
-      "name": "deleteTask",
+    "deleteTask": {
       "params": {
         "taskId": {
           "type": "string",
@@ -879,29 +855,25 @@
         "type": "Object_e20d9d5c"
       }
     },
-    {
-      "name": "fetchCurrentTasksState",
+    "fetchCurrentTasksState": {
       "params": {},
       "returns": {
         "type": "Task[]"
       }
     },
-    {
-      "name": "openTaskForm",
+    "openTaskForm": {
       "params": {},
       "returns": {
         "type": "Anonymous_cab8111f"
       }
     },
-    {
-      "name": "showHowManyTasks",
+    "showHowManyTasks": {
       "params": {},
       "returns": {
         "type": "number"
       }
     },
-    {
-      "name": "createTaskFromDraft",
+    "createTaskFromDraft": {
       "params": {
         "draft": {
           "type": "Anonymous_44fa79b6",
@@ -912,8 +884,7 @@
         "type": "Task"
       }
     },
-    {
-      "name": "updateTaskWithDraft",
+    "updateTaskWithDraft": {
       "params": {
         "task": {
           "type": "Task",
@@ -928,12 +899,11 @@
         "type": "Task"
       }
     },
-    {
-      "name": "clearCompletedTasks",
+    "clearCompletedTasks": {
       "params": {},
       "returns": {
         "type": "Object_3ad3551a"
       }
     }
-  ]
+  }
 }

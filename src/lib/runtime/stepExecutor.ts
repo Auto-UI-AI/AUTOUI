@@ -10,7 +10,7 @@ import { analyzeDataStep } from './analyzeDataStep';
 import { getValidationSchema } from './validation';
 import { validateFunctionParams, validateComponentProps } from '../utils/validation/schemaValidator';
 import type { FunctionSchema, ComponentSchema } from '../utils/validation/schemaValidator';
-import { errorHandlingWithLLM, type StepExecutionError, type ErrorHandlingResponse } from '../core/errorHandlingWithLLM';
+import { errorHandlingWithLLM, type StepExecutionError, type ErrorHandlingResponse } from '../core/errorHandling/errorHandlingWithLLM';
 
 export type ResolveComponent = (name: string, props: any) => React.ReactNode;
 export type SetUI = (ui: React.ReactNode | string) => void;

@@ -1,6 +1,6 @@
 import type { AutoUIConfig } from "@lib/types";
 import type { InstructionPlan, InstructionStep } from "@lib/types/llmTypes";
-import { retrieveRuntimeSchemasForPrompt } from "../utils/formatting/retrieveRuntimeSchemas";
+import { retrieveRuntimeSchemasForPrompt } from "../../utils/formatting/retrieveRuntimeSchemas";
 import { formatDataPreviewForPrompt } from "@lib/utils/formatting/formatDataPreviewForPrompt";
 
 export const buildDataAnalyzingPrompt = async (

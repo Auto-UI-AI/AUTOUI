@@ -1,5 +1,5 @@
 import { formatFuncsForPrompt } from '@lib/utils/formatting/formatFuncsForPrompt';
-import type { AutoUIConfig } from '../types';
+import type { AutoUIConfig } from '../../types';
 import { formatCompsForPrompt } from '@lib/utils/formatting/formatCompsForPrompt';
 import { formatAppDescForPrompt } from '@lib/utils/formatting/formatAppDescForPrompt';
 

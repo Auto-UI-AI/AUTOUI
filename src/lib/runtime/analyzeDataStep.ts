@@ -4,7 +4,7 @@ import { getConsumerKeysForAssign, getExpectedSchemaForStep, normalizeForCtx } f
 import { executePlanSteps, type ResolveComponent, type SetUI } from "./stepExecutor";
 import type { Dispatch, SetStateAction } from "react";
 import type { SerializedMessage } from "@lib/components/chat/types";
-import { extraAnalysisWithLLM } from "@lib/core/extraDataAnalyzingWithLLM";
+import { extraAnalysisWithLLM } from "@lib/core/extraAnalysis/extraDataAnalyzingWithLLM";
 
 export const analyzeDataStep = async (config:AutoUIConfig, out: any, assignKey: string, step:FunctionStep, currentIndex: number, nextStep: InstructionStep, userMessage: string, prevMessagesForContext: string, ctx: Record<string, any>, plan: InstructionPlan, resolveComponent: ResolveComponent, setUI: SetUI, setSerializedMessages: Dispatch<SetStateAction<SerializedMessage[]>>) =>{
     
