@@ -58,6 +58,7 @@ describe('executePlanSteps', () => {
 
     await executePlanSteps(plan, config, resolveComponent, setUI, setSerializedMessages, 'msg', '');
 
+    
     expect(resolveComponent).toHaveBeenCalledWith('Comp', {});
     expect(setUI).toHaveBeenCalledWith('COMPONENT_NODE');
     expect(setSerializedMessages).toHaveBeenCalled();
