@@ -164,6 +164,7 @@ export function EcommerceDemoPage() {
         prompt: 'Fetch a list of products filtered optionally by category or search query.',
         callFunc: fetchProducts,
         returns: 'Product[] — array of products with id, name, description, price, image, category',
+        canShareDataWithLLM: true,
       },
 
       addToCart: {

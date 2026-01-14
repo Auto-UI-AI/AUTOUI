@@ -1,5 +1,5 @@
 import type { AutoUIConfig } from '@lib/types';
-import type { StepExecutionError } from '@lib/core/errorHandling/errorHandlingWithLLM';
+import type { StepExecutionError } from '@lib/types/errorHandlingTypes';
 
 export function formatFailedStepInfo(failedStep: StepExecutionError, config: AutoUIConfig): {
   stepDescription: string;

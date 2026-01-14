@@ -10,7 +10,8 @@ import { analyzeDataStep } from './analyzeDataStep';
 import { getValidationSchema } from './validation';
 import { validateFunctionParams, validateComponentProps } from '../utils/validation/schemaValidator';
 import type { FunctionSchema, ComponentSchema } from '../utils/validation/schemaValidator';
-import { errorHandlingWithLLM, type StepExecutionError, type ErrorHandlingResponse } from '../core/errorHandling/errorHandlingWithLLM';
+import { errorHandlingWithLLM } from '../core/errorHandling/errorHandlingWithLLM';
+import type { StepExecutionError, ErrorHandlingResponse } from '@lib/types/errorHandlingTypes';
 
 export type ResolveComponent = (name: string, props: any) => React.ReactNode;
 export type SetUI = (ui: React.ReactNode | string) => void;
@@ -273,11 +274,9 @@ async function runStep(
     const componentConfig = config.components[step.name];
     const componentStep = step as ComponentStep;
     
-    // Merge explicit callbacks from step into props (callbacks field takes precedence)
     let propsToResolve = { ...(step.props ?? {}) };
     if (componentStep.callbacks) {
       console.log(`🔗 [ComponentStep] Merging explicit callbacks:`, componentStep.callbacks);
-      // Merge callbacks into props - these will be resolved by resolveProps
       Object.assign(propsToResolve, componentStep.callbacks);
     }
     

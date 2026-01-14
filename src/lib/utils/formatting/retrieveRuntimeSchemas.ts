@@ -32,12 +32,10 @@ export const retrieveRuntimeSchemasForPrompt = async ( componentNames: Set<strin
                   compInfo += `\n  OPTIONAL PROPS: ${optionalProps.join(', ')}`;
                 }
                 
-                // Add callback information if available
                 if (compConfig?.callbacks) {
                   const callbackNames = Object.keys(compConfig.callbacks);
                   if (callbackNames.length > 0) {
                     compInfo += `\n  AVAILABLE CALLBACKS: ${callbackNames.join(', ')}`;
-                    // Add callback descriptions
                     const callbackDetails = Object.entries(compConfig.callbacks)
                       .map(([name, callback]) => {
                         if (typeof callback === 'function') {

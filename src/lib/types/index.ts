@@ -126,3 +126,9 @@ export interface AutoUIMetadata {
   description?: string;
   tags?: string[];
 }
+
+export type {
+  StepExecutionError,
+  ErrorHandlingRequest,
+  ErrorHandlingResponse,
+} from './errorHandlingTypes';

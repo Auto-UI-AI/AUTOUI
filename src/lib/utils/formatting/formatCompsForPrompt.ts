@@ -8,7 +8,6 @@ export const formatCompsForPrompt = (config: AutoUIConfig) => {
         
         const callbacks = c.callbacks
           ? Object.entries(c.callbacks).map(([callbackName, callback]) => {
-              // Handle both old format (Function) and new format (AutoUICallback)
               const callbackDef: { description: string; whenToUse?: string; example?: string } = typeof callback === 'function' 
                 ? { description: 'Callback handler' }
                 : callback;
