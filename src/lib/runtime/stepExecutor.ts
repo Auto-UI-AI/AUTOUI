@@ -135,17 +135,17 @@ export async function executePlanSteps(
                 }
                 throw retryError;
               }
-            } else if (response.errorMessage && showToUser) {
+            } else if (response.fallbackSuggestion && showToUser) {
               setSerializedMessages((prev) => [
                 ...prev,
                 {
                   id: `${Date.now()}-error`,
                   role: 'assistant',
                   kind: 'text',
-                  text: response.errorMessage!,
+                  text: response.fallbackSuggestion!,
                 },
               ]);
-              setUI(response.errorMessage);
+              setUI(response.fallbackSuggestion);
               return ctx;
             }
           }
@@ -153,18 +153,20 @@ export async function executePlanSteps(
           console.error('Error handling API failed:', errorHandlingError);
         }
         
-        if (errorResponse && errorResponse.errorMessage && showToUser) {
-          setSerializedMessages((prev) => [
-            ...prev,
-            {
-              id: `${Date.now()}-error`,
-              role: 'assistant',
-              kind: 'text',
-              text: errorResponse.errorMessage!,
-            },
-          ]);
-          setUI(errorResponse.errorMessage);
-          return ctx;
+        if (errorResponse) {
+          if (errorResponse.fallbackSuggestion && showToUser) {
+            setSerializedMessages((prev) => [
+              ...prev,
+              {
+                id: `${Date.now()}-error`,
+                role: 'assistant',
+                kind: 'text',
+                text: errorResponse.fallbackSuggestion!,
+              },
+            ]);
+            setUI(errorResponse.fallbackSuggestion);
+            return ctx;
+          }
         }
       }
       
@@ -226,7 +228,9 @@ async function runStep(
       console.log(`🔎 [Runtime Validation] Validating function "${step.name}" params...`);
       const runtimeErrors = validateFunctionParamsRuntime(step.name, stepParams, runtimeSchema);
       if (runtimeErrors.length > 0) {
-        console.warn(`⚠️ [Runtime Validation] Function ${step.name} parameter validation errors:`, runtimeErrors);
+        console.error(`❌ [Runtime Validation] Function ${step.name} parameter validation errors:`, runtimeErrors);
+        const technicalError = `Function "${step.name}" validation failed: ${runtimeErrors.join('; ')}`;
+        throw new Error(technicalError);
       }
     } else {
       console.log(`🔎 [Validation] Checking for validation schema for function: "${step.name}"`);
@@ -238,7 +242,9 @@ async function runStep(
           const errors = validateFunctionParams(stepParams, functionSchema);
           
           if (errors.length > 0) {
-            console.warn(`⚠️ [Validation] Function ${step.name} parameter validation errors:`, errors);
+            console.error(`❌ [Validation] Function ${step.name} parameter validation errors:`, errors);
+            const technicalError = `Function "${step.name}" validation failed: ${errors.join('; ')}`;
+            throw new Error(technicalError);
           }
         }
       }
@@ -343,7 +349,9 @@ async function runStep(
           const errors = validateComponentProps(props, componentSchema);
           
           if (errors.length > 0) {
-            console.warn(`⚠️ [Validation] Component ${step.name} prop validation errors:`, errors);
+            console.error(`❌ [Validation] Component ${step.name} prop validation errors:`, errors);
+            const technicalError = `Component "${step.name}" validation failed: ${errors.join('; ')}`;
+            throw new Error(technicalError);
           }
         }
       }
