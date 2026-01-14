@@ -17,7 +17,7 @@ export const financialAutouiConfig: AutoUIConfig = {
   /* =========================
    *   APP ID
    * ========================= */
-  appId: 'financial-demo',
+  appId: 'app_1768157856796_sppwztm',
 
   /* =========================
    *   METADATA
@@ -36,7 +36,6 @@ export const financialAutouiConfig: AutoUIConfig = {
   llm: {
     proxyUrl,
     sharedSecret,
-
     appDescriptionPrompt:
       'A monitoring sources management application where users can track monitoring endpoints, services, and infrastructure components across different environments (Production, Staging, Dev, etc.). Users can add monitoring sources with endpoints/ports, view sources by category (Infrastructure, Services, Logs, Traces, etc.), manage pending sources that need setup, and analyze monitoring coverage over time.',
     maxTokens: 2048,

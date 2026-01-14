@@ -6,14 +6,58 @@ import { DataTable, SpendingBreakdownChart } from './components';
 import { useFinanceStore } from './store/useFinanceStore';
 import { InsightCards } from './components/InsightCards';
 import type { Bill } from './types/finance';
-import { ModalChat } from '@lib';
+import { ModalChat, autouiRegisterComponentPropsSchema, autouiRegisterFunctionParamsSchema } from '@autoai-ui/autoui';
+import {
+  addTransaction,
+  getSpendingByCategory,
+  getUpcomingBills,
+  getSourcesByEnvironment,
+  markBillAsPaidByName,
+  markSourceAsActive,
+} from './services/autouiFunctions';
+import { CategorySpendingWrapper } from './components/CategorySpendingWrapper';
+import { UpcomingBillsWrapper } from './components/UpcomingBillsWrapper';
 import financialAutouiConfig from './autoui.config';
+
+// Register component props schemas
+autouiRegisterComponentPropsSchema(CategorySpendingWrapper);
+autouiRegisterComponentPropsSchema(UpcomingBillsWrapper);
+
+// Register function params schemas
+autouiRegisterFunctionParamsSchema(addTransaction);
+autouiRegisterFunctionParamsSchema(getSpendingByCategory);
+autouiRegisterFunctionParamsSchema(getUpcomingBills);
+autouiRegisterFunctionParamsSchema(getSourcesByEnvironment);
+autouiRegisterFunctionParamsSchema(markBillAsPaidByName);
+autouiRegisterFunctionParamsSchema(markSourceAsActive);
 
 export function FinancialDemoPage() {
   const transactions = useFinanceStore((state) => state.transactions);
   const setTransactions = useFinanceStore((state) => state.setTransactions);
   const bills = useFinanceStore((state) => state.bills);
   const setBills = useFinanceStore((state) => state.setBills);
+
+  // Ensure config always has appId
+  const config = useMemo(() => {
+    const baseConfig = financialAutouiConfig;
+    if (!baseConfig.appId) {
+      console.warn('[FinancialDemoPage] appId missing from config, using default');
+      return { ...baseConfig, appId: 'app_1768157856796_sppwztm' };
+    }
+    return baseConfig;
+  }, []);
+
+  // Debug: Log config in dev mode
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      console.log('[FinancialDemoPage] Config check:', {
+        appId: config.appId,
+        hasProxyUrl: !!config.llm?.proxyUrl,
+        hasSharedSecret: !!config.llm?.sharedSecret,
+        proxyUrl: config.llm?.proxyUrl,
+      });
+    }
+  }, [config]);
 
   // Initialize store with mock data if empty
   useEffect(() => {
@@ -72,7 +116,7 @@ export function FinancialDemoPage() {
           </div>
         </SidebarInset>
       </SidebarProvider>
-      <ModalChat config={financialAutouiConfig} />
+      <ModalChat config={config} />
     </div>
   );
 }

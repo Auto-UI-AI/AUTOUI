@@ -14,70 +14,12 @@ export function SuggestedPromptsCard() {
   ];
 
   const sendMessageToChat = React.useCallback((message: string) => {
-    // Use a retry mechanism to ensure the chat is ready
-    const trySendMessage = (attempt = 0) => {
-      // Find the chat input element by its role attribute
-      const chatInput = document.querySelector('input[role="input"][aria-label="Message input"]') as HTMLInputElement;
-      const chatForm = document.querySelector('form[role="inputWrapper"]') as HTMLFormElement;
-
-      if (!chatInput || !chatForm) {
-        // If chat isn't ready yet, retry after a short delay
-        if (attempt < 10) {
-          setTimeout(() => trySendMessage(attempt + 1), 100);
-        }
-        return;
-      }
-
-      // Focus the input first to ensure it's ready
-      chatInput.focus();
-
-      // Use React's synthetic event system by accessing the input's value setter
-      // This bypasses React's controlled input restrictions
-      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;
-      if (nativeInputValueSetter) {
-        nativeInputValueSetter.call(chatInput, message);
-      } else {
-        chatInput.value = message;
-      }
-
-      // Create a proper React synthetic event for onChange
-      // React expects an event with target.value
-      const inputEvent = new Event('input', { bubbles: true, cancelable: true });
-      Object.defineProperty(inputEvent, 'target', {
-        writable: false,
-        value: { ...chatInput, value: message },
-      });
-
-      // Also trigger change event
-      const changeEvent = new Event('change', { bubbles: true, cancelable: true });
-      Object.defineProperty(changeEvent, 'target', {
-        writable: false,
-        value: { ...chatInput, value: message },
-      });
-
-      // Trigger both events
-      chatInput.dispatchEvent(inputEvent);
-      chatInput.dispatchEvent(changeEvent);
-
-      // Wait for React to process the state update, then submit
-      // Use requestAnimationFrame to ensure React has processed the update
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          // Click the submit button instead of dispatching submit event
-          // This is more reliable with React forms
-          const submitButton = chatForm.querySelector('button[type="submit"]') as HTMLButtonElement;
-          if (submitButton) {
-            submitButton.click();
-          } else {
-            // Fallback to form submit
-            const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
-            chatForm.dispatchEvent(submitEvent);
-          }
-        });
-      });
-    };
-
-    trySendMessage();
+    // Dispatch a custom event that the chat can listen to
+    const event = new CustomEvent('autoui-send-message', {
+      detail: { message },
+      bubbles: true,
+    });
+    document.dispatchEvent(event);
   }, []);
 
   const handlePromptClick = React.useCallback(
@@ -93,11 +35,11 @@ export function SuggestedPromptsCard() {
           // Wait for chat to mount, then send message
           setTimeout(() => {
             sendMessageToChat(prompt);
-          }, 300);
+          }, 500);
           return;
         }
       }
-      // Chat is already open or button not found, try to send immediately
+      // Chat is already open or button not found, send immediately
       sendMessageToChat(prompt);
     },
     [sendMessageToChat],

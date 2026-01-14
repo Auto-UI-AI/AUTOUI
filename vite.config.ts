@@ -29,6 +29,8 @@ export default defineConfig({
     alias: {
       '@lib': path.resolve(__dirname, 'src/lib'),
       '@': path.resolve(__dirname, 'src'),
+      '@autoai-ui/autoui': path.resolve(__dirname, 'src/lib/index.ts'),
+      '@autoai-ui/autoui/plugin': path.resolve(__dirname, 'src/lib/plugin.ts'),
     },
   },
   build: {
