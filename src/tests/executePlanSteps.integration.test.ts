@@ -21,6 +21,9 @@ describe('executePlanSteps (integration)', () => {
           canShareDataWithLLM: false,
         },
       },
+      components: {
+        Comp: {},
+      },
     };
 
     const plan = {

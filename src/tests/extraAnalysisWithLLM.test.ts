@@ -35,13 +35,25 @@ describe('extraAnalysisWithLLM', () => {
     });
 
     expect(mockFetch).toHaveBeenCalled();
-    expect(result).toEqual({ data: 42, newInstructionPlan: null });
+    expect(result).toEqual({
+      data: {
+        x: 1,
+      },
+      newInstructionPlan: null,
+      parseTo: 'primitive',
+    });
   });
 
   it('Throw error if fetch not ok', async () => {
     mockFetch.mockResolvedValueOnce({ ok: false, status: 500 });
     const config = { appId: 'app1', llm: { temperature: 0.5 }, functions: {} } as any;
 
-    await expect(extraAnalysisWithLLM(1, config, '', '', plan, step, 0, null)).rejects.toThrow('AutoUI proxy error');
+    const result = await extraAnalysisWithLLM(1, config, '', '', plan, step, 0, null);
+
+    expect(result).toEqual({
+      parseTo: 'primitive',
+      data: 1,
+      newInstructionPlan: null,
+    });
   });
 });

@@ -1,7 +1,7 @@
 {
-  "appId": "app_1768313360453_dbptv83",
+  "appId": "unknown",
   "version": "1.0.0",
-  "generatedAt": "2026-01-13T21:53:13.136Z",
+  "generatedAt": "2026-01-14T13:14:23.660Z",
   "types": {
     "string": {
       "type": "primitive"
@@ -258,7 +258,7 @@
       "properties": {},
       "refs": []
     },
-    "Array_ab0e3010": {
+    "Array_db5c7f26": {
       "type": "object",
       "properties": {
         "then": {
@@ -292,7 +292,7 @@
         "string"
       ]
     },
-    "Anonymous_8c550c6e": {
+    "Anonymous_51168929": {
       "type": "object",
       "properties": {
         "then": {
@@ -326,7 +326,7 @@
         "string"
       ]
     },
-    "Anonymous_2e8988d5": {
+    "Anonymous_4e2b6638": {
       "type": "object",
       "properties": {
         "then": {
@@ -525,7 +525,7 @@
         "Anonymous_68934a3e"
       ]
     },
-    "Anonymous_44fa79b6": {
+    "Anonymous_a9aba08c": {
       "type": "object",
       "properties": {
         "title": {
@@ -738,7 +738,7 @@
         }
       },
       "returns": {
-        "type": "Array_ab0e3010"
+        "type": "Array_db5c7f26"
       }
     },
     {
@@ -750,7 +750,7 @@
         }
       },
       "returns": {
-        "type": "Anonymous_8c550c6e"
+        "type": "Anonymous_51168929"
       }
     },
     {
@@ -762,7 +762,7 @@
         }
       },
       "returns": {
-        "type": "Anonymous_2e8988d5"
+        "type": "Anonymous_4e2b6638"
       }
     },
     {
@@ -781,7 +781,7 @@
         }
       },
       "returns": {
-        "type": "Array_ab0e3010"
+        "type": "Array_db5c7f26"
       }
     },
     {
@@ -843,7 +843,7 @@
       "name": "createTask",
       "params": {
         "draft": {
-          "type": "Anonymous_44fa79b6",
+          "type": "Anonymous_a9aba08c",
           "required": true
         }
       },
@@ -859,7 +859,7 @@
           "required": true
         },
         "patch": {
-          "type": "Anonymous_44fa79b6",
+          "type": "Anonymous_a9aba08c",
           "required": true
         }
       },
@@ -904,7 +904,7 @@
       "name": "createTaskFromDraft",
       "params": {
         "draft": {
-          "type": "Anonymous_44fa79b6",
+          "type": "Anonymous_a9aba08c",
           "required": true
         }
       },
@@ -920,7 +920,7 @@
           "required": true
         },
         "patch": {
-          "type": "Anonymous_44fa79b6",
+          "type": "Anonymous_a9aba08c",
           "required": true
         }
       },

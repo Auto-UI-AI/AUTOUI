@@ -12,17 +12,22 @@ describe('analyzeDataStep (integration)', () => {
   it('stores normalized ctx data', async () => {
     const ctx: any = {};
 
+    const plan = {
+      type: 'sequence',
+      steps: [{ type: 'function', name: 'test', assign: 'key' }],
+    };
+
     const result = await analyzeDataStep(
       {} as any,
       { raw: true },
       'key',
-      {} as any,
+      plan.steps[0] as any,
       0,
-      {} as any,
+      undefined as any,
       '',
       '',
       ctx,
-      {} as any,
+      plan as any,
       vi.fn(),
       vi.fn(),
       vi.fn(),
