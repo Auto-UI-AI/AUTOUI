@@ -9,8 +9,7 @@ export function SuggestedPromptsCard() {
     'Show monitoring sources by category for the last 30 days',
     'Show me all pending monitoring sources',
     'Mark the Kubernetes Cluster source as active',
-    'How many monitoring sources are in the Infrastructure category?',
-    'Show me all monitoring sources in Production environment',
+    'Display monitoring sources breakdown by category',
   ];
 
   const sendMessageToChat = React.useCallback((message: string) => {
