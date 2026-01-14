@@ -1,3 +1,10 @@
+## [0.2.8](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.7...v0.2.8) (2026-01-14)
+
+
+### Bug Fixes
+
+* updt ([bdc650f](https://github.com/Auto-UI-AI/AUTOUI/commit/bdc650f751f5e553a61386d6115843b29fa1e6ba))
+
 ## [0.2.7](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.6...v0.2.7) (2026-01-13)
 
 
