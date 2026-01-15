@@ -18,17 +18,17 @@ export function extractType(type: Type, context: ExtractionContext): string {
   context.visitedTypes.add(type);
 
   if (type.isString() || type.isStringLiteral()) {
-    console.log(`[AutoUI Type Schema] Extracting primitive type "${typeName}": string`);
+    
     context.types.set(typeName, { type: 'primitive' });
     return typeName;
   }
   if (type.isNumber() || type.isNumberLiteral()) {
-    console.log(`[AutoUI Type Schema] Extracting primitive type "${typeName}": number`);
+    
     context.types.set(typeName, { type: 'primitive' });
     return typeName;
   }
   if (type.isBoolean() || type.isBooleanLiteral()) {
-    console.log(`[AutoUI Type Schema] Extracting primitive type "${typeName}": boolean`);
+    
     context.types.set(typeName, { type: 'primitive' });
     return typeName;
   }
@@ -36,14 +36,14 @@ export function extractType(type: Type, context: ExtractionContext): string {
   if (type.isArray()) {
     const elementType = type.getArrayElementType();
     if (elementType) {
-      console.log(`[AutoUI Type Schema] Extracting array type "${typeName}"`);
+      
       const elementTypeName = extractType(elementType, context);
       context.types.set(typeName, {
         type: 'array',
         items: { type: elementTypeName },
         refs: [elementTypeName],
       });
-      console.log(`  → Array element type: "${elementTypeName}"`);
+      
       return typeName;
     }
   }
@@ -54,7 +54,7 @@ export function extractType(type: Type, context: ExtractionContext): string {
       const enumDeclaration = symbol.getValueDeclaration();
       if (enumDeclaration && Node.isEnumDeclaration(enumDeclaration)) {
         const values = enumDeclaration.getMembers().map((m) => m.getName());
-        console.log(`[AutoUI Type Schema] Extracting enum type "${typeName}" with values: [${values.join(', ')}]`);
+        
         context.types.set(typeName, {
           type: 'enum',
           values,
@@ -66,7 +66,7 @@ export function extractType(type: Type, context: ExtractionContext): string {
 
   if (type.isUnion()) {
     const unionTypes = type.getUnionTypes();
-    console.log(`[AutoUI Type Schema] Extracting union type "${typeName}" with ${unionTypes.length} union members`);
+    
     
     const stringLiterals: string[] = [];
     let hasOnlyStringLiterals = true;
@@ -97,7 +97,7 @@ export function extractType(type: Type, context: ExtractionContext): string {
           const decl = declarations[0];
           if (Node.isTypeAliasDeclaration(decl)) {
             const aliasName = symbol.getName();
-            console.log(`  → Converting string literal union to enum "${aliasName}" with values: [${stringLiterals.join(', ')}]`);
+            
             context.types.set(aliasName, {
               type: 'enum',
               values: stringLiterals,
@@ -119,7 +119,7 @@ export function extractType(type: Type, context: ExtractionContext): string {
       }
     }
     
-    console.log(`  → Union members: [${refs.join(', ')}]`);
+    
     
     if (refs.length > 1) {
       context.types.set(typeName, {
@@ -128,7 +128,7 @@ export function extractType(type: Type, context: ExtractionContext): string {
       });
       return typeName;
     } else if (refs.length === 1) {
-      console.log(`  → Single type union (with undefined) - returning "${refs[0]}"`);
+      
       return refs[0];
     }
   }
@@ -138,9 +138,9 @@ export function extractType(type: Type, context: ExtractionContext): string {
   
   const propertiesSymbol = type.getProperties();
   const typeText = type.getText();
-  console.log(`[AutoUI Type Schema] Extracting object type "${typeName}":`);
-  console.log(`  Type text: ${typeText.substring(0, 100)}${typeText.length > 100 ? '...' : ''}`);
-  console.log(`  Properties count: ${propertiesSymbol.length}`);
+  
+  
+  
   
   for (const prop of propertiesSymbol) {
     const propName = prop.getName();
@@ -153,24 +153,24 @@ export function extractType(type: Type, context: ExtractionContext): string {
     if (!propDecl) continue;
     const propType = context.checker.getTypeAtLocation(propDecl);
     
-    console.log(`    [Object Property] ${propName}:`);
-    console.log(`      Raw type: ${propType.getText()}`);
+    
+    
     
     const isOptional = isPropertyOptional(prop, propType);
     const isRequired = !isOptional;
     
     if (isOptional) {
-      console.log(`      Detected as optional (question token, union with undefined/null, or default value)`);
+      
     }
     
     const typeToExtract = extractNonOptionalType(propType);
     if (typeToExtract !== propType) {
-      console.log(`      Extracting non-optional type: ${typeToExtract.getText()}`);
+      
     }
 
     const propTypeName = extractType(typeToExtract, context);
     properties[propName] = { type: propTypeName, required: isRequired };
-    console.log(`      → Evaluated type: "${propTypeName}" (required: ${isRequired})`);
+    
     if (!refs.includes(propTypeName)) {
       refs.push(propTypeName);
     }

@@ -40,7 +40,7 @@ export function findRegistrations(project: Project): {
                 }
               }
               
-              console.log(`[AutoUI Type Schema] Found component registration: "${componentName}"`);
+              
               components.push({ name: componentName, type });
             }
           }
@@ -62,7 +62,7 @@ export function findRegistrations(project: Project): {
                 }
               }
               
-              console.log(`[AutoUI Type Schema] Found function registration: "${functionName}"`);
+              
               functions.push({ name: functionName, type });
             }
           }

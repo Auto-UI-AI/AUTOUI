@@ -22,7 +22,7 @@ export function autouiTypeSchemaPlugin(options: {
       // The schema file should be committed to the repo and used as-is in production
       const isProduction = process.env.NODE_ENV === 'production' || process.env.MODE === 'production';
       if (isProduction) {
-        console.log('[AutoUI Type Schema Plugin] Skipping schema generation in production build. Using existing schema file.');
+        
         return;
       }
 
@@ -70,7 +70,7 @@ export function autouiTypeSchemaPlugin(options: {
           mkdirSync(runtimeSchemaDir, { recursive: true });
         }
         writeFileSync(runtimeSchemaPath, JSON.stringify(schema, null, 2), 'utf-8');
-        console.log(`[AutoUI Type Schema Plugin] Schema written to ${runtimeSchemaFile}`);
+        
       } catch (error) {
         console.error('❌ [AutoUI Type Schema Plugin] Error in plugin:', error);
         if (error instanceof Error) {

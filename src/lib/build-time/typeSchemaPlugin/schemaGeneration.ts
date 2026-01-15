@@ -20,28 +20,28 @@ export function generateSchema(
     anonymousTypeCounter: new Map(),
   };
 
-  console.log(`[AutoUI Type Schema] Starting schema generation for appId: ${appId}, version: ${version}`);
+  
   const { components: componentRegistrations, functions: functionRegistrations } = findRegistrations(project);
-  console.log(`[AutoUI Type Schema] Found ${componentRegistrations.length} component(s) and ${functionRegistrations.length} function(s)`);
+  
 
   const components: Record<string, ComponentDefinition> = {};
   for (const { name, type } of componentRegistrations) {
-    console.log(`\n[AutoUI Type Schema] ========================================`);
-    console.log(`[AutoUI Type Schema] Processing Component: "${name}"`);
-    console.log(`[AutoUI Type Schema] ========================================`);
+    
+    
+    
     const props = extractComponentProps(type, context);
     components[name] = { props };
-    console.log(`[AutoUI Type Schema] ✓ Component "${name}" processed with ${Object.keys(props).length} prop(s)`);
+    
   }
 
   const functions: Record<string, FunctionDefinition> = {};
   for (const { name, type } of functionRegistrations) {
-    console.log(`\n[AutoUI Type Schema] ========================================`);
-    console.log(`[AutoUI Type Schema] Processing Function: "${name}"`);
-    console.log(`[AutoUI Type Schema] ========================================`);
+    
+    
+    
     const { params, returns } = extractFunctionSignature(type, context);
     functions[name] = { params, returns };
-    console.log(`[AutoUI Type Schema] ✓ Function "${name}" processed with ${Object.keys(params).length} param(s), return type: "${returns.type}"`);
+    
   }
 
   const types: Record<string, import('./types').TypeDefinition> = {};
