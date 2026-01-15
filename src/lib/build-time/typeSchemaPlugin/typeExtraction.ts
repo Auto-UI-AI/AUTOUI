@@ -137,7 +137,6 @@ export function extractType(type: Type, context: ExtractionContext): string {
   const refs: string[] = [];
   
   const propertiesSymbol = type.getProperties();
-  const typeText = type.getText();
   
   
   
