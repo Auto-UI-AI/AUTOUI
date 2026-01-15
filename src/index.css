@@ -173,7 +173,7 @@
     background-image:
       radial-gradient(circle at 18% 12%, hsl(var(--ecom-primary) / 0.18), transparent 45%),
       radial-gradient(circle at 82% 20%, hsl(var(--ecom-accent) / 0.14), transparent 48%),
-      radial-gradient(circle at 40% 95%, hsl(var(--ecom-primary) / 0.10), transparent 52%),
+      radial-gradient(circle at 40% 95%, hsl(var(--ecom-primary) / 0.1), transparent 52%),
       linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.02));
     background-attachment: fixed;
     background-repeat: no-repeat;
@@ -210,7 +210,7 @@
       radial-gradient(circle at 15% 8%, hsl(var(--ecom-primary) / 0.28), transparent 46%),
       radial-gradient(circle at 82% 18%, hsl(var(--ecom-accent) / 0.22), transparent 50%),
       radial-gradient(circle at 45% 96%, hsl(var(--ecom-primary) / 0.16), transparent 55%),
-      linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.30));
+      linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
     background-attachment: fixed;
     background-repeat: no-repeat;
   }

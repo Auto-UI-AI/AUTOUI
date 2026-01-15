@@ -9,17 +9,13 @@ export default function ShippingReturnsPage() {
             <CardTitle>Shipping</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm text-muted-foreground">
-            <p>
-              This is a demo shop. Shipping information is here to make the UI feel realistic.
-            </p>
+            <p>This is a demo shop. Shipping information is here to make the UI feel realistic.</p>
             <ul className="list-disc space-y-2 pl-5">
               <li>Standard: 3–5 business days</li>
               <li>Express: 1–2 business days</li>
               <li>International: 7–14 business days</li>
             </ul>
-            <p>
-              Orders are processed Mon–Fri. You’ll see a mock ETA after checkout.
-            </p>
+            <p>Orders are processed Mon–Fri. You’ll see a mock ETA after checkout.</p>
           </CardContent>
         </Card>
 
@@ -34,9 +30,7 @@ export default function ShippingReturnsPage() {
               <li>Refunds go to original payment method</li>
               <li>Exchange options depend on stock</li>
             </ul>
-            <p>
-              For the demo, returns aren’t actually processed—this page is just for completeness.
-            </p>
+            <p>For the demo, returns aren’t actually processed—this page is just for completeness.</p>
           </CardContent>
         </Card>
       </div>

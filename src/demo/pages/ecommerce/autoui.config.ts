@@ -1,9 +1,6 @@
 import type { AutoUIConfig } from '@lib/types';
 
-import CartForChat from './componentsForChat/CartForChat';
-import LastOrderForChat from './componentsForChat/LastOrderForChat';
-import ProductsForChat from './componentsForChat/ProductsForChat';
-import WishlistForChat from './componentsForChat/WishlistForChat';
+import EcommerceForChat from './componentsForChat/EcommerceForChat';
 import {
   addToCart,
   checkout,
@@ -21,7 +18,7 @@ const proxyUrl = import.meta.env.VITE_BASE_URL;
 const sharedSecret = import.meta.env.VITE_AUTOUI_SHARED_SECRET;
 
 export const ecommerceAutouiConfig: AutoUIConfig = {
-  appId: 'ecommerce-demo',
+  appId: 'app_1768424109198_mrvnzkn',
 
   metadata: {
     appName: 'Ecommerce Store Demo',
@@ -35,7 +32,7 @@ export const ecommerceAutouiConfig: AutoUIConfig = {
     sharedSecret,
     maxTokens: 2048,
     appDescriptionPrompt:
-      'You are an assistant for an ecommerce storefront. Users can browse products, filter by category, search, add/remove items from cart, adjust quantities, manage wishlist, and checkout. When useful, render UI components such as Products, Cart, Wishlist, and LastOrder.',
+      'You are an assistant for an ecommerce storefront. IMPORTANT: the chat UI can only reliably render ONE component per assistant message. Always render a single <Ecommerce /> component (never multiple). Use <Ecommerce view="products" /> for browsing, <Ecommerce view="cart" /> for cart, <Ecommerce view="wishlist" /> for wishlist, <Ecommerce view="checkout" /> to collect name/email/address via the form (do NOT fabricate user details), and <Ecommerce view="lastOrder" /> to show the last receipt. You can still call functions to modify state; after state changes, render exactly one <Ecommerce ... />.',
     requestHeaders: {
       'HTTP-Referer': 'https://autoui.dev',
       'X-Title': 'AutoUI Ecommerce Demo',
@@ -137,54 +134,32 @@ export const ecommerceAutouiConfig: AutoUIConfig = {
 
     checkout: {
       prompt:
-        'Checkout the current cart using provided user info. Creates an order receipt, saves it as lastOrder, and clears the cart.',
+        'Checkout the current cart using explicitly provided user info. Do NOT fabricate name/email/address; if missing, ask the user or render <Checkout />. Creates an order receipt, saves it as lastOrder, and clears the cart.',
       params: {
         name: 'string — customer name',
         email: 'string — customer email',
         address: 'string — shipping address',
       },
       callFunc: checkout,
-      returns: '{ ok: boolean, order: { orderId: string, eta: string, totalCost: number, createdAtIso: string } }',
+      returns:
+        '{ ok: boolean, order?: { orderId: string, eta: string, totalCost: number, createdAtIso: string }, error?: string }',
       exampleUsage: 'checkout({ name: "Jane Doe", email: "jane@example.com", address: "NYC" })',
     },
   },
 
   components: {
-    Products: {
+    Ecommerce: {
       prompt:
-        'Render a storefront product grid with search, category filter, and size filter. Users can open details, add to cart, and toggle wishlist.',
+        'Render the ecommerce UI. IMPORTANT: the host chat renderer supports only one component per assistant message, so use only this component. Use view to switch between products/cart/wishlist/checkout/lastOrder. For products view, render products as a vertical list (cart-like rows) because it displays more reliably than a grid in the chat container. You may pass initial category/q/size.',
       props: {
-        category: 'string (optional) — initial category',
-        q: 'string (optional) — initial search query',
-        size: 'string (optional) — initial size filter (XS, S, M, L, XL)',
+        view: '"products" | "cart" | "wishlist" | "checkout" | "lastOrder" (optional) — default "products"',
+        category: 'string (optional) — initial category (products view)',
+        q: 'string (optional) — initial search query (products view)',
+        size: 'string (optional) — initial size filter (products view)',
       },
-      callComponent: ProductsForChat,
+      callComponent: EcommerceForChat,
       category: 'store',
-      exampleUsage: '<Products category="Shoes" q="boot" />',
-    },
-
-    Cart: {
-      prompt: 'Render the current cart with items, quantities, subtotal, and remove controls.',
-      props: {},
-      callComponent: CartForChat,
-      category: 'checkout',
-      exampleUsage: '<Cart />',
-    },
-
-    Wishlist: {
-      prompt: 'Render the current wishlist with actions to remove items or add them to cart.',
-      props: {},
-      callComponent: WishlistForChat,
-      category: 'store',
-      exampleUsage: '<Wishlist />',
-    },
-
-    LastOrder: {
-      prompt: 'Render the most recent order receipt if it exists.',
-      props: {},
-      callComponent: LastOrderForChat,
-      category: 'checkout',
-      exampleUsage: '<LastOrder />',
+      exampleUsage: '<Ecommerce view="checkout" />',
     },
   },
 };

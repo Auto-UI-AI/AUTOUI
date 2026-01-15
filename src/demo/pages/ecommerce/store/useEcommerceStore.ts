@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
+import { toast } from 'sonner';
 
 import type { CartItem, OrderReceipt, Product, WishlistItem } from '../types';
 
@@ -24,6 +25,11 @@ type EcommerceState = {
   setLastOrder: (order: OrderReceipt | null) => void;
 };
 
+function safeToast(message: string, options?: Parameters<typeof toast>[1]) {
+  if (typeof window === 'undefined') return;
+  toast(message, options);
+}
+
 export const useEcommerceStore = create<EcommerceState>()(
   persist(
     (set, get) => ({
@@ -43,9 +49,11 @@ export const useEcommerceStore = create<EcommerceState>()(
           set({
             cart: cart.map((item) => (item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item)),
           });
+          safeToast(`Added another: ${product.name}`, { description: 'Cart updated' });
           return;
         }
         set({ cart: [...cart, { id: product.id, name: product.name, price: product.price, quantity: 1 }] });
+        safeToast(`Added to cart: ${product.name}`, { description: 'Cart updated' });
       },
 
       removeFromCart: (productId) => {
@@ -66,9 +74,11 @@ export const useEcommerceStore = create<EcommerceState>()(
         const exists = wishlist.some((w) => w.id === product.id);
         if (exists) {
           set({ wishlist: wishlist.filter((w) => w.id !== product.id) });
+          safeToast(`Removed from wishlist: ${product.name}`);
           return;
         }
         set({ wishlist: [...wishlist, { id: product.id, name: product.name, price: product.price }] });
+        safeToast(`Added to wishlist: ${product.name}`);
       },
 
       removeFromWishlist: (productId) => set({ wishlist: get().wishlist.filter((w) => w.id !== productId) }),

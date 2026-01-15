@@ -115,7 +115,10 @@ export default function EcommerceLayout() {
         aria-hidden
         className="pointer-events-none fixed inset-0 -z-10 opacity-90 motion-safe:animate-[ecom-bg_18s_ease-in-out_infinite] [background:radial-gradient(circle_at_15%_10%,hsl(var(--ecom-primary)/0.34),transparent_42%),radial-gradient(circle_at_80%_20%,hsl(var(--ecom-accent)/0.26),transparent_45%),radial-gradient(circle_at_40%_95%,hsl(var(--ecom-primary)/0.18),transparent_52%)]"
       />
-      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(to_bottom,transparent,rgba(0,0,0,0.02))] dark:bg-[linear-gradient(to_bottom,transparent,rgba(0,0,0,0.25))]" />
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(to_bottom,transparent,rgba(0,0,0,0.02))] dark:bg-[linear-gradient(to_bottom,transparent,rgba(0,0,0,0.25))]"
+      />
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 -z-10 opacity-[0.10] dark:opacity-[0.12] [background:linear-gradient(to_right,rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.12)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:radial-gradient(circle_at_35%_20%,black,transparent_70%)]"
@@ -294,9 +297,7 @@ export default function EcommerceLayout() {
           <div className="grid gap-6 md:grid-cols-3">
             <div>
               <div className="text-sm font-semibold">AUTOUI Atelier</div>
-              <div className="mt-2 text-sm text-muted-foreground">
-                Demo apparel shop UI with AutoUI chat.
-              </div>
+              <div className="mt-2 text-sm text-muted-foreground">Demo apparel shop UI with AutoUI chat.</div>
             </div>
             <div className="grid gap-2 text-sm">
               <Link className="text-muted-foreground hover:text-foreground" to="/demo/ecommerce/about">
@@ -311,9 +312,7 @@ export default function EcommerceLayout() {
             </div>
             <div className="text-sm text-muted-foreground">
               <div className="font-medium text-foreground">Note</div>
-              <div className="mt-2">
-                This is a demo. Products, prices and policies are mock.
-              </div>
+              <div className="mt-2">This is a demo. Products, prices and policies are mock.</div>
             </div>
           </div>
 

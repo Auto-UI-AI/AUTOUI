@@ -10,16 +10,16 @@ export default function AboutPage() {
           </CardHeader>
           <CardContent className="space-y-4 text-sm text-muted-foreground">
             <p>
-              We’re a demo storefront built for showcasing a modern ecommerce UI: fast filters, a clean cart,
-              and an AI-powered assistant that can render components.
+              We’re a demo storefront built for showcasing a modern ecommerce UI: fast filters, a clean cart, and an
+              AI-powered assistant that can render components.
             </p>
             <p>
               Our “collections” are curated basics—minimal silhouettes, timeless colors, and everyday comfort.
               Everything here is mock data for the demo, but the UX is real.
             </p>
             <p>
-              Want to explore? Use the chat to ask for “Products”, “Cart”, “Wishlist”, or “Last order” and see
-              UI components appear.
+              Want to explore? Use the chat to ask for “Products”, “Cart”, “Wishlist”, or “Last order” and see UI
+              components appear.
             </p>
           </CardContent>
         </Card>

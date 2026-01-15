@@ -31,7 +31,9 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ order, onContinue
         </div>
         <div className="flex items-center justify-between">
           <span className="text-muted-foreground">Total</span>
-          <span className="font-semibold">${Number.isFinite(order.totalCost) ? order.totalCost.toFixed(2) : '0.00'}</span>
+          <span className="font-semibold">
+            ${Number.isFinite(order.totalCost) ? order.totalCost.toFixed(2) : '0.00'}
+          </span>
         </div>
       </CardContent>
       {onContinueShopping && (

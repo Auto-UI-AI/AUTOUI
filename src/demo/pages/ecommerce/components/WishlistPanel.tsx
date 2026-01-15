@@ -35,7 +35,12 @@ export default function WishlistPanel({ wishlist, onRemove, onAddToCart }: Wishl
                         </Button>
                       )}
                       {onRemove && (
-                        <Button size="sm" variant="outline" className="border-0 bg-muted/50" onClick={() => onRemove(item.id)}>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="border-0 bg-muted/50"
+                          onClick={() => onRemove(item.id)}
+                        >
                           Remove
                         </Button>
                       )}

@@ -71,19 +71,24 @@ export async function getCartSummary() {
 
 export async function checkout(params: { name: string; email: string; address: string }) {
   const state = useEcommerceStore.getState();
-  const { total } = summarizeCart({ cart: state.cart });
 
-  const receipt = submitOrder({
-    user: { name: params.name, email: params.email, address: params.address },
-    cart: state.cart,
-  });
+  if (state.cart.length === 0) {
+    return { ok: false, error: 'Cart is empty. Add items before checkout.' };
+  }
 
-  const order = {
-    orderId: receipt.orderId,
-    eta: receipt.eta,
-    totalCost: total,
-    createdAtIso: new Date().toISOString(),
-  };
+  const name = params.name?.trim() ?? '';
+  const email = params.email?.trim() ?? '';
+  const address = params.address?.trim() ?? '';
+
+  if (!name) return { ok: false, error: 'Name is required.' };
+  if (!email) return { ok: false, error: 'Email is required.' };
+  if (!address) return { ok: false, error: 'Shipping address is required.' };
+
+  const basicEmailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!basicEmailOk) return { ok: false, error: 'Email looks invalid. Please enter a real email address.' };
+
+  const receipt = submitOrder({ user: { name, email, address }, cart: state.cart });
+  const order = receipt;
 
   state.setLastOrder(order);
   state.clearCart();

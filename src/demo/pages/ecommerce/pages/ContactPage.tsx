@@ -26,9 +26,7 @@ export default function ContactPage() {
               <Textarea id="message" placeholder="How can we help?" className="min-h-32 border-0 bg-muted/50" />
             </div>
             <Button className="w-full">Send message</Button>
-            <p className="text-xs text-muted-foreground">
-              Demo form: messages are not actually sent.
-            </p>
+            <p className="text-xs text-muted-foreground">Demo form: messages are not actually sent.</p>
           </CardContent>
         </Card>
 
