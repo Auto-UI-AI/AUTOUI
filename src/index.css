@@ -138,4 +138,95 @@
   body.financial-app {
     @apply bg-[#0E0F13];
   }
+
+  /*
+    Ecommerce demo theme (scoped by body class).
+    Uses HSL custom properties so we can reference them in utility gradients.
+  */
+  html.ecommerce-app,
+  body.ecommerce-app {
+    --background: oklch(0.99 0.01 320);
+    --foreground: oklch(0.16 0.02 290);
+    --card: oklch(1 0.01 320);
+    --card-foreground: oklch(0.16 0.02 290);
+    --popover: oklch(1 0.01 320);
+    --popover-foreground: oklch(0.16 0.02 290);
+    --primary: oklch(0.64 0.22 315);
+    --primary-foreground: oklch(0.99 0 0);
+    --secondary: oklch(0.965 0.01 320);
+    --secondary-foreground: oklch(0.22 0.02 290);
+    --muted: oklch(0.965 0.01 320);
+    --muted-foreground: oklch(0.48 0.02 290);
+    --accent: oklch(0.92 0.08 210);
+    --accent-foreground: oklch(0.18 0.02 290);
+    /* Make default borders effectively invisible in ecommerce */
+    --border: oklch(0.985 0 0);
+    --input: oklch(0.985 0 0);
+    --ring: oklch(0.63 0.23 285);
+
+    /* Accent hues used by ecommerce background gradients */
+    --ecom-primary: 315 92% 62%;
+    --ecom-accent: 205 92% 55%;
+
+    color: var(--foreground);
+    background-color: var(--background);
+    background-image:
+      radial-gradient(circle at 18% 12%, hsl(var(--ecom-primary) / 0.18), transparent 45%),
+      radial-gradient(circle at 82% 20%, hsl(var(--ecom-accent) / 0.14), transparent 48%),
+      radial-gradient(circle at 40% 95%, hsl(var(--ecom-primary) / 0.1), transparent 52%),
+      linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.02));
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  .dark html.ecommerce-app,
+  .dark body.ecommerce-app {
+    /* Dark theme: charcoal / plum (no navy) */
+    --background: #0c0b10;
+    --foreground: #f6f4ff;
+    --card: rgba(255, 255, 255, 0.06);
+    --card-foreground: #f6f4ff;
+    --popover: rgba(255, 255, 255, 0.07);
+    --popover-foreground: #f6f4ff;
+    --primary: #ff4fd8;
+    --primary-foreground: #0c0b10;
+    --secondary: rgba(255, 255, 255, 0.06);
+    --secondary-foreground: #f6f4ff;
+    --muted: rgba(255, 255, 255, 0.06);
+    --muted-foreground: rgba(246, 244, 255, 0.75);
+    --accent: #5ee7ff;
+    --accent-foreground: #0c0b10;
+    /* Make default borders effectively invisible in ecommerce */
+    --border: transparent;
+    --input: transparent;
+    --ring: rgba(255, 79, 216, 0.55);
+
+    --ecom-primary: 315 92% 62%;
+    --ecom-accent: 195 92% 55%;
+
+    color: var(--foreground);
+    background-color: var(--background);
+    background-image:
+      radial-gradient(circle at 15% 8%, hsl(var(--ecom-primary) / 0.28), transparent 46%),
+      radial-gradient(circle at 82% 18%, hsl(var(--ecom-accent) / 0.22), transparent 50%),
+      radial-gradient(circle at 45% 96%, hsl(var(--ecom-primary) / 0.16), transparent 55%),
+      linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+}
+
+@keyframes ecom-bg {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-2%, 1%, 0) scale(1.03);
+    filter: hue-rotate(18deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: hue-rotate(0deg);
+  }
 }

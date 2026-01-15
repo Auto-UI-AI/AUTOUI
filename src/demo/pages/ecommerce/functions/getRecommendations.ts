@@ -13,15 +13,18 @@
  * });
  * ```
  */
-import { type Product } from './fetchProducts';
-import { PLACEHOLDER_IMAGE } from '@/demo/constants';
+import type { CartItem, Product } from '../types';
 
-export interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-}
+export type { CartItem, Product } from '../types';
+
+const pexels = (id: number) =>
+  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=1200`;
+
+const IMG = {
+  scarf: pexels(572897),
+  boots: pexels(4041687),
+  hat: pexels(2529150),
+};
 
 export interface GetRecommendationsParams {
   cart?: CartItem[];
@@ -38,7 +41,7 @@ export async function getRecommendations(params: GetRecommendationsParams = {}):
           name: 'Scarf',
           description: 'Cozy scarf perfect for cold weather.',
           price: 29.99,
-          image: PLACEHOLDER_IMAGE,
+          image: IMG.scarf,
           category: 'Accessories',
         },
         {
@@ -46,15 +49,16 @@ export async function getRecommendations(params: GetRecommendationsParams = {}):
           name: 'Winter Boots',
           description: 'Warm and comfortable winter boots.',
           price: 129.99,
-          image: PLACEHOLDER_IMAGE,
+          image: IMG.boots,
           category: 'Shoes',
+          sizes: ['S', 'M', 'L', 'XL'],
         },
         {
           id: '7',
           name: 'Wool Hat',
           description: 'Soft wool hat for winter warmth.',
           price: 39.99,
-          image: PLACEHOLDER_IMAGE,
+          image: IMG.hat,
           category: 'Accessories',
         },
       ];

@@ -27,7 +27,7 @@ export default function CategoryFilter({ categories, selected, onSelect }: Categ
       type="single"
       value={selected}
       onValueChange={(val) => val && onSelect(val)}
-      className="flex flex-wrap gap-2"
+      className="flex flex-wrap justify-start gap-2"
       data-testid="category-filter"
     >
       {categories.map((category) => (
@@ -36,8 +36,8 @@ export default function CategoryFilter({ categories, selected, onSelect }: Categ
           value={category}
           aria-label={`Select ${category}`}
           className={cn(
-            'px-4 py-2 rounded-full border transition-colors text-sm',
-            selected === category ? 'text-primary-foreground border-primary' : 'border-muted hover:border-primary',
+            'px-4 py-2 rounded-full border-0 bg-muted/40 transition-colors text-sm hover:bg-muted/55',
+            selected === category ? 'bg-primary text-primary-foreground hover:bg-primary/90' : 'text-foreground',
           )}
           data-testid={`category-filter-chip-${category}`}
         >

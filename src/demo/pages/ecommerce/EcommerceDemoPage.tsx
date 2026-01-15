@@ -1,22 +1,30 @@
-import { useState, useEffect } from 'react';
-import {
-  fetchProducts,
-  fetchCategories,
-  addToCart,
-  getRecommendations,
-  type Product,
-  type CartItem,
-} from './functions';
-import { SearchBar, CategoryFilter, ProductGallery, CartSummary } from './components';
+import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
-export function EcommerceDemoPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+import { CategoryFilter, ProductDetailsModal, ProductGallery, SizeFilter } from './components';
+import { fetchCategories, fetchProducts, getRecommendations, type Product } from './functions';
+import { useEcommerceStore } from './store/useEcommerceStore';
+
+export default function EcommerceDemoPage() {
+  const [searchParams] = useSearchParams();
+
+  const products = useEcommerceStore((s) => s.products);
+  const categories = useEcommerceStore((s) => s.categories);
+  const cart = useEcommerceStore((s) => s.cart);
+  const wishlist = useEcommerceStore((s) => s.wishlist);
+
+  const setProducts = useEcommerceStore((s) => s.setProducts);
+  const setCategories = useEcommerceStore((s) => s.setCategories);
+  const addToCartStore = useEcommerceStore((s) => s.addToCart);
+  const toggleWishlist = useEcommerceStore((s) => s.toggleWishlist);
+
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [selectedSize, setSelectedSize] = useState<string | undefined>(undefined);
   const [recommendations, setRecommendations] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [detailsProductId, setDetailsProductId] = useState<string | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -26,21 +34,8 @@ export function EcommerceDemoPage() {
       setCategories(fetchedCategories);
       setLoading(false);
     };
-    loadData();
-  }, []);
-
-  useEffect(() => {
-    const loadProducts = async () => {
-      setLoading(true);
-      const fetchedProducts = await fetchProducts({
-        category: selectedCategory === 'All' ? undefined : selectedCategory,
-        q: searchQuery || undefined,
-      });
-      setProducts(fetchedProducts);
-      setLoading(false);
-    };
-    loadProducts();
-  }, [selectedCategory, searchQuery]);
+    void loadData();
+  }, [setCategories, setProducts]);
 
   useEffect(() => {
     const loadRecommendations = async () => {
@@ -51,61 +46,138 @@ export function EcommerceDemoPage() {
         setRecommendations([]);
       }
     };
-    loadRecommendations();
+    void loadRecommendations();
   }, [cart]);
 
-  const handleAddToCart = async (productId: string) => {
-    const product = products.find((p) => p.id === productId);
-    if (!product) return;
+  useEffect(() => {
+    setSearchQuery(searchParams.get('q') ?? '');
+  }, [searchParams]);
 
-    await addToCart({ productId });
-    const existingItem = cart.find((item) => item.id === productId);
-    if (existingItem) {
-      setCart(cart.map((item) => (item.id === productId ? { ...item, quantity: item.quantity + 1 } : item)));
-    } else {
-      setCart([...cart, { id: product.id, name: product.name, price: product.price, quantity: 1 }]);
-    }
-  };
+  const filteredProducts = useMemo(() => {
+    return products.filter((p) => {
+      if (selectedCategory !== 'All' && p.category !== selectedCategory) return false;
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        const hay = `${p.name} ${p.description} ${p.category ?? ''}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      if (selectedSize && p.sizes && p.sizes.length > 0 && !p.sizes.includes(selectedSize)) return false;
+      return true;
+    });
+  }, [products, searchQuery, selectedCategory, selectedSize]);
 
-  const handleCheckout = () => {
-    alert(
-      `Checkout with ${cart.length} items. Total: $${cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}`,
-    );
-  };
+  const detailsProduct = useMemo(() => {
+    return detailsProductId ? products.find((p) => p.id === detailsProductId) : undefined;
+  }, [detailsProductId, products]);
 
   return (
-    <>
-      <div className="space-y-6 p-6">
-        {/* Search and Filters */}
-        <div className="space-y-4">
-          <SearchBar onSearch={setSearchQuery} placeholder="Search products..." />
-          <CategoryFilter categories={categories} selected={selectedCategory} onSelect={setSelectedCategory} />
-        </div>
+    <main className="mx-auto w-full max-w-7xl px-4 py-8 md:py-10">
+      <div className="mb-6 space-y-1">
+        <h1 className="text-2xl font-semibold tracking-tight">Shop</h1>
+        <p className="text-sm text-muted-foreground">Modern essentials with a glassy, minimal vibe.</p>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Products */}
-          <div className="lg:col-span-2">
-            {loading ? (
-              <div className="text-center py-12 text-muted-foreground">Loading products...</div>
-            ) : (
-              <ProductGallery products={products} onAddToCart={handleAddToCart} />
+      <div className="grid gap-8 lg:grid-cols-12">
+        <aside className="lg:col-span-3">
+          <div
+            id="products"
+            className="sticky top-24 space-y-6 rounded-2xl border-0 bg-card/50 p-4 shadow-sm backdrop-blur"
+          >
+            <div className="space-y-2">
+              <div className="text-sm font-medium">Categories</div>
+              <CategoryFilter categories={categories} selected={selectedCategory} onSelect={setSelectedCategory} />
+            </div>
+
+            <div className="space-y-2">
+              <div className="text-sm font-medium">Size</div>
+              <SizeFilter sizes={['XS', 'S', 'M', 'L', 'XL']} selected={selectedSize} onFilter={setSelectedSize} />
+            </div>
+
+            {(selectedCategory !== 'All' || selectedSize) && (
+              <button
+                type="button"
+                className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                onClick={() => {
+                  setSelectedCategory('All');
+                  setSelectedSize(undefined);
+                }}
+              >
+                Clear filters
+              </button>
             )}
           </div>
+        </aside>
 
-          {/* Cart */}
-          <div className="lg:col-span-1">
-            <CartSummary items={cart} onCheckout={handleCheckout} />
+        <section className="lg:col-span-9">
+          <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div className="text-sm text-muted-foreground">
+              {loading ? 'Loading…' : `${filteredProducts.length} products`}
+              {searchQuery ? ` for “${searchQuery}”` : ''}
+            </div>
           </div>
-        </div>
 
-        {/* Recommendations */}
-        {recommendations.length > 0 && (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Recommended for You</h3>
-            <ProductGallery products={recommendations} onAddToCart={handleAddToCart} />
-          </div>
-        )}
+          {loading ? (
+            <div className="py-12 text-center text-muted-foreground">Loading products…</div>
+          ) : (
+            <ProductGallery
+              products={filteredProducts}
+              onAddToCart={(productId) => {
+                const p = products.find((x) => x.id === productId);
+                if (!p) return;
+                addToCartStore({ id: p.id, name: p.name, price: p.price });
+              }}
+              onOpenDetails={(productId) => setDetailsProductId(productId)}
+              onToggleWishlist={(productId) => {
+                const p = products.find((x) => x.id === productId);
+                if (!p) return;
+                toggleWishlist({ id: p.id, name: p.name, price: p.price });
+              }}
+              isWishlisted={(productId) => wishlist.some((w) => w.id === productId)}
+            />
+          )}
+
+          {recommendations.length > 0 && (
+            <div className="mt-10 space-y-4">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                <h3 className="text-lg font-semibold">Recommended for you</h3>
+                <span className="text-sm text-muted-foreground">Based on your cart</span>
+              </div>
+              <ProductGallery
+                products={recommendations}
+                onAddToCart={(productId) => {
+                  const p = recommendations.find((x) => x.id === productId) || products.find((x) => x.id === productId);
+                  if (!p) return;
+                  addToCartStore({ id: p.id, name: p.name, price: p.price });
+                }}
+                onOpenDetails={(productId) => setDetailsProductId(productId)}
+                onToggleWishlist={(productId) => {
+                  const p = recommendations.find((x) => x.id === productId) || products.find((x) => x.id === productId);
+                  if (!p) return;
+                  toggleWishlist({ id: p.id, name: p.name, price: p.price });
+                }}
+                isWishlisted={(productId) => wishlist.some((w) => w.id === productId)}
+              />
+            </div>
+          )}
+        </section>
       </div>
-    </>
+      {detailsProduct && (
+        <ProductDetailsModal
+          product={detailsProduct}
+          onClose={() => setDetailsProductId(null)}
+          onAddToCart={(productId) => {
+            const p = products.find((x) => x.id === productId);
+            if (!p) return;
+            addToCartStore({ id: p.id, name: p.name, price: p.price });
+          }}
+          onToggleWishlist={(productId) => {
+            const p = products.find((x) => x.id === productId);
+            if (!p) return;
+            toggleWishlist({ id: p.id, name: p.name, price: p.price });
+          }}
+          isWishlisted={wishlist.some((w) => w.id === detailsProduct.id)}
+        />
+      )}
+    </main>
   );
 }

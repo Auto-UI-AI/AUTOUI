@@ -1,1 +1,1 @@
-export { EcommerceDemoPage } from './EcommerceDemoPage';
+export { default as EcommerceDemoPage } from './EcommerceDemoPage';

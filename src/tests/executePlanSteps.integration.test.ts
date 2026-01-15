@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 
 vi.mock('../lib/utils/formatting/resolveProps', () => ({
-  resolveProps: (props: any, ctx: any) => {
+  resolveProps: (_props: any, ctx: any) => {
     return { v: ctx.x };
   },
 }));
