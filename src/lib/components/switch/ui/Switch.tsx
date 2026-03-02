@@ -85,7 +85,6 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(function S
           className="autoui-switch__input"
           type="checkbox"
           checked={isChecked}
-          defaultChecked={defaultChecked}
           onChange={handleChange}
           disabled={disabled}
           required={required}
