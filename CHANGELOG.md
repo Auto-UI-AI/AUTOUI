@@ -1,3 +1,10 @@
+## [0.2.9](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.8...v0.2.9) (2026-03-02)
+
+
+### Bug Fixes
+
+* next js integrated ([fe4898c](https://github.com/Auto-UI-AI/AUTOUI/commit/fe4898c5d0402082381779c18fbe34aa0fad544c))
+
 ## [0.2.8](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.7...v0.2.8) (2026-01-14)
 
 
