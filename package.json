@@ -96,6 +96,17 @@
     "react": ">=19.0.0 < 20.0.0",
     "react-dom": ">=19.0.0 <20.0.0"
   },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    },
+    "webpack": {
+      "optional": true
+    }
+  },
+  "bin": {
+    "autoui-nextjs-generate-schema": "./dist/nextjs-standalone.mjs"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -106,6 +117,11 @@
       "types": "./dist/plugin.d.ts",
       "import": "./dist/plugin.mjs",
       "require": "./dist/plugin.cjs"
+    },
+    "./nextjs": {
+      "types": "./dist/nextjs.d.ts",
+      "import": "./dist/nextjs.mjs",
+      "require": "./dist/nextjs.cjs"
     }
   },
   "types": "dist/index.d.ts",

@@ -12,7 +12,8 @@ export default defineConfig({
     }),
     dts({
       tsconfigPath: './tsconfig.build.json',
-      include: ['src/lib/index.ts', 'src/lib/plugin.ts'],
+      include: ['src/lib/index.ts', 'src/lib/plugin.ts', 'src/lib/nextjs.ts'],
+      exclude: ['src/lib/build-time/nextjsPlugin/bin.ts'],
       insertTypesEntry: true,
     }),
   ],
@@ -27,6 +28,8 @@ export default defineConfig({
       entry: {
         index: path.resolve(__dirname, 'src/lib/index.ts'),
         plugin: path.resolve(__dirname, 'src/lib/plugin.ts'),
+        nextjs: path.resolve(__dirname, 'src/lib/nextjs.ts'),
+        'nextjs-standalone': path.resolve(__dirname, 'src/lib/build-time/nextjsPlugin/bin.ts'),
       },
       formats: ['es', 'cjs'],
       fileName: (format: string, entryName: string) => {
@@ -35,7 +38,7 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'vite', 'node:fs', 'node:path', 'node:crypto', 'node:os', 'ts-morph'],
+      external: ['react', 'react-dom', 'vite', 'next', 'webpack', 'node:fs', 'node:path', 'node:crypto', 'node:os', 'ts-morph'],
       output: {
         globals: {
           'react': 'React',

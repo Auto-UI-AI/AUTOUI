@@ -25,10 +25,13 @@ async function loadRuntimeSchema(schemaPath?: string): Promise<AutoUIAppSchema |
       schemaData = await response.json();
     }
     else {
+      // For Next.js: files in public/ are served from root, so try root path first
+      // For Vite: files in public/ are also served from root
+      // Try multiple paths to support both frameworks
       const possiblePaths = [
-        path.startsWith('/') ? path : `/${path}`, 
-        `/public/${path}`, 
-        path, 
+        path.startsWith('/') ? path : `/${path}`, // Root path (works for Next.js public/ and Vite public/)
+        path, // Original path as-is
+        `/public/${path}`, // Explicit public path (may work in some setups)
       ];
       
       let lastError: Error | null = null;
