@@ -1,3 +1,10 @@
+## [0.2.10](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.9...v0.2.10) (2026-03-02)
+
+
+### Bug Fixes
+
+* defaultChecked prop removed from switch input ([abff37c](https://github.com/Auto-UI-AI/AUTOUI/commit/abff37c752708b64c0897f083011a2e0a1a3b1d7))
+
 ## [0.2.9](https://github.com/Auto-UI-AI/AUTOUI/compare/v0.2.8...v0.2.9) (2026-03-02)
 
 
